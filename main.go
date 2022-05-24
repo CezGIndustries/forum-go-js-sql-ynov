@@ -5,6 +5,6 @@ import (
 )
 
 func main() {
-	fmt.Println("lol")
+	fmt.Println("pipi")
 	return
 }
