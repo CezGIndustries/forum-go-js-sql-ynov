@@ -1,10 +1,9 @@
 package main
 
 import (
-	"fmt"
+	"forum/forum"
 )
 
 func main() {
-	fmt.Println("pipi")
-	return
+	forum.Test()
 }
