@@ -3,7 +3,9 @@ let post = document.getElementById("posts")
 let id = 0
 
 input.addEventListener("keyup",function(event){
+    console.log('hi')
     if(event.keyCode == 13){
+    console.log(id)
     id ++
     let val = document.querySelector('input').value
     document.querySelector('input').value = ''
