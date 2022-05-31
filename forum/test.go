@@ -1,5 +1,7 @@
 package forum
 
+import "fmt"
+
 func Test() {
-	return
+	fmt.Println("pipi")
 }
