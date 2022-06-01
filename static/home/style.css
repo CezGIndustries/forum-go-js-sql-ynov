@@ -1,11 +1,83 @@
-
-
-.cron{
-    margin: 10px;
-    padding: 10px;
-    border: 3px solid blue;
-    background-color: lightblue;
+@font-face {
+    font-family: 'orkneyregular';
+    src: url('/font/orkney-regular-webfont.woff2') format('woff2'), url('/font/orkney-regular-webfont.woff') format('woff');
 }
-body{
-    background-color: red;
+
+* {
+    /* font-family: 'orkneyregular'; */
+    margin: 0;
+    padding: 0;
+}
+
+.allcolumns {
+    background-color: #08061A;
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    display: flex;
+}
+
+.leftcolumn {
+    width: 20%;
+    height: 100%;
+    border: solid green 2px;
+}
+
+.navbar {
+    margin: 30px;
+    border-radius: 1.05rem;
+    border: white 2px solid;
+    background-color: #17152A;
+}
+
+.logo {
+    margin-left: 10px;
+}
+
+.nav {
+    margin-left: 10px;
+    font-size: 25px;
+    border: solid #FFD700 2px;
+}
+
+li {
+    margin: 50px 0px;
+}
+
+a {
+    color: #cacaca;
+    text-decoration: none;
+}
+
+.logout {
+    justify-content: space-around;
+    margin: 50px 0px 0px 10px;
+    align-items: flex-end;
+    border: solid pink 2px;
+}
+
+.imgprofile {
+    border: white 2px solid;
+}
+
+img {
+    height: 25%;
+    width: 25%;
+    border-radius: 50%;
+}
+
+.resume {
+    border: orange 2px solid;
+}
+
+.midcolumn {
+    width: 50%;
+    height: 100%;
+    border: solid red 2px;
+}
+
+.rightcolumn {
+    width: 30%;
+    height: 100%;
+    border: solid cyan 2px;
 }
