@@ -7,12 +7,11 @@ import (
 )
 
 func main() {
-	fileServer := http.FileServer(http.Dir("./static"))
+	fileServer := http.FileServer(http.Dir("static/"))
 	http.Handle("/ressources/", http.StripPrefix("/ressources/", fileServer))
 
 	db := forum.InitUserBDD("users.db")
 	defer db.Close()
-
 	forum.CreateUser(db, "Jeremy", "jeremy.dura@ynov.com", "AZEAZE") //func pour crée un user dans la bdd
 
 	http.HandleFunc("/", forum.Connexion_Creation())
