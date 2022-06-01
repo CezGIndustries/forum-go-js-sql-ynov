@@ -3,33 +3,52 @@ package main
 import (
 	"fmt"
 	"forum/forum"
+	"log"
 	"net/http"
 
 	"github.com/gorilla/mux"
 )
 
+// func main() {
+// fileServer := http.FileServer(http.Dir("static/"))
+// http.Handle("/ressources/", http.StripPrefix("/ressources/", fileServer))
+
+// db := forum.InitUserBDD("users.db")
+// defer db.Close()
+// forum.CreateUser(db, "Jeremy", "jeremy.dura@ynov.com", "AZEAZE") //func pour crée un user dans la bdd
+
+// http.HandleFunc("/", forum.Connexion_Creation())
+// http.HandleFunc("/home", forum.Home())
+// http.HandleFunc("/profil", forum.Profil()) //mettre le nom du mec à la place
+
+// port := os.Getenv("PORT")
+// if port == "" {
+// 	port = "8080"
+// }
+
+// http.ListenAndServe(":"+port, nil)
+
+// }
+
 func main() {
+	m := mux.NewRouter()
 
-	// db := forum.InitUserBDD("users.db")
-	// defer db.Close()
-	// forum.CreateUser(db, "Jeremy", "jeremy.dura@ynov.com", "AZEAZE") //func pour crée un user dans la bdd
+	m.Handle("/ressources", http.FileServer(http.Dir("./static/")))
 
-	r := mux.NewRouter()
+	m.HandleFunc("/", forum.Connexion_Creation())
+	m.HandleFunc("/home", forum.Home())
 
-	fileServer := http.FileServer(http.Dir("static/"))
-	r.Handle("/ressources/", http.StripPrefix("/ressources/", fileServer))
-
-	r.HandleFunc("/", forum.Connexion_Creation())
-
-	r.HandleFunc("/home", forum.Home())
-
-	r.HandleFunc("/profil/{nameUser}", func(w http.ResponseWriter, r *http.Request) {
+	m.HandleFunc("/profil/{nameUser}", func(w http.ResponseWriter, r *http.Request) {
 		vars := mux.Vars(r)
 		fmt.Print(vars)
 		nameUser := vars["nameUser"]
 		fmt.Println(nameUser)
 	})
 
-	http.ListenAndServe(":8080", r)
+	s := &http.Server{
+		Addr:    ":8080",
+		Handler: m,
+	}
 
+	log.Fatal(s.ListenAndServe())
 }
