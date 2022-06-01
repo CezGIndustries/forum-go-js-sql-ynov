@@ -18,13 +18,3 @@ func Connexion_Creation() http.HandlerFunc {
 		t.Execute(w, "hello world")
 	}
 }
-func Profil() http.HandlerFunc {
-	return func(w http.ResponseWriter, r *http.Request) {
-		t, _ := template.ParseFiles("./static/profil/index.html")
-		t.Execute(w, "hello world")
-		// vars := mux.Vars(m)
-		// fmt.Print(vars)
-		// nameUser := vars["nameUser"]
-		// fmt.Println(nameUser)
-	}
-}
