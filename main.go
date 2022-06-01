@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"forum/forum"
 	"log"
 	"net/http"
@@ -32,12 +33,17 @@ import (
 func main() {
 	m := mux.NewRouter()
 
-	spa := spaHandler{staticPath: "./", indexPath: "index.html"}
-	router.PathPrefix("/").Handler(spa)
+	m.Handle("/static/", http.FileServer(http.Dir("./static/")))
 
 	m.HandleFunc("/", forum.Connexion_Creation())
 	m.HandleFunc("/home", forum.Home())
-	m.HandleFunc("/profil/{id}", forum.Profil())
+
+	m.HandleFunc("/profil/{nameUser}", func(w http.ResponseWriter, r *http.Request) {
+		vars := mux.Vars(r)
+		fmt.Print(vars)
+		nameUser := vars["nameUser"]
+		fmt.Println(nameUser)
+	})
 
 	s := &http.Server{
 		Addr:    ":8080",
