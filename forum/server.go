@@ -1,6 +1,7 @@
 package forum
 
 import (
+	"fmt"
 	"html/template"
 	"net/http"
 )
@@ -23,5 +24,6 @@ func Profil() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		t, _ := template.ParseFiles("./static/profil/index.html")
 		t.Execute(w, "")
+		fmt.Println(r)
 	}
 }

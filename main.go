@@ -4,6 +4,8 @@ import (
 	"forum/forum"
 	"log"
 	"net/http"
+
+	"github.com/gorilla/mux"
 )
 
 // func main() {
@@ -28,10 +30,10 @@ import (
 // }
 
 func main() {
-	m := http.NewServeMux()
+	m := mux.NewRouter()
 
-	fileServer := http.FileServer(http.Dir("static/"))
-	m.Handle("/ressources/", http.StripPrefix("/ressources/", fileServer))
+	spa := spaHandler{staticPath: "./", indexPath: "index.html"}
+	router.PathPrefix("/").Handler(spa)
 
 	m.HandleFunc("/", forum.Connexion_Creation())
 	m.HandleFunc("/home", forum.Home())
