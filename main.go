@@ -6,17 +6,19 @@ import (
 	"os"
 )
 
+// const dbFolderName = "chronosDB/"
+
 func main() {
 	fileServer := http.FileServer(http.Dir("static/"))
 	http.Handle("/ressources/", http.StripPrefix("/ressources/", fileServer))
 
-	db := forum.InitUserBDD("users.db")
-	defer db.Close()
-	forum.CreateUser(db, "Jeremy", "jeremy.dura@ynov.com", "AZEAZE") //func pour crée un user dans la bdd
+	// os.Mkdir(dbFolderName, os.ModePerm)
+	// forum.DatabasesInit(dbFolderName)
 
 	http.HandleFunc("/", forum.Connexion_Creation())
 	http.HandleFunc("/home", forum.Home())
-	http.HandleFunc("/profil", forum.Profil()) //mettre le nom du mec à la place
+	http.HandleFunc("/profil", forum.Profil())
+	http.HandleFunc("/api/v1/database/logusers", forum.LogUsers())
 
 	port := os.Getenv("PORT")
 	if port == "" {
