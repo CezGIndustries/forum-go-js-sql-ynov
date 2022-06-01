@@ -1,0 +1,194 @@
+@font-face {
+    font-family: 'orkneyregular';
+    src: url('/font/orkney-regular-webfont.woff2') format('woff2'),
+         url('/font/orkney-regular-webfont.woff') format('woff');
+}
+
+
+* {
+    margin: 0;
+    padding: 0;
+}
+
+#background {
+    background-color: #08061a;
+    position: absolute;
+    height: 100%;
+    width: 100%;
+}
+
+.loginsignupform {
+    position: relative;
+    margin: 6% auto;
+    padding: 5px;
+    width: 380px;
+    height: 630px;
+    background: #17152a;
+    border-radius: 30px;
+    overflow: hidden;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    width: 100%;
+    height: 50%;
+    top: -50px;
+}
+
+.loginsignupbutton {
+    position: relative;
+    width: 220px;
+    margin: 35px auto;
+    border-radius: 30px;
+    border: 1px solid #b33ced;
+    background: transparent;
+    top: -130px;
+}
+
+.mainbuttons {
+    position: relative;
+    cursor: pointer;
+    padding: 10px 20px;
+    border: 0;
+    background: transparent;
+    border-radius: 30px;
+    outline: none;
+    color: #cacaca;
+    font-family: 'orkneyregular';
+}
+
+#mainbuttongroup {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 110px;
+    height: 100%;
+    border-radius: 30px;
+    background: linear-gradient(135deg, rgba(249,112,254,1) 15%, rgba(179,60,237,1) 100%);
+    transition: 0.5s ease;
+}
+
+h4 {
+    text-decoration: underline;
+    text-decoration-color: #b33ced;
+    text-decoration-thickness: 2px;
+    margin-bottom: 15px;
+    color: #cacaca;
+    font-family: 'orkneyregular';
+}
+
+.input-group {
+    position: absolute;
+    top: 280px;
+    width: 280px;
+    transition: 0.5s ease;
+}
+
+.input-field {
+    width: 100%;
+    padding: 10px 0;
+    margin: 5px 0;
+    border-left: 0;
+    border-top: 0;
+    border-right: 0;
+    border-bottom: 1px solid #f970fe;
+    outline: none;
+    background: transparent;
+    color: #cacaca;
+    font-family: 'orkneyregular';
+}
+
+.submitbutton {
+    cursor: pointer;
+    display: block;
+    width: 85%;
+    margin: auto;
+    margin-top: 25px;
+    padding: 10px 30px;
+    background: linear-gradient(135deg, rgba(249,112,254,1) 15%, rgba(179,60,237,1) 100%);
+    border: 1px solid #b33ced;
+    border-radius: 30px;
+    outline: none;
+    margin-bottom: 28px;
+    font-family: 'orkneyregular';
+    color: #cacaca;
+    transition: 0.4s;
+}
+
+.submitbutton:after {
+    content: '»';
+    position: absolute;
+    opacity: 0; /*mettre à 1 pr l'afficher*/
+    right: 0;
+    transition: 0.4s;
+}
+
+.submitbutton:hover{
+    padding-right: 28px;
+    padding-left: -31px;
+}
+
+.submitbutton:hover:after {
+    opacity: 1;
+    right: 85px;
+}
+
+.check-box {
+    margin: 10px 10px 20px 0;
+}
+
+span {
+    font-size: 12px;
+    color: #cacaca;
+    bottom: 68px;
+}
+
+.iconrow {
+    display: flex;
+    justify-content: space-evenly;
+    margin-bottom: 20px;
+}
+
+.icon {
+    border: 1px solid #17152a;
+    border-radius: 30px;
+    padding: 5px 8px;
+    box-shadow: 3px 3px 5px -4px #b33ced;
+    color: #cacaca;
+}
+
+.fa-google:hover {
+    background: conic-gradient(from -45deg, #ea4335 110deg, #4285f4 90deg 180deg, #34a853 180deg 270deg, #fbbc05 270deg) 72% 54%/151% 151% no-repeat;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    -webkit-text-fill-color: transparent;
+}
+
+.fa-microsoft:hover {
+    color: #81bc06;
+}
+
+p a:link {
+    font-size: 12px;
+    text-align: center;
+    text-decoration: none;
+    color: #cacaca;
+    font-family: 'orkneyregular';
+}
+
+p a:hover {
+    text-decoration: underline;
+    text-decoration-color: red;
+}
+
+#loginform {
+    left: 50px;
+}
+
+#signupform {
+    left: 450px;
+}
