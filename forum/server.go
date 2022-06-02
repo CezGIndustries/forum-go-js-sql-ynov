@@ -35,16 +35,7 @@ func Profil() http.HandlerFunc {
 		fmt.Println(username)
 	}
 }
-func Bdd() http.HandlerFunc {
-	return func(w http.ResponseWriter, r *http.Request) {
 
-	}
-}
-func Register() http.HandlerFunc {
-	return func(w http.ResponseWriter, r *http.Request) {
-
-	}
-}
 func Login() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		var u UserLogin
