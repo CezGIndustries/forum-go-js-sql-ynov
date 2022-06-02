@@ -35,3 +35,22 @@ githubLogin.onclick = function(){
     console.log("siuu")
 }
 console.log(githubLogin)
+
+const confirmLogin = () => {
+    console.log('hello')
+    fetch('/login_auth', {
+        method: 'POST',
+        header: {
+            "content-type": "application/json"
+        },
+        body: JSON.stringify({
+            method: "LOGIN",
+            email: document.getElementById('email_login_login').value,
+            password: document.getElementById('password_login').value
+        })
+        
+
+    }).then((res) => {
+        return res.json()
+    })
+}

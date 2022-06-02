@@ -1,8 +1,10 @@
 package forum
 
 import (
+	"encoding/json"
 	"fmt"
 	"html/template"
+	"io/ioutil"
 	"net/http"
 
 	"github.com/gorilla/mux"
@@ -14,6 +16,9 @@ func Home() http.HandlerFunc {
 		t.Execute(w, "hello world")
 	}
 }
+
+// tmpl, _ := template.ParseFiles("./index.html")
+// 	tmpl.Execute(w, nil)
 
 func Connexion_Creation() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
@@ -28,5 +33,25 @@ func Profil() http.HandlerFunc {
 		t.Execute(w, "hello world")
 		username := mux.Vars(r)["nameUser"]
 		fmt.Println(username)
+	}
+}
+func Bdd() http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+
+	}
+}
+func Register() http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+
+	}
+}
+func Login() http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		var u UserLogin
+		body, _ := ioutil.ReadAll(r.Body)
+		json.Unmarshal(body, &u)
+		fmt.Println(string(body))
+		fmt.Println(u)
+		// http.Redirect(w, r, "/home", http.StatusFound)
 	}
 }
