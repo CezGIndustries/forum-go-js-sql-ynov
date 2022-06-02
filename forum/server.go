@@ -1,8 +1,11 @@
 package forum
 
 import (
+	"fmt"
 	"html/template"
 	"net/http"
+
+	"github.com/gorilla/mux"
 )
 
 func Home() http.HandlerFunc {
@@ -23,5 +26,7 @@ func Profil() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		t, _ := template.ParseFiles("./static/profil/index.html")
 		t.Execute(w, "hello world")
+		username := mux.Vars(r)["nameUser"]
+		fmt.Println(username)
 	}
 }

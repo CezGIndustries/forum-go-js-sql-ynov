@@ -2,27 +2,26 @@ package main
 
 import (
 	"forum/forum"
+	"log"
 	"net/http"
-	"os"
+
+	"github.com/gorilla/mux"
 )
 
 func main() {
-	fileServer := http.FileServer(http.Dir("static/"))
-	http.Handle("/ressources/", http.StripPrefix("/ressources/", fileServer))
+	m := mux.NewRouter()
 
-	db := forum.InitUserBDD("users.db")
-	defer db.Close()
-	forum.CreateUser(db, "Jeremy", "jeremy.dura@ynov.com", "AZEAZE") //func pour crée un user dans la bdd
+	m.PathPrefix("/static/").Handler(http.StripPrefix("/static/", http.FileServer(http.Dir("./static/"))))
 
-	http.HandleFunc("/", forum.Connexion_Creation())
-	http.HandleFunc("/home", forum.Home())
-	http.HandleFunc("/profil", forum.Profil()) //mettre le nom du mec à la place
+	m.HandleFunc("/", forum.Connexion_Creation())
+	m.HandleFunc("/home", forum.Home())
 
-	port := os.Getenv("PORT")
-	if port == "" {
-		port = "8080"
+	m.HandleFunc("/profil/{nameUser}", forum.Profil())
+
+	s := &http.Server{
+		Addr:    ":8080",
+		Handler: m,
 	}
 
-	http.ListenAndServe(":"+port, nil)
-
+	log.Fatal(s.ListenAndServe())
 }
