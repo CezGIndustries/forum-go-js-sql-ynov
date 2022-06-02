@@ -6,7 +6,6 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/gorilla/mux"
 	_ "github.com/mattn/go-sqlite3"
 )
 
@@ -75,11 +74,9 @@ func InitUser() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		if r.Method == "POST" {
 			fmt.Println("POST")
+
 		}
-		vars := mux.Vars(r)
-		fmt.Println(r)
-		fmt.Println(r.Body)
-		fmt.Println(vars)
+		http.Redirect(w, r, "/", http.StatusFound)
 	}
 }
 
