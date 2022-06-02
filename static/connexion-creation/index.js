@@ -18,7 +18,7 @@ function login() {
 
 const confirmLogin = () => {
     console.log('hello')
-    fetch('/login_auth', {
+    fetch('/chronosdb/POST/logUsers', {
         method: 'POST',
         header: {
             "content-type": "application/json"

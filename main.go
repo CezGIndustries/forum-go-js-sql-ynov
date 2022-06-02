@@ -14,6 +14,7 @@ func main() {
 	m.PathPrefix("/static/").Handler(http.StripPrefix("/static/", http.FileServer(http.Dir("./static/"))))
 
 	m.HandleFunc("/", forum.Connexion_Creation())
+
 	m.HandleFunc("/home", forum.Home())
 
 	m.HandleFunc("/profil/{nameUser}", forum.Profil())
