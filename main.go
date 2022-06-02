@@ -35,8 +35,6 @@ func main() {
 
 	// forum.CheckUser(Env.DB, forum.UserLogin{"CezGain", "CezGain@cez.gain", "azerty"})
 
-	Env.Router.HandleFunc("/test", forum.Test())
-
 	s := &http.Server{
 		Addr:    ":8080",
 		Handler: Env.Router,
