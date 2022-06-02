@@ -30,3 +30,9 @@ func Profil() http.HandlerFunc {
 		fmt.Println(username)
 	}
 }
+
+func LogUsers() http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		fmt.Println("test")
+	}
+}
