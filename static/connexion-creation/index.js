@@ -77,8 +77,8 @@ const confirmRegister = () => {
                 "content-type": "application/json"
             },
             body: JSON.stringify({
+                uniqueName: pseudo,
                 email: email,
-                pseudo: pseudo,
                 password: password,
             })
         }).then((res) => {
@@ -95,8 +95,8 @@ function pseudoIsGood(string) {
     return string.match(/[^A-Za-z0-9]/g) === null
 }
 
-function passwordIsGood(password, confirmPassword){
-    return password >= 6 && password === confirmPassword
+function passwordIsGood(password, confirmPassword) {
+    return password.length >= 6 && password === confirmPassword
 }
 
 function validateEmail(email) {
