@@ -28,6 +28,7 @@ func main() {
 	Env.Router.HandleFunc("/profil/{nameUser}", forum.Profil())
 
 	Env.Router.HandleFunc("/chronosdb/POST/logUsers/CHECK", forum.CheckUser(Env.DB))
+	Env.Router.HandleFunc("/chronosdb/POST/logUsers/REGISTER", forum.CreateNewUser(Env.DB))
 
 	s := &http.Server{
 		Addr:    ":8080",

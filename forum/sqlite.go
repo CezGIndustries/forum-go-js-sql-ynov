@@ -39,11 +39,20 @@ func DatabaseInit(folder string) *sql.DB {
 	return chronosDB
 }
 
-func CreateNewUser(chronosDB *sql.DB, NewUser UserLogin) {
-	_, err := chronosDB.Exec(`INSERT INTO logUsers (uniqueName, email, password) VALUES (?, ?, ?);`, NewUser.UniqueName, NewUser.Email, NewUser.Password)
-	if err != nil {
-		log.Fatal(err)
-		// GESTION D'ERREUR RENVOIE DE L'ERREUR
+func CreateNewUser(chronosDB *sql.DB) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		var (
+			NewUser UserLogin
+		)
+		body, _ := ioutil.ReadAll(r.Body)
+		json.Unmarshal(body, &NewUser)
+		_, err := chronosDB.Exec(`INSERT INTO logUsers (uniqueName, email, password) VALUES (?, ?, ?);`, NewUser.UniqueName, NewUser.Email, NewUser.Password)
+		if err != nil {
+			w.Write([]byte(`{ "ERROR":"409" }`))
+		} else {
+			addSession(w, r)
+			http.Redirect(w, r, "/home", http.StatusFound)
+		}
 	}
 }
 
@@ -66,18 +75,22 @@ func ModifyUser(chronosDB *sql.DB, uniqueName string, User UserLogin) {
 func CheckUser(chronosDB *sql.DB) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		var (
-			uniqueName, email, password, response string
-			User                                  UserLogin
+			uniqueName, email, password string
+			User                        UserLogin
 		)
 		body, _ := ioutil.ReadAll(r.Body)
 		json.Unmarshal(body, &User)
 		sqlStatement := fmt.Sprintf(`SELECT * FROM logUsers WHERE (uniqueName = '%s' OR email = '%s') AND password = '%s';`, User.UniqueName, User.Email, User.Password)
 		row := chronosDB.QueryRow(sqlStatement)
-		if err := row.Scan(&uniqueName, &email, &password); err != nil { // RENVOIER { "AUTH_TOKEN": "123456789" } ou { "ERROR": "404" }
-			response = `{ "ERROR":"404" }`
+		if err := row.Scan(&uniqueName, &email, &password); err != nil {
+			w.Write([]byte(`{ "ERROR":"404" }`))
 		} else {
-			response = fmt.Sprintf(`{ "AUTH_TOKEN": "%s" }`, "FAIRE LE TOKEN_AUTH") // CREER LE TOKEN AUTH
+			addSession(w, r)
+			http.Redirect(w, r, "/home", http.StatusFound)
 		}
-		w.Write([]byte(response))
 	}
+}
+
+func addSession(w http.ResponseWriter, r *http.Request) {
+	return
 }
