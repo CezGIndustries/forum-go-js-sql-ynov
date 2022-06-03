@@ -17,20 +17,22 @@ function login() {
 
 
 const confirmLogin = () => {
-    console.log('hello')
-    fetch('/login_auth', {
+    fetch('/chronosdb/POST/logUsers/CHECK', {
         method: 'POST',
         header: {
             "content-type": "application/json"
         },
         body: JSON.stringify({
-            method: "LOGIN",
+            uniqueName: document.getElementById('email_login_login').value,
             email: document.getElementById('email_login_login').value,
             password: document.getElementById('password_login').value
         })
-        
-
     }).then((res) => {
         return res.json()
+    }).then((res) => {
+        console.log(res.ERROR, res.AUTH_TOKEN)
+        if(typeof res.ERROR === "undefined") {
+            console.log("METTRE LES FONCTIONS")
+        }
     })
 }
