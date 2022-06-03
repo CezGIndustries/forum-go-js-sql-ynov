@@ -27,13 +27,7 @@ func main() {
 
 	Env.Router.HandleFunc("/profil/{nameUser}", forum.Profil())
 
-	Env.Router.HandleFunc("/chronosdb/POST/logUsers", forum.InitUser())
-
-	// forum.CreateNewUser(Env.DB, forum.UserLogin{"azeaze", "CezGain@cez.gain", "azerty"})
-	// forum.CreateNewUser(Env.DB, forum.UserLogin{"aze", "CezGain@cez.gain", "azerty"})
-	// forum.CreateNewUser(Env.DB, forum.UserLogin{"CezGain", "CezGain@cez.gain", "azerty"})
-
-	// forum.CheckUser(Env.DB, forum.UserLogin{"CezGain", "CezGain@cez.gain", "azerty"})
+	Env.Router.HandleFunc("/chronosdb/POST/logUsers/CHECK", forum.CheckUser(Env.DB))
 
 	s := &http.Server{
 		Addr:    ":8080",

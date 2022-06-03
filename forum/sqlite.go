@@ -2,7 +2,9 @@ package forum
 
 import (
 	"database/sql"
+	"encoding/json"
 	"fmt"
+	"io/ioutil"
 	"log"
 	"net/http"
 
@@ -61,23 +63,21 @@ func ModifyUser(chronosDB *sql.DB, uniqueName string, User UserLogin) {
 	}
 }
 
-func CheckUser(chronosDB *sql.DB, User UserLogin) error {
-	var (
-		uniqueName, email, password string
-	)
-	sqlStatement := fmt.Sprintf(`SELECT * FROM logUsers WHERE (uniqueName = '%s' OR email = '%s') AND password = '%s';`, User.UniqueName, User.Email, User.Password)
-	row := chronosDB.QueryRow(sqlStatement)
-	return row.Scan(&uniqueName, &email, &password) // SI NIL ALORS IL EXISTE
-}
-
-func InitUser() http.HandlerFunc {
+func CheckUser(chronosDB *sql.DB) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		if r.Method == "POST" {
-			fmt.Println("POST")
-
+		var (
+			uniqueName, email, password, response string
+			User                                  UserLogin
+		)
+		body, _ := ioutil.ReadAll(r.Body)
+		json.Unmarshal(body, &User)
+		sqlStatement := fmt.Sprintf(`SELECT * FROM logUsers WHERE (uniqueName = '%s' OR email = '%s') AND password = '%s';`, User.UniqueName, User.Email, User.Password)
+		row := chronosDB.QueryRow(sqlStatement)
+		if err := row.Scan(&uniqueName, &email, &password); err != nil { // RENVOIER { "AUTH_TOKEN": "123456789" } ou { "ERROR": "404" }
+			response = `{ "ERROR":"404" }`
+		} else {
+			response = fmt.Sprintf(`{ "AUTH_TOKEN": "%s" }`, "FAIRE LE TOKEN_AUTH") // CREER LE TOKEN AUTH
 		}
-		http.Redirect(w, r, "/", http.StatusFound)
+		w.Write([]byte(response))
 	}
 }
-
-// CREATE, CHECK, MODIFY, DELETE

@@ -12,10 +12,10 @@
 
 .loginsignupform {
     position: relative;
-    margin: 6% auto;
+    margin: 1.5% auto;
     padding: 5px;
     width: 380px;
-    height: 630px;
+    height: 680px;
     background: #17152a;
     border-radius: 30px;
     overflow: hidden;
@@ -34,11 +34,11 @@
 .loginsignupbutton {
     position: relative;
     width: 220px;
-    margin: 35px auto;
+    margin: 10px auto;
     border-radius: 30px;
     border: 1px solid #b33ced;
     background: transparent;
-    top: -130px;
+    top: -140px;
 }
 
 .mainbuttons {
@@ -70,7 +70,8 @@ h4 {
     text-decoration-thickness: 2px;
     margin-bottom: 15px;
     color: #cacaca;
-    
+    font-family: 'orkneyregular';
+    text-align: center;
 }
 
 .input-group {
