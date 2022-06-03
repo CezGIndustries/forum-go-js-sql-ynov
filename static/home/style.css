@@ -33,7 +33,7 @@
     margin-left: 10px;
 }
 
-.nav {
+.nave {
     margin-left: 10px;
     font-size: 25px;
 }
@@ -49,9 +49,9 @@ a {
 }
 
 .logout {
-    justify-content: space-around;
-    margin: 50px 0px 0px 10px;
-    align-items: flex-end;
+    bottom: 10px;
+    border: wheat 2px solid;
+    margin: 120px 0px 0px 10px;
 }
 
 img {
@@ -79,9 +79,21 @@ img {
 }
 
 .right {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     width: 30%;
     height: 100%;
     border: solid 2px green;
+}
+
+select {
+    width: 95%;
+    height: 85%;
+    color: #cacaca;
+    background-color: #17152A;
+    border: solid #B33CED 1px;
+    border-radius: 1.05rem;
 }
 
 .left {
