@@ -1,10 +1,8 @@
 package forum
 
 import (
-	"encoding/json"
 	"fmt"
 	"html/template"
-	"io/ioutil"
 	"net/http"
 
 	"github.com/gorilla/mux"
@@ -33,16 +31,5 @@ func Profil() http.HandlerFunc {
 		t.Execute(w, "hello world")
 		username := mux.Vars(r)["nameUser"]
 		fmt.Println(username)
-	}
-}
-
-func Login() http.HandlerFunc {
-	return func(w http.ResponseWriter, r *http.Request) {
-		var u UserLogin
-		body, _ := ioutil.ReadAll(r.Body)
-		json.Unmarshal(body, &u)
-		fmt.Println(string(body))
-		fmt.Println(u)
-		// http.Redirect(w, r, "/home", http.StatusFound)
 	}
 }
