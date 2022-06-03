@@ -27,11 +27,11 @@
                 <button type="button" class="mainbuttons" onclick="register()">S'inscrire</button>
             </div>
             <form action="" id="loginform" class="input-group">
-                <input id="email_login_login" type="text" class="input-field" placeholder="Pseudo" title="Entrez votre Pseudo" required>
+                <input id="email_login_login" type="text" class="input-field" placeholder="Pseudo/Email" title="Entrez votre Pseudo ou votre Email" required>
                 <input id="password_login" type="password" class="input-field" placeholder="Mot de passe" title="Entrez votre Mot De Passe" required>
                 <input type="checkbox" class="check-box"><span>Se souvenir de mon mot de passe</span>
                 <p><a href="#">Mot de passe oublié ?</a></p>
-                <button type="submit" class="submitbutton" onclick="confirmLogin()">Confirmer</button>
+                <button type="button" class="submitbutton" onclick="confirmLogin()">Confirmer</button>
                 <h4>Ou me connecter avec :</h4>
                 <div class="iconrow">
                     <a href="#" class="icon"><i class="fa-brands fa-google"> Google</i></a>
@@ -42,11 +42,11 @@
             </form>
             <form action="" id="signupform" class="input-group">
                 <input type="text" class="input-field" placeholder="Pseudo" title="Le nom sous lequel vous apparaîtrez" required>
-                <input type="email" class="input-field" placeholder="Email" not required>
+                <input type="email" class="input-field" placeholder="Email" title="Renseignez l'addresse mail souhaitée" required>
                 <input type="password" class="input-field" placeholder="Mot de passe" title="Renseignez un Mot De Passe" required>
-                <input type="password" class="input-field" placeholder="Confirmez le mot de passe" title="Confirmez un Mot De Passe" required>
+                <input type="password" class="input-field" placeholder="Confirmez le mot de passe" title="Confirmez le Mot De Passe choisi" required>
                 <input type="checkbox" class="check-box"><span>Se souvenir de mon mot de passe</span>
-                <button type="submit" class="submitbutton" onclick="confirmRegister()">Confirmer</button>
+                <button type="button" class="submitbutton" onclick="confirmRegister()">Confirmer</button>
                 <h4>Ou m'inscrire avec :</h4>
                 <div class="iconrow">
                     <a href="#" class="icon"><i class="fa-brands fa-google"> Google</i></a>
