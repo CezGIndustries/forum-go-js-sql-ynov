@@ -2,49 +2,82 @@ package forum
 
 import (
 	"database/sql"
+	"fmt"
 	"log"
+	"net/http"
 
 	_ "github.com/mattn/go-sqlite3"
 )
 
-func DatabasesInit(folder string) {
-	databaseLogUser(folder)
-}
-
 type UserLogin struct {
-	UniqueName string
-	Email      string
-	Password   string
+	UniqueName string `json:"uniqueName"`
+	Email      string `json:"email"`
+	Password   string `json:"password"`
 }
 
-func databaseLogUser(folder string) *sql.DB {
-	logUser, err := sql.Open("sqlite3", folder+"logUsers.db")
+func DatabaseInit(folder string) *sql.DB {
+	chronosDB, err := sql.Open("sqlite3", folder+"chronosDB.db")
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	sqlLogUsers := `
+	logUsers := `
 		CREATE TABLE IF NOT EXISTS logUsers (
-			uniqueName TEXT NOT NULL PRIMARY KEY,
-			email TEXT NOT NULL,
-			password TEXT NOT NULL
+			uniqueName TEXT(32) NOT NULL PRIMARY KEY,
+			email TEXT(256) NOT NULL,
+			password TEXT(64) NOT NULL
 		);
 	`
 
-	_, err = logUser.Exec(sqlLogUsers)
+	_, err = chronosDB.Exec(logUsers)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	return logUser
+	return chronosDB
 }
 
-func CreateNewUser(chronosDB *sql.DB, NewUser UserLogin) (int64, error) {
-	result, err := chronosDB.Exec(`INSERT INTO logUsers (uniqueName, email, password) VALUES (?, ?, ?)`, NewUser.UniqueName, NewUser.Email, NewUser.Password)
+func CreateNewUser(chronosDB *sql.DB, NewUser UserLogin) {
+	_, err := chronosDB.Exec(`INSERT INTO logUsers (uniqueName, email, password) VALUES (?, ?, ?);`, NewUser.UniqueName, NewUser.Email, NewUser.Password)
 	if err != nil {
 		log.Fatal(err)
+		// GESTION D'ERREUR RENVOIE DE L'ERREUR
 	}
-	return result.LastInsertId()
 }
 
-// func insertIntoUsers(db *sql.DB, name string, email string, password string) (int64, error);
+func DeleteUser(chronosDB *sql.DB, uniqueName string) {
+	_, err := chronosDB.Exec(`DELETE FROM logUsers WHERE uniqueName = '?';`, uniqueName)
+	if err != nil {
+		log.Fatal(err)
+		// GESTION D'ERREUR RENVOIE DE L'ERREUR
+	}
+}
+
+func ModifyUser(chronosDB *sql.DB, uniqueName string, User UserLogin) {
+	_, err := chronosDB.Exec(`UPDATE logUsers SET uniqueName = '?', email ='?', password = '?' WHERE uniqueName = '?';`, User.UniqueName, User.Email, User.Password, uniqueName)
+	if err != nil {
+		log.Fatal(err)
+		// GESTION D'ERREUR RENVOIE DE L'ERREUR
+	}
+}
+
+func CheckUser(chronosDB *sql.DB, User UserLogin) error {
+	var (
+		uniqueName, email, password string
+	)
+	sqlStatement := fmt.Sprintf(`SELECT * FROM logUsers WHERE (uniqueName = '%s' OR email = '%s') AND password = '%s';`, User.UniqueName, User.Email, User.Password)
+	row := chronosDB.QueryRow(sqlStatement)
+	return row.Scan(&uniqueName, &email, &password) // SI NIL ALORS IL EXISTE
+}
+
+func InitUser() http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		if r.Method == "POST" {
+			fmt.Println("POST")
+
+		}
+		http.Redirect(w, r, "/", http.StatusFound)
+	}
+}
+
+// CREATE, CHECK, MODIFY, DELETE

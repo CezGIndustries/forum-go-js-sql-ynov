@@ -1,6 +1,7 @@
 package main
 
 import (
+	"database/sql"
 	"forum/forum"
 	"log"
 	"net/http"
@@ -8,19 +9,35 @@ import (
 	"github.com/gorilla/mux"
 )
 
+type App struct {
+	Router *mux.Router
+	DB     *sql.DB
+}
+
 func main() {
-	m := mux.NewRouter()
+	Env := App{
+		Router: mux.NewRouter(),
+		DB:     forum.DatabaseInit("forum/"),
+	}
 
-	m.PathPrefix("/static/").Handler(http.StripPrefix("/static/", http.FileServer(http.Dir("./static/"))))
+	Env.Router.PathPrefix("/static/").Handler(http.StripPrefix("/static/", http.FileServer(http.Dir("./static/"))))
 
-	m.HandleFunc("/", forum.Connexion_Creation())
-	m.HandleFunc("/home", forum.Home())
+	Env.Router.HandleFunc("/", forum.Connexion_Creation())
+	Env.Router.HandleFunc("/home", forum.Home())
 
-	m.HandleFunc("/profil/{nameUser}", forum.Profil())
+	Env.Router.HandleFunc("/profil/{nameUser}", forum.Profil())
+
+	Env.Router.HandleFunc("/chronosdb/POST/logUsers", forum.InitUser())
+
+	// forum.CreateNewUser(Env.DB, forum.UserLogin{"azeaze", "CezGain@cez.gain", "azerty"})
+	// forum.CreateNewUser(Env.DB, forum.UserLogin{"aze", "CezGain@cez.gain", "azerty"})
+	// forum.CreateNewUser(Env.DB, forum.UserLogin{"CezGain", "CezGain@cez.gain", "azerty"})
+
+	// forum.CheckUser(Env.DB, forum.UserLogin{"CezGain", "CezGain@cez.gain", "azerty"})
 
 	s := &http.Server{
 		Addr:    ":8080",
-		Handler: m,
+		Handler: Env.Router,
 	}
 
 	log.Fatal(s.ListenAndServe())
