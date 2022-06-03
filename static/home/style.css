@@ -39,6 +39,7 @@
 }
 
 li {
+    list-style: none;
     margin: 50px 0px;
 }
 
@@ -87,6 +88,16 @@ img {
     height: 100%;
     width: 70%;
     border: solid 2px orangered;
+}
+
+.feed {
+    width: 100%;
+    color: #cacaca;
+    border: solid grey 2px;
+}
+
+.crone {
+    border: solid yellowgreen 2px;
 }
 
 .article {
