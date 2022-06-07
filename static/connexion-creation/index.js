@@ -92,7 +92,7 @@ const confirmRegister = () => {
 }
 
 function pseudoIsGood(string) {
-    return string.match(/[^A-Za-z0-9]/g) === null
+    return 3 <= string.length && string.length <= 32 && string.match(/[^A-Za-z0-9]/g) === null
 }
 
 function passwordIsGood(password, confirmPassword) {

@@ -37,6 +37,49 @@ func DatabaseInit(folder string) *sql.DB {
 		log.Fatal(err)
 	}
 
+	accountUsers := `
+		CREATE TABLE IF NOT EXISTS accountUsers (
+			uniqueName TEXT(32) NOT NULL PRIMARY KEY,
+			status TEXT(16) NOT NULL,
+			profilPicture TEXT NOT NULL,
+			banner TEXT NOT NULL,
+			biography TEXT(240)
+		);
+		CREATE TABLE IF NOT EXISTS follow (
+			user REFERENCES accountUsers(uniqueName),
+			followUser REFERENCES accountUsers(uniqueName)
+		);
+	`
+
+	_, err = chronosDB.Exec(accountUsers)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	cron := `
+		CREATE TABLE IF NOT EXISTS cron (
+			id INTEGER NOT NULL PRIMARY KEY,
+			creator REFERENCES accountUsers(uniqueName),
+			content TEXT(240) NOT NULL,
+			timeLeft TEXT(64) NOT NULL
+		);
+		CREATE TABLE IF NOT EXISTS cronCommentary (
+			idCron INTEGER REFERENCES cron(id),
+			id INTEGER NOT NULL PRIMARY KEY,
+			creator REFERENCES accountUsers(uniqueName),
+			content TEXT(240) NOT NULL
+		);
+		CREATE TABLE IF NOT EXISTS cronLike (
+			id INTEGER REFERENCES cron(id),
+			user REFERENCES accountUsers(uniqueName)
+		);
+	`
+
+	_, err = chronosDB.Exec(cron)
+	if err != nil {
+		log.Fatal(err)
+	}
+
 	return chronosDB
 }
 
@@ -51,7 +94,8 @@ func CreateNewUser(chronosDB *sql.DB) http.HandlerFunc {
 		if err != nil {
 			w.Write([]byte(`{ "ERROR":"409" }`))
 		} else {
-			addSession(w, r)
+			chronosDB.Exec(`INSERT INTO accountUsers (uniqueName, status, profilPicture, banner) VALUES (?, ?, ?, ?);`, NewUser.UniqueName, "member", "../img/profile_pictures/1.png", "../img/banners/1.png")
+			addSession(w, r, NewUser.UniqueName)
 			http.Redirect(w, r, "/home", http.StatusFound)
 		}
 	}
@@ -59,6 +103,31 @@ func CreateNewUser(chronosDB *sql.DB) http.HandlerFunc {
 
 func DeleteUser(chronosDB *sql.DB, uniqueName string) {
 	_, err := chronosDB.Exec(`DELETE FROM logUsers WHERE uniqueName = '?';`, uniqueName)
+	if err != nil {
+		log.Fatal(err)
+		// GESTION D'ERREUR RENVOIE DE L'ERREUR
+	}
+	_, err = chronosDB.Exec(`DELETE FROM accountUsers WHERE uniqueName = '?';`, uniqueName)
+	if err != nil {
+		log.Fatal(err)
+		// GESTION D'ERREUR RENVOIE DE L'ERREUR
+	}
+	_, err = chronosDB.Exec(`DELETE FROM follow WHERE user = '?' || followUser = '?';`, uniqueName, uniqueName)
+	if err != nil {
+		log.Fatal(err)
+		// GESTION D'ERREUR RENVOIE DE L'ERREUR
+	}
+	_, err = chronosDB.Exec(`DELETE FROM cron WHERE creator = '?';`, uniqueName)
+	if err != nil {
+		log.Fatal(err)
+		// GESTION D'ERREUR RENVOIE DE L'ERREUR
+	}
+	_, err = chronosDB.Exec(`DELETE FROM cronCommentary WHERE creator = '?';`, uniqueName, uniqueName)
+	if err != nil {
+		log.Fatal(err)
+		// GESTION D'ERREUR RENVOIE DE L'ERREUR
+	}
+	_, err = chronosDB.Exec(`DELETE FROM cronLike WHERE user = '?';`, uniqueName, uniqueName)
 	if err != nil {
 		log.Fatal(err)
 		// GESTION D'ERREUR RENVOIE DE L'ERREUR
@@ -86,7 +155,7 @@ func CheckUser(chronosDB *sql.DB) http.HandlerFunc {
 		if err := row.Scan(&uniqueName, &email, &password); err != nil {
 			w.Write([]byte(`{ "ERROR":"404" }`))
 		} else {
-			addSession(w, r)
+			addSession(w, r, User.UniqueName)
 			http.Redirect(w, r, "/home", http.StatusFound)
 		}
 	}
@@ -94,14 +163,16 @@ func CheckUser(chronosDB *sql.DB) http.HandlerFunc {
 
 var store = sessions.NewCookieStore(PRIVATE_KEY)
 
-func addSession(w http.ResponseWriter, r *http.Request) {
+func addSession(w http.ResponseWriter, r *http.Request, uniqueName string) {
 	session, _ := store.Get(r, "AUTH_TOKEN")
 	session.Values["authenticated"] = true
+	session.Values["uniqueName"] = uniqueName
 	session.Save(r, w)
 }
 
 func leaveSession(w http.ResponseWriter, r *http.Request) {
 	session, _ := store.Get(r, "AUTH_TOKEN")
 	session.Values["authenticated"] = false
+	session.Values["uniqueName"] = ""
 	session.Save(r, w)
 }
