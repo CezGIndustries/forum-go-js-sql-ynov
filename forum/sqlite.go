@@ -8,6 +8,7 @@ import (
 	"log"
 	"net/http"
 
+	"github.com/gorilla/sessions"
 	_ "github.com/mattn/go-sqlite3"
 )
 
@@ -91,6 +92,16 @@ func CheckUser(chronosDB *sql.DB) http.HandlerFunc {
 	}
 }
 
+var store = sessions.NewCookieStore(PRIVATE_KEY)
+
 func addSession(w http.ResponseWriter, r *http.Request) {
-	return
+	session, _ := store.Get(r, "AUTH_TOKEN")
+	session.Values["authenticated"] = true
+	session.Save(r, w)
+}
+
+func leaveSession(w http.ResponseWriter, r *http.Request) {
+	session, _ := store.Get(r, "AUTH_TOKEN")
+	session.Values["authenticated"] = false
+	session.Save(r, w)
 }
