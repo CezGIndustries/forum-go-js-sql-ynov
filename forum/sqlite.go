@@ -26,9 +26,9 @@ func DatabaseInit(folder string) *sql.DB {
 
 	logUsers := `
 		CREATE TABLE IF NOT EXISTS logUsers (
-			uniqueName TEXT(32) NOT NULL PRIMARY KEY,
-			email TEXT(256) NOT NULL,
-			password TEXT(64) NOT NULL
+			UniqueName TEXT(32) NOT NULL PRIMARY KEY,
+			Email TEXT(256) NOT NULL,
+			Password TEXT(64) NOT NULL
 		);
 	`
 
@@ -39,15 +39,15 @@ func DatabaseInit(folder string) *sql.DB {
 
 	accountUsers := `
 		CREATE TABLE IF NOT EXISTS accountUsers (
-			uniqueName TEXT(32) NOT NULL PRIMARY KEY,
-			status TEXT(16) NOT NULL,
-			profilPicture TEXT NOT NULL,
-			banner TEXT NOT NULL,
-			biography TEXT(240)
+			UniqueName TEXT(32) NOT NULL PRIMARY KEY,
+			Status TEXT(16) NOT NULL,
+			ProfilPicture TEXT NOT NULL,
+			Banner TEXT NOT NULL,
+			Biography TEXT(240)
 		);
 		CREATE TABLE IF NOT EXISTS follow (
-			user REFERENCES accountUsers(uniqueName),
-			followUser REFERENCES accountUsers(uniqueName)
+			User REFERENCES accountUsers(uniqueName),
+			FollowUser REFERENCES accountUsers(uniqueName)
 		);
 	`
 
@@ -58,20 +58,28 @@ func DatabaseInit(folder string) *sql.DB {
 
 	cron := `
 		CREATE TABLE IF NOT EXISTS cron (
-			id INTEGER NOT NULL PRIMARY KEY,
-			creator REFERENCES accountUsers(uniqueName),
-			content TEXT(240) NOT NULL,
-			timeLeft TEXT(64) NOT NULL
+			ID INTEGER NOT NULL PRIMARY KEY AUTOINCREMENTE,
+			Creator REFERENCES accountUsers(uniqueName),
+			Content TEXT(240) NOT NULL,
+			Tag TEXT NOT NULL
+		);
+		CREATE TABLE IF NOT EXISTS timeLeft (
+			ID INTEGER REFERENCES cron(id),
+			Year INTEGER(2) NOT NULL,
+			Month INTEGER(1) NOT NULL,
+			Day INTEGER(1) NOT NULL,
+			Hour INTEGER(1) NOT NULL,
+			Minute INTEGER(1) NOT NULL,
 		);
 		CREATE TABLE IF NOT EXISTS cronCommentary (
-			idCron INTEGER REFERENCES cron(id),
-			id INTEGER NOT NULL PRIMARY KEY,
-			creator REFERENCES accountUsers(uniqueName),
-			content TEXT(240) NOT NULL
+			IDCron INTEGER REFERENCES cron(id),
+			ID INTEGER NOT NULL PRIMARY KEY,
+			Creator REFERENCES accountUsers(uniqueName),
+			Content TEXT(240) NOT NULL
 		);
 		CREATE TABLE IF NOT EXISTS cronLike (
-			id INTEGER REFERENCES cron(id),
-			user REFERENCES accountUsers(uniqueName)
+			ID INTEGER REFERENCES cron(id),
+			User REFERENCES accountUsers(uniqueName)
 		);
 	`
 
@@ -90,11 +98,11 @@ func CreateNewUser(chronosDB *sql.DB) http.HandlerFunc {
 		)
 		body, _ := ioutil.ReadAll(r.Body)
 		json.Unmarshal(body, &NewUser)
-		_, err := chronosDB.Exec(`INSERT INTO logUsers (uniqueName, email, password) VALUES (?, ?, ?);`, NewUser.UniqueName, NewUser.Email, NewUser.Password)
+		_, err := chronosDB.Exec(`INSERT INTO logUsers (UniqueName, Email, Password) VALUES (?, ?, ?);`, NewUser.UniqueName, NewUser.Email, NewUser.Password)
 		if err != nil {
 			w.Write([]byte(`{ "ERROR":"409" }`))
 		} else {
-			chronosDB.Exec(`INSERT INTO accountUsers (uniqueName, status, profilPicture, banner) VALUES (?, ?, ?, ?);`, NewUser.UniqueName, "member", "../img/profile_pictures/1.png", "../img/banners/1.png")
+			chronosDB.Exec(`INSERT INTO accountUsers (UniqueName, Status, ProfilPicture, Banner) VALUES (?, ?, ?, ?);`, NewUser.UniqueName, "member", "../img/profile_pictures/1.png", "../img/banners/1.png")
 			addSession(w, r, NewUser.UniqueName)
 			http.Redirect(w, r, "/home", http.StatusFound)
 		}
@@ -102,32 +110,7 @@ func CreateNewUser(chronosDB *sql.DB) http.HandlerFunc {
 }
 
 func DeleteUser(chronosDB *sql.DB, uniqueName string) {
-	_, err := chronosDB.Exec(`DELETE FROM logUsers WHERE uniqueName = '?';`, uniqueName)
-	if err != nil {
-		log.Fatal(err)
-		// GESTION D'ERREUR RENVOIE DE L'ERREUR
-	}
-	_, err = chronosDB.Exec(`DELETE FROM accountUsers WHERE uniqueName = '?';`, uniqueName)
-	if err != nil {
-		log.Fatal(err)
-		// GESTION D'ERREUR RENVOIE DE L'ERREUR
-	}
-	_, err = chronosDB.Exec(`DELETE FROM follow WHERE user = '?' || followUser = '?';`, uniqueName, uniqueName)
-	if err != nil {
-		log.Fatal(err)
-		// GESTION D'ERREUR RENVOIE DE L'ERREUR
-	}
-	_, err = chronosDB.Exec(`DELETE FROM cron WHERE creator = '?';`, uniqueName)
-	if err != nil {
-		log.Fatal(err)
-		// GESTION D'ERREUR RENVOIE DE L'ERREUR
-	}
-	_, err = chronosDB.Exec(`DELETE FROM cronCommentary WHERE creator = '?';`, uniqueName, uniqueName)
-	if err != nil {
-		log.Fatal(err)
-		// GESTION D'ERREUR RENVOIE DE L'ERREUR
-	}
-	_, err = chronosDB.Exec(`DELETE FROM cronLike WHERE user = '?';`, uniqueName, uniqueName)
+	_, err := chronosDB.Exec(`DELETE FROM logUsers WHERE UniqueName = '?';`, uniqueName)
 	if err != nil {
 		log.Fatal(err)
 		// GESTION D'ERREUR RENVOIE DE L'ERREUR
@@ -135,7 +118,7 @@ func DeleteUser(chronosDB *sql.DB, uniqueName string) {
 }
 
 func ModifyUser(chronosDB *sql.DB, uniqueName string, User UserLogin) {
-	_, err := chronosDB.Exec(`UPDATE logUsers SET uniqueName = '?', email ='?', password = '?' WHERE uniqueName = '?';`, User.UniqueName, User.Email, User.Password, uniqueName)
+	_, err := chronosDB.Exec(`UPDATE logUsers SET UniqueName = '?', Email ='?', Password = '?' WHERE UniqueName = '?';`, User.UniqueName, User.Email, User.Password, uniqueName)
 	if err != nil {
 		log.Fatal(err)
 		// GESTION D'ERREUR RENVOIE DE L'ERREUR
@@ -150,7 +133,7 @@ func CheckUser(chronosDB *sql.DB) http.HandlerFunc {
 		)
 		body, _ := ioutil.ReadAll(r.Body)
 		json.Unmarshal(body, &User)
-		sqlStatement := fmt.Sprintf(`SELECT * FROM logUsers WHERE (uniqueName = '%s' OR email = '%s') AND password = '%s';`, User.UniqueName, User.Email, User.Password)
+		sqlStatement := fmt.Sprintf(`SELECT * FROM logUsers WHERE (UniqueName = '%s' OR Email = '%s') AND Password = '%s';`, User.UniqueName, User.Email, User.Password)
 		row := chronosDB.QueryRow(sqlStatement)
 		if err := row.Scan(&uniqueName, &email, &password); err != nil {
 			w.Write([]byte(`{ "ERROR":"404" }`))
@@ -175,4 +158,58 @@ func leaveSession(w http.ResponseWriter, r *http.Request) {
 	session.Values["authenticated"] = false
 	session.Values["uniqueName"] = ""
 	session.Save(r, w)
+}
+
+func validSession(w http.ResponseWriter, r *http.Request) bool {
+	session, _ := store.Get(r, "AUTH_TOKEN")
+	auth := session.Values["authenticated"].(bool)
+	return auth
+}
+
+type Cron struct {
+	Creator  string `json:"creator"`
+	Content  string `json:"content"`
+	TimeLeft struct {
+		Year, Month, Day, Hour, Minute string
+	} `json:"timeLeft"`
+	Tag string `json:"tag"`
+}
+
+// TIME LEFT, CONTENT
+func CreateCron(chronosDB *sql.DB) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		if validSession(w, r) {
+			var (
+				Cron = Cron{}
+			)
+			body, _ := ioutil.ReadAll(r.Body)
+			json.Unmarshal(body, &Cron)
+			session, _ := store.Get(r, "AUTH_TOKEN")
+			Cron.Creator = session.Values["uniqueName"].(string)
+			chronosDB.Exec(`INSERT INTO cron (Creator, Content, Tag) VALUES (?, ?, ?);`, Cron.Creator, Cron.Content, Cron.Tag)
+			chronosDB.Exec(`INSERT INTO timeLeft (Year, Month, Day, Hour, Minute) VALUES (?, ?, ?, ?, ?);`, Cron.TimeLeft.Year, Cron.TimeLeft.Month, Cron.TimeLeft.Day, Cron.TimeLeft.Hour, Cron.TimeLeft.Minute)
+			// w.Write
+		}
+		http.Redirect(w, r, "/", http.StatusForbidden)
+	}
+}
+
+func GoDeleteCron(chronosDB *sql.DB) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+
+	}
+}
+
+// ID
+func RedirectCron(chronosDB *sql.DB) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+
+	}
+}
+
+// ID
+func GetCron(chronosDB *sql.DB) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+
+	}
 }

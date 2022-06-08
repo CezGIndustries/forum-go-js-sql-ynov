@@ -30,6 +30,10 @@ func main() {
 	Env.Router.HandleFunc("/chronosdb/POST/logUsers/CHECK", forum.CheckUser(Env.DB))
 	Env.Router.HandleFunc("/chronosdb/POST/logUsers/REGISTER", forum.CreateNewUser(Env.DB))
 
+	Env.Router.HandleFunc("/chronosdb/POST/cron/CREATE", forum.CreateCron(Env.DB))
+	Env.Router.HandleFunc("/chronosdb/POST/cron/REDIRECT", forum.RedirectCron(Env.DB))
+	Env.Router.HandleFunc("/chronosdb/POST/cron/GET", forum.GetCron(Env.DB))
+
 	s := &http.Server{
 		Addr:    ":8080",
 		Handler: Env.Router,
