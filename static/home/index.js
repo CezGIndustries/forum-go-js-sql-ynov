@@ -29,13 +29,13 @@ const cron = {
   
   }
   
-  const button = document.getElementById('button-submit');
+  const button = document.getElementById('button-post');
   
   //Click and create cron if all conditons true//
   button.addEventListener('click', event => {
-      const content = document.getElementById("text-value-cron").value
+      const content = document.getElementById("text-value-entry").value
       const tag = tagExist(content)
-      const timeEntry = parseInt(document.getElementById("time").value)
+      const timeEntry = parseInt(document.getElementById("select-time").value)
       const timeNow = SetTime()
       if(content !== '' && tag != null){
         timeLeftFunciton(timeEntry, timeNow)
