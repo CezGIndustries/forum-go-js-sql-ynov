@@ -58,7 +58,7 @@ func DatabaseInit(folder string) *sql.DB {
 
 	cron := `
 		CREATE TABLE IF NOT EXISTS cron (
-			ID INTEGER NOT NULL PRIMARY KEY AUTOINCREMENTE,
+			ID INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
 			Creator REFERENCES accountUsers(uniqueName),
 			Content TEXT(240) NOT NULL,
 			Tag TEXT NOT NULL
@@ -69,7 +69,7 @@ func DatabaseInit(folder string) *sql.DB {
 			Month INTEGER(1) NOT NULL,
 			Day INTEGER(1) NOT NULL,
 			Hour INTEGER(1) NOT NULL,
-			Minute INTEGER(1) NOT NULL,
+			Minute INTEGER(1) NOT NULL
 		);
 		CREATE TABLE IF NOT EXISTS cronCommentary (
 			IDCron INTEGER REFERENCES cron(id),
@@ -104,7 +104,7 @@ func CreateNewUser(chronosDB *sql.DB) http.HandlerFunc {
 		} else {
 			chronosDB.Exec(`INSERT INTO accountUsers (UniqueName, Status, ProfilPicture, Banner) VALUES (?, ?, ?, ?);`, NewUser.UniqueName, "member", "../img/profile_pictures/1.png", "../img/banners/1.png")
 			addSession(w, r, NewUser.UniqueName)
-			http.Redirect(w, r, "/home", http.StatusFound)
+			http.Redirect(w, r, "/home", http.StatusMovedPermanently)
 		}
 	}
 }
@@ -139,7 +139,7 @@ func CheckUser(chronosDB *sql.DB) http.HandlerFunc {
 			w.Write([]byte(`{ "ERROR":"404" }`))
 		} else {
 			addSession(w, r, User.UniqueName)
-			http.Redirect(w, r, "/home", http.StatusFound)
+			http.Redirect(w, r, "/home", http.StatusMovedPermanently)
 		}
 	}
 }
@@ -162,8 +162,8 @@ func leaveSession(w http.ResponseWriter, r *http.Request) {
 
 func validSession(w http.ResponseWriter, r *http.Request) bool {
 	session, _ := store.Get(r, "AUTH_TOKEN")
-	auth := session.Values["authenticated"].(bool)
-	return auth
+	auth, ok := session.Values["authenticated"].(bool)
+	return auth || ok
 }
 
 type Cron struct {
@@ -186,11 +186,12 @@ func CreateCron(chronosDB *sql.DB) http.HandlerFunc {
 			json.Unmarshal(body, &Cron)
 			session, _ := store.Get(r, "AUTH_TOKEN")
 			Cron.Creator = session.Values["uniqueName"].(string)
-			chronosDB.Exec(`INSERT INTO cron (Creator, Content, Tag) VALUES (?, ?, ?);`, Cron.Creator, Cron.Content, Cron.Tag)
+			test, _ := chronosDB.Exec(`INSERT INTO cron (Creator, Content, Tag) VALUES (?, ?, ?);`, Cron.Creator, Cron.Content, Cron.Tag)
 			chronosDB.Exec(`INSERT INTO timeLeft (Year, Month, Day, Hour, Minute) VALUES (?, ?, ?, ?, ?);`, Cron.TimeLeft.Year, Cron.TimeLeft.Month, Cron.TimeLeft.Day, Cron.TimeLeft.Hour, Cron.TimeLeft.Minute)
-			// w.Write
+			w.Write([]byte(`{ TEST: "TEST" }`))
+			fmt.Println(test)
 		}
-		http.Redirect(w, r, "/", http.StatusForbidden)
+		http.Redirect(w, r, "/", http.StatusMovedPermanently)
 	}
 }
 
