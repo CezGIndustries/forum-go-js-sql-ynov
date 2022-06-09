@@ -49,18 +49,43 @@ a {
 }
 
 .logout {
+    display: flex;
+    align-items: center;
     bottom: 10px;
-    border: wheat 2px solid;
+    border: 1px solid #B33CED;
     margin: 120px 0px 0px 10px;
+    height: 6%;
+    border-radius: 30px;
 }
 
-img {
-    height: 25%;
-    width: 25%;
+.logoutleft {
+    width: 35%;
+}
+
+.logout img {
+    border: 1px solid red;
+    width: 30%;
+    aspect-ratio: 1;
     border-radius: 50%;
 }
 
-.resume {
+.logoutmid {
+    width: 45%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    border: 1px solid red;
+    color: #cacaca;
+}
+
+.logoutright {
+    width: 15%;
+}
+
+.logoutright .fa-ellipsis {
+    color: #cacaca;
+}
+
+.iconlogout {
     color: #cacaca;
 }
 
@@ -85,6 +110,7 @@ img {
 }
 
 select {
+    text-align: center;
     width: 95%;
     height: 85%;
     color: #cacaca;
@@ -107,26 +133,75 @@ select {
     background-color: #17152A;
     width: 100%;
     height: 20%;
+    border-radius: 30px;
 }
 
-.photouser {
-    height: 25%;
+.people {
+    display: flex;
     width: 100%;
+}
+
+.photouser img {
+    height: 25%;
+    width: 25%;
+    border-radius: 50%;
 }
 
 .user {
     color: #cacaca;
 }
 
-textarea {
+#text {
+    color: #cacaca;
+    resize: none;
     display: flex;
-    justify-content: center;
+    justify-items: center;
     align-items: center;
+    width: 100%;
+    background-color: #17152A;
+    color: #cacaca;
+    border-color: #B33CED;
+    border-radius: 30px;
+    box-sizing: border-box;
+    padding-left: 39px;
+    padding-right: 39px;
+    padding-top: 10px;
+    font-size: 17px;
+}
+
+.textareawrapper {
+    border: 1 px solid #B33CED;
+    margin: 5px 0;
+    padding: 3px;
+}
+
+.selecttime {
+    display: flex;
+    justify-content: flex-end;
+    color: #cacaca;
+    font-size: 25px;
+}
+
+.buttonpost {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.buttoncron {
+    border-radius: 30px;
+    border: none;
+    background-color: #B33CED;
+    color: #cacaca;
+    font-size: 25px;
 }
 
 .allarticle {
     display: flex;
     flex-direction: column;
+    overflow-x: hidden;
+    overflow-y: auto;
+    height: 500px;
+    width: 100%;
 }
 
 .anarticle {
@@ -139,6 +214,7 @@ textarea {
 }
 
 .article {
+    border: solid #B33CED 1px;
     border-radius: 1.05rem;
     font-size: 20px;
     color: #cacaca;
@@ -152,6 +228,5 @@ textarea {
 
 .rightcolumn {
     width: 20%;
-    height: 100%;
-    border: solid cyan 2px;
+    height: 100vh;
 }
