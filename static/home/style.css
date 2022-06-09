@@ -151,7 +151,7 @@ select {
     color: #cacaca;
 }
 
-#text {
+#text-value-entry {
     color: #cacaca;
     resize: none;
     display: flex;
@@ -182,7 +182,7 @@ select {
     font-size: 25px;
 }
 
-.buttonpost {
+#buttonpost {
     display: flex;
     justify-content: flex-end;
 }
