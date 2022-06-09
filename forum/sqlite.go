@@ -7,6 +7,7 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
+	"time"
 
 	"github.com/gorilla/sessions"
 	_ "github.com/mattn/go-sqlite3"
@@ -188,14 +189,14 @@ func CreateCron(chronosDB *sql.DB) http.HandlerFunc {
 			Cron.Creator = session.Values["uniqueName"].(string)
 			test, _ := chronosDB.Exec(`INSERT INTO cron (Creator, Content, Tag) VALUES (?, ?, ?);`, Cron.Creator, Cron.Content, Cron.Tag)
 			chronosDB.Exec(`INSERT INTO timeLeft (Year, Month, Day, Hour, Minute) VALUES (?, ?, ?, ?, ?);`, Cron.TimeLeft.Year, Cron.TimeLeft.Month, Cron.TimeLeft.Day, Cron.TimeLeft.Hour, Cron.TimeLeft.Minute)
-			w.Write([]byte(`{ TEST: "TEST" }`))
+			w.Write([]byte(`{ "TEST" : "TEST" }`))
 			fmt.Println(test)
 		}
 		http.Redirect(w, r, "/", http.StatusMovedPermanently)
 	}
 }
 
-func GoDeleteCron(chronosDB *sql.DB) http.HandlerFunc {
+func DeleteCron(chronosDB *sql.DB) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 
 	}
@@ -212,5 +213,19 @@ func RedirectCron(chronosDB *sql.DB) http.HandlerFunc {
 func GetCron(chronosDB *sql.DB) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 
+	}
+}
+
+func GoDeleteCron(chronosDB *sql.DB) {
+	for {
+		date := time.Now()
+		fmt.Println(date.Format("2006 01 02 15 04"))
+		fmt.Println(date.Format("2006")) // Année
+		fmt.Println(date.Format("01"))   // Mois
+		fmt.Println(date.Format("02"))   // Jour
+		fmt.Println(date.Format("15"))   // Heure
+		fmt.Println(date.Format("04"))   // Minute
+
+		time.Sleep(time.Second * 5)
 	}
 }

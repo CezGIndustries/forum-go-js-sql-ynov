@@ -1,176 +1,173 @@
 const cron = {
-    creator: String,
-    content: String,
-    id: Number,
-    like: Number,
-    commentaires: Number
-  }
-  const timeLeft = {
-    year: String,
-    month: String,
-    day: String,
-    hour: String,
-    minute: String,
-  }
+  creator: String,
+  content: String,
+  id: Number,
+  like: Number,
+  commentaires: Number
+}
+
+const timeLeft = {
+  year: String,
+  month: String,
+  day: String,
+  hour: String,
+  minute: String,
+}
   
-  const like = {
-    user: [],
-  }
-  const comment = {
-    user: [],
-  }
+const like = {
+  user: [],
+}
+
+const comment = {
+  user: [],
+}
+
   
-  document.querySelector('body').onload = function(){
-    console.log('Page-load...')  
-  
+document.querySelector('body').onload = function(){
+  console.log('Page-load...')  
   //Create request for draw cron when onload page//
   
   //-------//
+}
+
+const button = document.getElementById('button-submit');  
+//Click and create cron if all conditons true//
+button.addEventListener('click', () => {
+  const content = document.getElementById("text-value-cron").value
+  const tag = tagExist(content)
+  if(content !== '' && tag != null) {
+    const timeEntry = parseInt(document.getElementById("time").value)
+    timeLeftFunciton(timeEntry, SetTime())
+    createCrone(content, tag)
+  } else {
+    console.log('err: missing content, time or tag')
+  }
+});  
   
+//fonction for cron creation//
+function drawCrons(id){
+  requestDrawCron(id)
+  const mainCron = document.querySelector('.div-cron')
+  const newCrone = document.createElement('div')
+
+  newCrone.classList.add('cron')
+  newCrone.setAttribute('cron-id', id.toString() )
+  
+  const cronContent = document.createElement('p')
+  cronContent.classList.add('cron-content')
+  cronContent.innerText = content + '-'
+ 
+  const cronTime = document.createElement('p')
+  cronTime.classList.add('cron-time')
+  
+  if(time >= 60){
+    cronTime.innerText =  time/60  +'h'
+  }else{
+    cronTime.innerText =  time+ 'min'
   }
   
-  const button = document.getElementById('button-submit');
+  const divLike = document.createElement('div')
+  divLike.classList.add('btn')
+  divLike.setAttribute('id', 'like')
+  divLike.innerText = like.toString()
+   
+  const divComment = document.createElement('div')
+  divComment.classList.add('btn')
+  divComment.setAttribute('id', 'comment')
   
-  //Click and create cron if all conditons true//
-  button.addEventListener('click', event => {
-      const content = document.getElementById("text-value-cron").value
-      const tag = tagExist(content)
-      const timeEntry = parseInt(document.getElementById("time").value)
-      const timeNow = SetTime()
-      if(content !== '' && tag != null){
-        timeLeftFunciton(timeEntry, timeNow)
-        createCrone(content, tag)
-      }else{
-          console.log('err: missing content, time or tag')
-      }
-  });
+  mainCron.after(newCrone)
+  newCrone.append(userNameCreateCron)
+  newCrone.append(cronContent)
+  newCrone.append(cronTime)
+  newCrone.append(divLike)
+  newCrone.append(divComment)
   
-  
-  //fonction for cron creation//
-  function drawCrons(id){
-      requestDrawCron(id)
-      const mainCron = document.querySelector('.div-cron')
-      const newCrone = document.createElement('div')
-  
-      newCrone.classList.add('cron')
-      newCrone.setAttribute('cron-id', id.toString() )
-  
-      const cronContent = document.createElement('p')
-      cronContent.classList.add('cron-content')
-      cronContent.innerText = content + '-'
-  
-      const cronTime = document.createElement('p')
-      cronTime.classList.add('cron-time')
-  
-      if(time >= 60){
-          cronTime.innerText =  time/60  +'h'
-      }else{
-          cronTime.innerText =  time+ 'min'
-      }
-  
-      const divLike = document.createElement('div')
-      divLike.classList.add('btn')
-      divLike.setAttribute('id', 'like')
-      divLike.innerText = like.toString()
-      
-      const divComment = document.createElement('div')
-      divComment.classList.add('btn')
-      divComment.setAttribute('id', 'comment')
-  
-      mainCron.after(newCrone)
-      newCrone.append(userNameCreateCron)
-      newCrone.append(cronContent)
-      newCrone.append(cronTime)
-      newCrone.append(divLike)
-      newCrone.append(divComment)
-  
-      document.querySelector('input').value = ''
-      
-      //Event if click on cron//
-      newCrone.addEventListener('click', event => {
-      //create request for redirect on cron//
-        const id = newCrone.getAttribute('cron-id')
-        requestRedirectCron(id)
+  document.querySelector('input').value = ''
+    
+  //Event if click on cron//
+  newCrone.addEventListener('click', event => {
+    //create request for redirect on cron//
+    const id = newCrone.getAttribute('cron-id')
+    requestRedirectCron(id)
       //-------//
-      }); 
+    }); 
   
-      //Event if click on like//
-      divLike.addEventListener('click', event => {
-      //create request for add like and delete like//
-      const id = newCrone.getAttribute('cron-id')
-      requestLikePost(id)
-      //-------//
-      }); 
+    //Event if click on like//
+    divLike.addEventListener('click', event => {
+    //create request for add like and delete like//
+    const id = newCrone.getAttribute('cron-id')
+    requestLikePost(id)
+    //-------//
+    }); 
   
-      //Event if click on comment//
-      divComment.addEventListener('click', event => {
-      //create request for redirect and comment cron//
-      const id = newCrone.getAttribute('cron-id')
-      requestRedirectCron(id)
-      //-------//
-      }); 
+  //Event if click on comment//
+  divComment.addEventListener('click', event => {
+    //create request for redirect and comment cron//
+    const id = newCrone.getAttribute('cron-id')
+    requestRedirectCron(id)
+    //-------//
+  }); 
   
-      return newCrone
-  }
+  return newCrone
+}
   
-  //Request for create cron//
-  function createCrone(content,tag ){
-    fetch('/route/' , {
+//Request for create cron//
+function createCrone(content,tag ){
+  fetch('/chronosdb/POST/cron/CREATE' , {
+    method:'POST',
+    headers: {
+      "content-type": "application/json"
+    },
+    body: JSON.stringify({
+      content:content,
+      time:timeLeft,
+      tag:tag
+    }).then((res) => {
+      return res.json()
+    }).then((id) => {
+      drawCrons(id)
+    })
+  })
+}
+    
+//Request date for draw on page "cron"//
+function requestDrawCron(id){
+//first fetch for base date//
+  fetch('/route/' , {
+    method:'POST',
+    headers: {
+        "content-type": "application/json"
+    },
+    body: JSON.stringify({
+      id: id,
+    })
+  }).then((res) => {
+    return res.json()
+  }).then((res) =>{
+    cron.creator = res.creator
+    cron.content = res.content
+    cron.timeLeft = res.timeLeft
+    cron.id = res.id
+
+//Second fetch for recover like data//
+    fetch('/route/',{
       method:'POST',
       headers: {
         "content-type": "application/json"
-      },
-      body: JSON.stringify({
-        content:content,
-        time:timeLeft,
-        tag:tag
-      }).then((res) => {
-        return res.json()
-      }).then((id) => {
-        drawCrons(id)
-      })
+    },
+    body: JSON.stringify({
+      id: id,
     })
-  }
-  
-  
-  //Request date for draw on page "cron"//
-  function requestDrawCron(id){
-  //first fetch for base date//
-    fetch('/route/' , {
-      method:'POST',
-      headers: {
-          "content-type": "application/json"
-      },
-      body: JSON.stringify({
-        id: id,
-      })
     }).then((res) => {
       return res.json()
     }).then((res) =>{
-      cron.creator = res.creator
-      cron.content = res.content
-      cron.timeLeft = res.timeLeft
-      cron.id = res.id
+      like.user = res.user
   
-  //Second fetch for recover like data//
+  //Third fetch for recover comment data//
       fetch('/route/',{
         method:'POST',
         headers: {
           "content-type": "application/json"
-      },
-      body: JSON.stringify({
-        id: id,
-      })
-      }).then((res) => {
-        return res.json()
-      }).then((res) =>{
-        like.user = res.user
-  
-  //Third fetch for recover comment data//
-        fetch('/route/',{
-          method:'POST',
-          headers: {
-            "content-type": "application/json"
         },
         body: JSON.stringify({
           id: id,
