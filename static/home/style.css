@@ -165,7 +165,7 @@ p {
     padding: 3px;
 }
 
-#text {
+#text-value-entry {
     color: #cacaca;
     resize: none;
     display: flex;
@@ -190,7 +190,7 @@ p {
     align-items: center;
 }
 
-#selecttime {
+#select-time {
     cursor: pointer;
     width: 75px;
     height: 25px;
@@ -207,7 +207,7 @@ p {
     border: #B33CED solid 1px;
 }
 
-.buttoncrone {
+#button-post {
     cursor: pointer;
     width: 75px;
     height: 25px;
@@ -218,13 +218,13 @@ p {
     border-radius: 30px;
 }
 
-.buttoncrone:hover {
+#button-post:hover {
     transition: 0.4s ease;
     background-color: #9441be;
     border-color: #9441be;
 }
 
-.allarticle {
+.div-all-article {
     display: flex;
     flex-direction: column;
     overflow-x: hidden;
@@ -245,7 +245,7 @@ p {
     width: 10px;
 }
 
-.anarticle {
+.div-article {
     display: flex;
     justify-content: center;
     width: 90%;
