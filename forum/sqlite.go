@@ -20,7 +20,7 @@ type UserLogin struct {
 }
 
 func DatabaseInit(folder string) *sql.DB {
-	chronosDB, err := sql.Open("sqlite3", folder+"chronosDB.db")
+	cronosDB, err := sql.Open("sqlite3", folder+"cronosDB.db")
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -33,7 +33,7 @@ func DatabaseInit(folder string) *sql.DB {
 		);
 	`
 
-	_, err = chronosDB.Exec(logUsers)
+	_, err = cronosDB.Exec(logUsers)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -47,12 +47,12 @@ func DatabaseInit(folder string) *sql.DB {
 			Biography TEXT(240)
 		);
 		CREATE TABLE IF NOT EXISTS follow (
-			User REFERENCES accountUsers(uniqueName),
-			FollowUser REFERENCES accountUsers(uniqueName)
+			User REFERENCES accountUsers(UniqueName),
+			FollowUser REFERENCES accountUsers(UniqueName)
 		);
 	`
 
-	_, err = chronosDB.Exec(accountUsers)
+	_, err = cronosDB.Exec(accountUsers)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -60,73 +60,68 @@ func DatabaseInit(folder string) *sql.DB {
 	cron := `
 		CREATE TABLE IF NOT EXISTS cron (
 			ID INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-			Creator REFERENCES accountUsers(uniqueName),
+			Creator REFERENCES accountUsers(UniqueName),
 			Content TEXT(240) NOT NULL,
-			Tag TEXT NOT NULL
+			Tag TEXT(360) NOT NULL,
+			ParentID INTEGER REFERENCES cron(ID)
 		);
 		CREATE TABLE IF NOT EXISTS timeLeft (
-			ID INTEGER REFERENCES cron(id),
+			ID INTEGER REFERENCES cron(ID),
 			Year INTEGER(2) NOT NULL,
 			Month INTEGER(1) NOT NULL,
 			Day INTEGER(1) NOT NULL,
 			Hour INTEGER(1) NOT NULL,
 			Minute INTEGER(1) NOT NULL
 		);
-		CREATE TABLE IF NOT EXISTS cronCommentary (
-			IDCron INTEGER REFERENCES cron(id),
-			ID INTEGER NOT NULL PRIMARY KEY,
-			Creator REFERENCES accountUsers(uniqueName),
-			Content TEXT(240) NOT NULL
-		);
 		CREATE TABLE IF NOT EXISTS cronLike (
-			ID INTEGER REFERENCES cron(id),
-			User REFERENCES accountUsers(uniqueName)
+			ID INTEGER REFERENCES cron(ID),
+			User REFERENCES accountUsers(UniqueName)
 		);
 	`
 
-	_, err = chronosDB.Exec(cron)
+	_, err = cronosDB.Exec(cron)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	return chronosDB
+	return cronosDB
 }
 
-func CreateNewUser(chronosDB *sql.DB) http.HandlerFunc {
+func CreateNewUser(cronosDB *sql.DB) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		var (
 			NewUser UserLogin
 		)
 		body, _ := ioutil.ReadAll(r.Body)
 		json.Unmarshal(body, &NewUser)
-		_, err := chronosDB.Exec(`INSERT INTO logUsers (UniqueName, Email, Password) VALUES (?, ?, ?);`, NewUser.UniqueName, NewUser.Email, NewUser.Password)
+		_, err := cronosDB.Exec(`INSERT INTO logUsers (UniqueName, Email, Password) VALUES (?, ?, ?);`, NewUser.UniqueName, NewUser.Email, NewUser.Password)
 		if err != nil {
 			w.Write([]byte(`{ "ERROR":"409" }`))
 		} else {
-			chronosDB.Exec(`INSERT INTO accountUsers (UniqueName, Status, ProfilPicture, Banner) VALUES (?, ?, ?, ?);`, NewUser.UniqueName, "member", "../img/profile_pictures/1.png", "../img/banners/1.png")
+			cronosDB.Exec(`INSERT INTO accountUsers (UniqueName, Status, ProfilPicture, Banner) VALUES (?, ?, ?, ?);`, NewUser.UniqueName, "member", "../img/profile_pictures/1.png", "../img/banners/1.png")
 			addSession(w, r, NewUser.UniqueName)
 			http.Redirect(w, r, "/home", http.StatusMovedPermanently)
 		}
 	}
 }
 
-func DeleteUser(chronosDB *sql.DB, uniqueName string) {
-	_, err := chronosDB.Exec(`DELETE FROM logUsers WHERE UniqueName = '?';`, uniqueName)
+func DeleteUser(cronosDB *sql.DB, uniqueName string) {
+	_, err := cronosDB.Exec(`DELETE FROM logUsers WHERE UniqueName = '?';`, uniqueName)
 	if err != nil {
 		log.Fatal(err)
 		// GESTION D'ERREUR RENVOIE DE L'ERREUR
 	}
 }
 
-func ModifyUser(chronosDB *sql.DB, uniqueName string, User UserLogin) {
-	_, err := chronosDB.Exec(`UPDATE logUsers SET UniqueName = '?', Email ='?', Password = '?' WHERE UniqueName = '?';`, User.UniqueName, User.Email, User.Password, uniqueName)
+func ModifyUser(cronosDB *sql.DB, uniqueName string, User UserLogin) {
+	_, err := cronosDB.Exec(`UPDATE logUsers SET UniqueName = '?', Email ='?', Password = '?' WHERE UniqueName = '?';`, User.UniqueName, User.Email, User.Password, uniqueName)
 	if err != nil {
 		log.Fatal(err)
 		// GESTION D'ERREUR RENVOIE DE L'ERREUR
 	}
 }
 
-func CheckUser(chronosDB *sql.DB) http.HandlerFunc {
+func CheckUser(cronosDB *sql.DB) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		var (
 			uniqueName, email, password string
@@ -135,7 +130,7 @@ func CheckUser(chronosDB *sql.DB) http.HandlerFunc {
 		body, _ := ioutil.ReadAll(r.Body)
 		json.Unmarshal(body, &User)
 		sqlStatement := fmt.Sprintf(`SELECT * FROM logUsers WHERE (UniqueName = '%s' OR Email = '%s') AND Password = '%s';`, User.UniqueName, User.Email, User.Password)
-		row := chronosDB.QueryRow(sqlStatement)
+		row := cronosDB.QueryRow(sqlStatement)
 		if err := row.Scan(&uniqueName, &email, &password); err != nil {
 			w.Write([]byte(`{ "ERROR":"404" }`))
 		} else {
@@ -154,12 +149,12 @@ func addSession(w http.ResponseWriter, r *http.Request, uniqueName string) {
 	session.Save(r, w)
 }
 
-func leaveSession(w http.ResponseWriter, r *http.Request) {
-	session, _ := store.Get(r, "AUTH_TOKEN")
-	session.Values["authenticated"] = false
-	session.Values["uniqueName"] = ""
-	session.Save(r, w)
-}
+// func leaveSession(w http.ResponseWriter, r *http.Request) {
+// 	session, _ := store.Get(r, "AUTH_TOKEN")
+// 	session.Values["authenticated"] = false
+// 	session.Values["uniqueName"] = ""
+// 	session.Save(r, w)
+// }
 
 func validSession(w http.ResponseWriter, r *http.Request) bool {
 	session, _ := store.Get(r, "AUTH_TOKEN")
@@ -168,16 +163,18 @@ func validSession(w http.ResponseWriter, r *http.Request) bool {
 }
 
 type Cron struct {
+	ID       string `json:"ID"`
 	Creator  string `json:"creator"`
 	Content  string `json:"content"`
 	TimeLeft struct {
-		Year, Month, Day, Hour, Minute string
+		Year, Month, Day, Hour, Minute int
 	} `json:"timeLeft"`
-	Tag string `json:"tag"`
+	Tag      string `json:"tag"`
+	ParentID int    `json:"ParentID"`
 }
 
 // TIME LEFT, CONTENT
-func CreateCron(chronosDB *sql.DB) http.HandlerFunc {
+func CreateCron(cronosDB *sql.DB) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		if validSession(w, r) {
 			var (
@@ -187,36 +184,66 @@ func CreateCron(chronosDB *sql.DB) http.HandlerFunc {
 			json.Unmarshal(body, &Cron)
 			session, _ := store.Get(r, "AUTH_TOKEN")
 			Cron.Creator = session.Values["uniqueName"].(string)
-			test, _ := chronosDB.Exec(`INSERT INTO cron (Creator, Content, Tag) VALUES (?, ?, ?);`, Cron.Creator, Cron.Content, Cron.Tag)
-			chronosDB.Exec(`INSERT INTO timeLeft (Year, Month, Day, Hour, Minute) VALUES (?, ?, ?, ?, ?);`, Cron.TimeLeft.Year, Cron.TimeLeft.Month, Cron.TimeLeft.Day, Cron.TimeLeft.Hour, Cron.TimeLeft.Minute)
-			w.Write([]byte(`{ "TEST" : "TEST" }`))
-			fmt.Println(test)
+			result, _ := cronosDB.Exec(`INSERT INTO cron (Creator, Content, Tag, ParentID) VALUES (?, ?, ?, ?);`, Cron.Creator, Cron.Content, Cron.Tag, Cron.ParentID)
+			ID, _ := result.LastInsertId()
+			cronosDB.Exec(`INSERT INTO timeLeft (ID, Year, Month, Day, Hour, Minute) VALUES (?, ?, ?, ?, ?, ?);`, ID, Cron.TimeLeft.Year, Cron.TimeLeft.Month, Cron.TimeLeft.Day, Cron.TimeLeft.Hour, Cron.TimeLeft.Minute)
+			w.Write([]byte(fmt.Sprintf(`{ "ID" : "%v" }`, ID)))
+		} else {
+			http.Redirect(w, r, "/", http.StatusMovedPermanently)
 		}
-		http.Redirect(w, r, "/", http.StatusMovedPermanently)
 	}
 }
 
-func DeleteCron(chronosDB *sql.DB) http.HandlerFunc {
+func DeleteCron(cronosDB *sql.DB) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 
 	}
 }
 
 // ID
-func RedirectCron(chronosDB *sql.DB) http.HandlerFunc {
+func RedirectCron(cronosDB *sql.DB) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 
 	}
 }
 
 // ID
-func GetCron(chronosDB *sql.DB) http.HandlerFunc {
+func GetCron(cronosDB *sql.DB) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-
+		var (
+			Cron = Cron{}
+		)
+		body, _ := ioutil.ReadAll(r.Body)
+		json.Unmarshal(body, &Cron)
+		sqlStatement := fmt.Sprintf(`SELECT * FROM cron WHERE ID = %v`, Cron.ID)
+		row := cronosDB.QueryRow(sqlStatement)
+		if err := row.Scan(&Cron.ID, &Cron.Creator, &Cron.Content, &Cron.Tag, &Cron.ParentID); err != nil {
+			fmt.Println(err)
+			w.Write([]byte(`{ "ERROR":"404" }`))
+		} else {
+			sqlStatement = fmt.Sprintf(`SELECT Year, Month, Day, Hour, Minute FROM timeLeft WHERE ID = %v`, Cron.ID)
+			row = cronosDB.QueryRow(sqlStatement)
+			row.Scan(&Cron.TimeLeft.Year, &Cron.TimeLeft.Month, &Cron.TimeLeft.Day, &Cron.TimeLeft.Hour, &Cron.TimeLeft.Minute)
+			response := fmt.Sprintf(`{
+				"ID":"%v",
+				"Creator":"%v",
+				"Content":"%v",
+				"TimeLeft":{
+					"Year":"%v",
+					"Month":"%v",
+					"Day":"%v",
+					"Hour":"%v",
+					"Minute":"%v"
+				},
+				"Tag":"%v",
+				"ParentID":%v
+			}`, Cron.ID, Cron.Creator, Cron.Content, Cron.TimeLeft.Year, Cron.TimeLeft.Month, Cron.TimeLeft.Day, Cron.TimeLeft.Hour, Cron.TimeLeft.Minute, Cron.Tag, Cron.ParentID)
+			w.Write([]byte(response))
+		}
 	}
 }
 
-func GoDeleteCron(chronosDB *sql.DB) {
+func GoDeleteCron(cronosDB *sql.DB) {
 	for {
 		date := time.Now()
 		fmt.Println(date.Format("2006 01 02 15 04"))

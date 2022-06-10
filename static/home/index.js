@@ -13,16 +13,21 @@ button.addEventListener('click', () => {
   if(content !== '') {
     const timeEntry = parseInt(document.getElementById("select-time").value)
     timeLeft = timeLeftFunciton(timeEntry, SetTime())
-    createCrone(content, tag, timeLeft)
+    if(tag !== null) {
+      createCrone(content, tag.join(' '), timeLeft)
+    } else {
+      createCrone(content, tag, timeLeft)
+    }
   } else {
     console.log('err: missing content, time or tag')
   }
 });  
   
 //fonction for cron creation//
-function drawCrons(id){
-  requestDrawCron(id)
-  const mainCron = document.querySelector('.div-cron')
+async function drawCrons(id) {
+  const cron = await requestCron(id)
+  console.log(cron)
+  const mainCron = document.querySelector('#user-post')
   const newCrone = document.createElement('div')
 
   newCrone.classList.add('cron')
@@ -30,16 +35,9 @@ function drawCrons(id){
   
   const cronContent = document.createElement('p')
   cronContent.classList.add('cron-content')
-  cronContent.innerText = content + '-'
  
   const cronTime = document.createElement('p')
   cronTime.classList.add('cron-time')
-  
-  if(time >= 60){
-    cronTime.innerText =  time/60  +'h'
-  }else{
-    cronTime.innerText =  time+ 'min'
-  }
   
   const divLike = document.createElement('div')
   divLike.classList.add('btn')
@@ -50,13 +48,12 @@ function drawCrons(id){
   divComment.setAttribute('id', 'comment')
   
   mainCron.after(newCrone)
-  newCrone.append(userNameCreateCron)
   newCrone.append(cronContent)
   newCrone.append(cronTime)
   newCrone.append(divLike)
   newCrone.append(divComment)
   
-  document.querySelector('input').value = ''
+  document.querySelector('textarea').value = ''
     
   //Event if click on cron//
   newCrone.addEventListener('click', event => {
@@ -94,20 +91,21 @@ function createCrone(content, tag, timeLeft){
     },
     body: JSON.stringify({
       content:content,
-      time:timeLeft,
-      tag:tag
-    }).then((res) => {
-      return res.json()
-    }).then((id) => {
-      drawCrons(id)
+      timeLeft:timeLeft,
+      tag:tag,
+      parentID: -1,
     })
+  }).then((res) => {
+    return res.json()
+  }).then((res) => {
+    drawCrons(res.ID)
   })
 }
     
-//Request date for draw on page "cron"//
-function requestDrawCron(id){
-//first fetch for base date//
-  fetch('/route/' , {
+
+async function requestCron(id){
+  // Get every information of the cron with the database
+  return fetch('/chronosdb/POST/cron/GET' , {
     method:'POST',
     headers: {
         "content-type": "application/json"
@@ -118,44 +116,10 @@ function requestDrawCron(id){
   }).then((res) => {
     return res.json()
   }).then((res) =>{
-    const cron = {}
-    cron.creator = res.creator
-    cron.content = res.content
-    cron.timeLeft = res.timeLeft
-    cron.id = res.id
-    //Second fetch for recover like data//
-    fetch('/route/',{
-      method:'POST',
-      headers: {
-        "content-type": "application/json"
-    },
-    body: JSON.stringify({
-      id: id,
-    })
-    }).then((res) => {
-      return res.json()
-    }).then((res) =>{
-      const like = {user: []}      
-      like.user = res.user
-      //Third fetch for recover comment data//
-      fetch('/route/',{
-        method:'POST',
-        headers: {
-          "content-type": "application/json"
-        },
-        body: JSON.stringify({
-          id: id,
-        })
-      }).then((res) => {
-        return res.json()
-      }).then((res) =>{
-        const comment = {user: []}
-        comment.user = res.user
-      })
-    })
+    return res
   })
 }
-  
+
 //Request onload page//
 function requestOnLoadPage(){
   fetch('/route/',{
