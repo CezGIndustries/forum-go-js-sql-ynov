@@ -100,7 +100,7 @@ func CreateNewUser(cronosDB *sql.DB) http.HandlerFunc {
 		} else {
 			cronosDB.Exec(`INSERT INTO accountUsers (UniqueName, Status, ProfilPicture, Banner) VALUES (?, ?, ?, ?);`, NewUser.UniqueName, "member", "../img/profile_pictures/1.png", "../img/banners/1.png")
 			addSession(w, r, NewUser.UniqueName)
-			http.Redirect(w, r, "/home", http.StatusMovedPermanently)
+			http.RedirectHandler("/home", 302)
 		}
 	}
 }
@@ -135,7 +135,7 @@ func CheckUser(cronosDB *sql.DB) http.HandlerFunc {
 			w.Write([]byte(`{ "ERROR":"404" }`))
 		} else {
 			addSession(w, r, User.UniqueName)
-			http.Redirect(w, r, "/home", http.StatusMovedPermanently)
+			http.Redirect(w, r, "/home", http.StatusFound)
 		}
 	}
 }
