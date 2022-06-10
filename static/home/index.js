@@ -27,57 +27,56 @@ button.addEventListener('click', () => {
 async function drawCrons(id) {
   const cron = await requestCron(id)
   console.log(cron)
-  const mainCron = document.querySelector('#user-post')
+  const mainCron = document.querySelector('.div-all-article')
+
   const newCrone = document.createElement('div')
 
-  newCrone.classList.add('cron')
-  newCrone.setAttribute('cron-id', id.toString() )
+  newCrone.setAttribute('cron-id', cron.ID.toString() )
+  newCrone.classList.add('div-article')
+
+  const article = document.createElement('article')
+  article.classList.add('article')
+  article.setAttribute('id', 'test')
+  article.innerText =cron.Creator +" --- "+ cron.Content +" --- Finish Time -"+ cron.TimeLeft.Year +"/"+ cron.TimeLeft.Month+"/"+ cron.TimeLeft.Day+"/"+cron.TimeLeft.Hour+"/"+cron.TimeLeft.Minute +" --- "+ cron.Tag
+
+
   
-  const cronContent = document.createElement('p')
-  cronContent.classList.add('cron-content')
- 
-  const cronTime = document.createElement('p')
-  cronTime.classList.add('cron-time')
-  
-  const divLike = document.createElement('div')
-  divLike.classList.add('btn')
-  divLike.setAttribute('id', 'like')
+  // const divLike = document.createElement('div')
+  // divLike.classList.add('btn')
+  // divLike.setAttribute('id', 'like')
    
-  const divComment = document.createElement('div')
-  divComment.classList.add('btn')
-  divComment.setAttribute('id', 'comment')
+  // const divComment = document.createElement('div')
+  // divComment.classList.add('btn')
+  // divComment.setAttribute('id', 'comment')
   
-  mainCron.after(newCrone)
-  newCrone.append(cronContent)
-  newCrone.append(cronTime)
-  newCrone.append(divLike)
-  newCrone.append(divComment)
+  mainCron.append(newCrone)
+  newCrone.append(article)
   
   document.querySelector('textarea').value = ''
     
   //Event if click on cron//
-  newCrone.addEventListener('click', event => {
-    //create request for redirect on cron//
-    const id = newCrone.getAttribute('cron-id')
-    requestRedirectCron(id)
-      //-------//
-    }); 
+  // newCrone.addEventListener('click', event => {
+  //   //create request for redirect on cron//
+  //   const id = newCrone.getAttribute('cron-id')
+  //   requestRedirectCron(id)
+  //     //-------//
+  //   }); 
   
     //Event if click on like//
-    divLike.addEventListener('click', event => {
-    //create request for add like and delete like//
-    const id = newCrone.getAttribute('cron-id')
-    requestLikePost(id)
-    //-------//
-    }); 
+    // divLike.addEventListener('click', event => {
+    // //create request for add like and delete like//
+    // const id = newCrone.getAttribute('cron-id')
+    // requestLikePost(id)
+    // //-------//
+    // }); 
   
   //Event if click on comment//
-  divComment.addEventListener('click', event => {
-    //create request for redirect and comment cron//
-    const id = newCrone.getAttribute('cron-id')
-    requestRedirectCron(id)
-    //-------//
-  }); 
+  // divComment.addEventListener('click', event => {
+  //   //create request for redirect and comment cron//
+  //   const id = newCrone.getAttribute('cron-id')
+  //   requestRedirectCron(id)
+  //   //-------//
+  // }); 
   
   return newCrone
 }

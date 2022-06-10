@@ -195,7 +195,7 @@ select {
     font-size: 25px;
 }
 
-.allarticle {
+.div-all-article {
     display: flex;
     flex-direction: column;
     overflow-x: hidden;
@@ -204,7 +204,7 @@ select {
     width: 100%;
 }
 
-.anarticle {
+.div-article {
     display: flex;
     justify-content: center;
     width: 90%;
