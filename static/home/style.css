@@ -26,15 +26,11 @@
     height: 90%;
     margin: 30px;
     border-radius: 1.05rem;
-    background-color: #17152A;
+    background-color: #08061A;
 }
 
 .logo {
     margin-left: 10px;
-}
-
-.fa {
-    margin-right: 10px;
 }
 
 .nave {
@@ -42,6 +38,11 @@
     justify-content: flex-start;
     margin-left: 10px;
     font-size: 25px;
+    height: 80%;
+}
+
+.fa {
+    margin-right: 10px;
 }
 
 .icon {
@@ -53,46 +54,54 @@
 }
 
 li {
+    cursor: pointer;
     list-style: none;
     margin: 50px 0px;
 }
 
-a {
+p {
+    cursor: pointer;
     color: #cacaca;
     text-decoration: none;
 }
 
 .logout {
+    background-color: #17152A;
     display: flex;
     align-items: center;
-    bottom: 10px;
-    border: 1px solid #B33CED;
-    margin: 120px 0px 0px 10px;
+    margin-left: 10px;
     height: 6%;
     border-radius: 30px;
 }
 
+.logout:hover {
+    transition: 0.5s ease;
+    transform: scaleY(110%);
+    transform: scaleX(105%);
+}
+
 .logoutleft {
-    width: 35%;
+    width: 20%;
 }
 
 .logout img {
-    border: 1px solid red;
-    width: 30%;
-    aspect-ratio: 1;
+    display: flex;
+    justify-content: center;
     border-radius: 50%;
+    width: 30px;
+    height: 30px;
 }
 
 .logoutmid {
-    width: 45%;
+    width: 69%;
     overflow: hidden;
     text-overflow: ellipsis;
-    border: 1px solid red;
     color: #cacaca;
+    margin-right: 1%;
 }
 
 .logoutright {
-    width: 15%;
+    width: 10%;
 }
 
 .logoutright .fa-ellipsis {
@@ -115,28 +124,6 @@ a {
     width: 100%;
 }
 
-.left {
-    height: 100%;
-    width: 70%;
-}
-
-.right {
-    display: flex;
-    align-items: center;
-    width: 25%;
-    height: 100%;
-}
-
-#selectfilter {
-    text-align: center;
-    width: 100%;
-    height: 85%;
-    color: #cacaca;
-    background-color: #17152A;
-    border: solid #B33CED 1px;
-    border-radius: 30px;
-}
-
 .userwrapper {
     margin-bottom: 10px;
     width: 100%;
@@ -151,13 +138,14 @@ a {
 }
 
 .userimg img {
+    cursor: pointer;
     width: 60px;
     height: 60px;
     border-radius: 50%;
 }
 
 .pseudouser {
-    width: 60%;
+    width: 90%;
     margin: 0 0 0 10px;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -166,6 +154,7 @@ a {
 }
 
 .optionsadmin {
+    cursor: pointer;
     border: solid green 2px;
 }
 
@@ -202,6 +191,7 @@ a {
 }
 
 #selecttime {
+    cursor: pointer;
     width: 75px;
     height: 25px;
     margin: 0 5px 0 0px;
@@ -218,6 +208,7 @@ a {
 }
 
 .buttoncrone {
+    cursor: pointer;
     width: 75px;
     height: 25px;
     margin: 0 25px 0 5px;
@@ -240,6 +231,18 @@ a {
     overflow-y: auto;
     height: 400px;
     width: 100%;
+}
+
+::-webkit-scrollbar {
+    width: 15px;
+    background-color: #08061A;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: #17152A;
+    border-radius: 30px;
+    border: solid 1px #B33CED;
+    width: 10px;
 }
 
 .anarticle {
