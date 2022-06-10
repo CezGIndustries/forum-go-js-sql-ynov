@@ -38,7 +38,7 @@ githubLogin.onclick = function(){
 // console.log(githubLogin)
 
 const confirmLogin = () => {
-    fetch('/chronosdb/POST/logUsers/CHECK', {
+    fetch('/cronosdb/POST/logUsers/CHECK', {
         method: 'POST',
         header: {
             "content-type": "application/json"
@@ -71,7 +71,7 @@ const confirmRegister = () => {
 
     // Condition that check the validity of the values
     if(pseudoIsGood(pseudo) && validateEmail(email) && passwordIsGood(password, confirmPassword)){
-        fetch('/chronosdb/POST/logUsers/REGISTER', {
+        fetch('/cronosdb/POST/logUsers/REGISTER', {
             method: 'POST',
             header: {
                 "content-type": "application/json"
