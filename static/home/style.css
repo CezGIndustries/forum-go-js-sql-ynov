@@ -165,6 +165,7 @@ p {
 }
 
 #text-value-entry {
+    outline: none;
     color: #cacaca;
     resize: none;
     display: flex;
@@ -172,7 +173,6 @@ p {
     align-items: center;
     width: 100%;
     background-color: #17152A;
-    color: #cacaca;
     border-color: #B33CED;
     border-radius: 30px;
     box-sizing: border-box;
@@ -244,31 +244,99 @@ p {
     width: 10px;
 }
 
-.div-article {
-    display: flex;
-    justify-content: center;
-    width: 90%;
-    height: 20%;
-    margin: 5px;
-    border-radius: 30px;
+.div-all-article {
+    border: none;
 }
 
 .article {
-    border: solid #B33CED 1px;
-    border-radius: 30px;
-    font-size: 20px;
-    color: #cacaca;
-    width: 90%;
-    height: 20%;
-    text-align: center;
-    background-color: #17152A;
+    border: none;
+}
+
+.user-wrapper {
     display: flex;
-    flex-wrap: wrap;
+    justify-content: flex-start;
+    align-items: center;
+    color: #cacaca;
+}
+
+.image-user {
+    cursor: pointer;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+}
+
+.pseudo-user {
+    width: 90%;
+    margin: 0 0 0 10px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: 16px;
+    color: #cacaca;
+}
+
+.options-admin {
+    display: flex;
+    justify-content: flex-end;
+    cursor: pointer;
+    width: 10%;
+}
+
+.article-text {
+    border: #B33CED solid 1px;
+    padding-left: 39px;
+    padding-right: 39px;
+    padding-top: 10px;
+    border-radius: 30px;
+    background-color: #17152A;
+    color: #cacaca;
+    font-size: 20px;
+    margin: 5px 2px 10px 40px;
+}
+
+.partage {
+    display: flex;
+    justify-content: flex-start;
+}
+
+.vide-gauche {
+    width: 5%;
+}
+
+.like {
+    cursor: pointer;
+    width: 10%;
+}
+
+.dislike {
+    cursor: pointer;
+    width: 10%;
+}
+
+.share {
+    cursor: pointer;
+    width: 10%;
+}
+
+.save {
+    cursor: pointer;
+    width: 10%;
+}
+
+.time {
+    display: flex;
+    justify-content: flex-end;
+    width: 10%;
+}
+
+.vide-droite {
+    width: 40%;
 }
 
 ::-webkit-scrollbar {
     width: 15px;
-    background-color: #08061A;
+    background-color: #cacaca;
+    /* #08061A */
 }
 
 ::-webkit-scrollbar-thumb {
