@@ -84,7 +84,7 @@ async function drawCrons(id) {
   
 //Request for create cron//
 function createCrone(content, tag, timeLeft){
-  fetch('/chronosdb/POST/cron/CREATE' , {
+  fetch('/cronosdb/POST/cron/CREATE' , {
     method:'POST',
     headers: {
       "content-type": "application/json"
@@ -105,7 +105,7 @@ function createCrone(content, tag, timeLeft){
 
 async function requestCron(id){
   // Get every information of the cron with the database
-  return fetch('/chronosdb/POST/cron/GET' , {
+  return fetch('/cronosdb/POST/cron/GET' , {
     method:'POST',
     headers: {
         "content-type": "application/json"

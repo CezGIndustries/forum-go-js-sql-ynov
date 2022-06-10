@@ -203,7 +203,18 @@ func DeleteCron(cronosDB *sql.DB) http.HandlerFunc {
 // ID
 func RedirectCron(cronosDB *sql.DB) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-
+		var (
+			Cron = Cron{}
+		)
+		body, _ := ioutil.ReadAll(r.Body)
+		json.Unmarshal(body, &Cron)
+		sqlStatement := fmt.Sprintf(`SELECT Creator FROM cron WHERE ID = %v`, Cron.ID)
+		row := cronosDB.QueryRow(sqlStatement)
+		if err := row.Scan(&Cron.Creator); err != nil {
+			w.Write([]byte(`{ "ERROR":"404" }`))
+		} else {
+			http.Redirect(w, r, "/", http.StatusMovedPermanently)
+		}
 	}
 }
 
@@ -218,7 +229,6 @@ func GetCron(cronosDB *sql.DB) http.HandlerFunc {
 		sqlStatement := fmt.Sprintf(`SELECT * FROM cron WHERE ID = %v`, Cron.ID)
 		row := cronosDB.QueryRow(sqlStatement)
 		if err := row.Scan(&Cron.ID, &Cron.Creator, &Cron.Content, &Cron.Tag, &Cron.ParentID); err != nil {
-			fmt.Println(err)
 			w.Write([]byte(`{ "ERROR":"404" }`))
 		} else {
 			sqlStatement = fmt.Sprintf(`SELECT Year, Month, Day, Hour, Minute FROM timeLeft WHERE ID = %v`, Cron.ID)
