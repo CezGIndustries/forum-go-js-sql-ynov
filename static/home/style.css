@@ -187,7 +187,7 @@ select {
     justify-content: flex-end;
 }
 
-.buttoncron {
+#buttoncron {
     border-radius: 30px;
     border: none;
     background-color: #B33CED;
@@ -203,6 +203,7 @@ select {
     height: 500px;
     width: 100%;
 }
+
 
 .div-article {
     display: flex;

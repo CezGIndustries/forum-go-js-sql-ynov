@@ -5,7 +5,7 @@ document.querySelector('body').onload = function(){
   //-------//
 }
 
-const button = document.getElementById('button-post');  
+const button = document.getElementById('buttoncron');  
 //Click and create cron if all conditons true//
 button.addEventListener('click', () => {
   const content = document.getElementById("text-value-entry").value
@@ -48,8 +48,8 @@ async function drawCrons(id) {
   // const divComment = document.createElement('div')
   // divComment.classList.add('btn')
   // divComment.setAttribute('id', 'comment')
-  
-  mainCron.append(newCrone)
+  const lastElement = document.getElementById('start')
+  lastElement.after(newCrone)
   newCrone.append(article)
   
   document.querySelector('textarea').value = ''
