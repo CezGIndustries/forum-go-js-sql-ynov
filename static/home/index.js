@@ -48,8 +48,8 @@ async function drawCrons(id) {
   // const divComment = document.createElement('div')
   // divComment.classList.add('btn')
   // divComment.setAttribute('id', 'comment')
-  
-  mainCron.append(newCrone)
+  const lastElement = document.getElementById('start')
+  lastElement.after(newCrone)
   newCrone.append(article)
   
   document.querySelector('textarea').value = ''
@@ -144,7 +144,7 @@ function requestLikePost(id){
       "content-type": "application/json"
   },
   body: JSON.stringify({
-    id: id,
+    content: "ONLOAD-PAGE",
   })
   }).then((res) => {
     return res.json()
