@@ -5,7 +5,7 @@ document.querySelector('body').onload = function(){
   //-------//
 }
 
-const button = document.getElementById('buttoncron');  
+const button = document.getElementById('button-post');  
 //Click and create cron if all conditons true//
 button.addEventListener('click', () => {
   const content = document.getElementById("text-value-entry").value
@@ -39,8 +39,6 @@ async function drawCrons(id) {
   article.setAttribute('id', 'test')
   article.innerText =cron.Creator +" --- "+ cron.Content +" --- Finish Time -"+ cron.TimeLeft.Year +"/"+ cron.TimeLeft.Month+"/"+ cron.TimeLeft.Day+"/"+cron.TimeLeft.Hour+"/"+cron.TimeLeft.Minute +" --- "+ cron.Tag
 
-  const userNameDiv = document.getElementById('name-user')
-  userNameDiv.innerHTML = "test"
 
   
   // const divLike = document.createElement('div')
@@ -146,7 +144,7 @@ function requestLikePost(id){
       "content-type": "application/json"
   },
   body: JSON.stringify({
-    id: id,
+    content: "ONLOAD-PAGE",
   })
   }).then((res) => {
     return res.json()
@@ -167,27 +165,6 @@ function requestRedirectCron(id){
     })
   })
 }
-
-function requestOnLoadPage(){
-  fetch('/route/',{
-    method:'POST',
-    headers: {
-      "content-type": "application/json"
-  },
-  body: JSON.stringify({
-    content: "ONLOAD-PAGE",
-  })
-  }).then((res) => {
-    return res.json()
-  }).then((res) =>{
-      //user actuell
-      //img actuell
-      //les tag's actuelles
-      //les 20 derniers posts(amis et tag suivis)
-  })
-}
-
-
 
 //Set time now //
 function SetTime(){
