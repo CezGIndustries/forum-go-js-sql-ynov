@@ -35,21 +35,6 @@ async function drawCrons(id) {
   // DRAW CRON
   const cron = await requestCron(id)
   console.log(cron)
-  const mainCron = document.querySelector('.div-all-article')
-
-  const newCrone = document.createElement('div')
-
-  newCrone.setAttribute('cron-id', cron.ID.toString() )
-  newCrone.classList.add('div-article')
-
-  const article = document.createElement('article')
-  article.classList.add('article')
-  article.setAttribute('id', 'test')
-  article.innerText =cron.Creator +" --- "+ cron.Content +" --- Finish Time -"+ cron.TimeLeft.Year +"/"+ cron.TimeLeft.Month+"/"+ cron.TimeLeft.Day+"/"+cron.TimeLeft.Hour+"/"+cron.TimeLeft.Minute +" --- "+ cron.Tag
-  
-  const lastElement = document.getElementById('start')
-  lastElement.after(newCrone)
-  newCrone.append(article)
   
   document.querySelector('textarea').value = ''
 
