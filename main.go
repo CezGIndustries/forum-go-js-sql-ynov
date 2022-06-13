@@ -27,12 +27,21 @@ func main() {
 
 	Env.Router.HandleFunc("/profil/{nameUser}", forum.Profil())
 
-	Env.Router.HandleFunc("/chronosdb/POST/logUsers/CHECK", forum.CheckUser(Env.DB))
+	Env.Router.HandleFunc("/cronosdb/POST/logUsers/CHECK", forum.CheckUser(Env.DB))
+	Env.Router.HandleFunc("/cronosdb/POST/logUsers/REGISTER", forum.CreateNewUser(Env.DB))
+
+	Env.Router.HandleFunc("/cronosdb/POST/cron/CREATE", forum.CreateCron(Env.DB))
+	Env.Router.HandleFunc("/cronosdb/POST/cron/REDIRECT", forum.RedirectCron(Env.DB))
+	Env.Router.HandleFunc("/cronosdb/POST/cron/GET", forum.GetCron(Env.DB))
+	Env.Router.HandleFunc("/cronosdb/POST/cron/DELETE", forum.DeleteCron(Env.DB))
+	Env.Router.HandleFunc("/cronosdb/POST/cron/LIKE", forum.CreateLike(Env.DB))
 
 	s := &http.Server{
 		Addr:    ":8080",
 		Handler: Env.Router,
 	}
+
+	// go forum.GoDeleteCron(Env.DB)
 
 	log.Fatal(s.ListenAndServe())
 }
