@@ -23,11 +23,9 @@ func Connexion_Creation() http.HandlerFunc {
 		if !ValidSession(w, r) {
 			t, _ := template.ParseFiles("./static/connexion-creation/index.html")
 			t.Execute(w, "hello world")
+		} else {
+			http.Redirect(w, r, "/home", http.StatusFound)
 		}
-		//  else {
-		// w.Header().Set("content-type", "text/html; charset=utf-8")
-		// http.Redirect(w, r, "/home", http.StatusMovedPermanently)
-		// }
 	}
 }
 

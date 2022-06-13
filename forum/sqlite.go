@@ -107,8 +107,7 @@ func CreateNewUser(cronosDB *sql.DB) http.HandlerFunc {
 		} else {
 			cronosDB.Exec(`INSERT INTO accountUsers (UniqueName, Status, ProfilPicture, Banner) VALUES (?, ?, ?, ?);`, NewUser.UniqueName, "member", "../img/profile_pictures/1.png", "../img/banners/1.png")
 			addSession(w, r, NewUser.UniqueName)
-			w.Header().Set("content-type", "text/html; charset=utf-8")
-			http.Redirect(w, r, "/home", http.StatusMovedPermanently)
+			w.Write([]byte(`{}`))
 		}
 	}
 }
@@ -143,7 +142,7 @@ func CheckUser(cronosDB *sql.DB) http.HandlerFunc {
 			w.Write([]byte(`{ "ERROR":"404" }`))
 		} else {
 			addSession(w, r, User.UniqueName)
-			// http.Redirect(w, r, "/home", http.StatusMovedPermanently)
+			w.Write([]byte(`{}`))
 		}
 	}
 }
@@ -194,14 +193,14 @@ func CreateCron(cronosDB *sql.DB) http.HandlerFunc {
 			json.Unmarshal(body, &Cron)
 			session, _ := store.Get(r, "AUTH_TOKEN")
 			Cron.Creator = session.Values["uniqueName"].(string)
-			result, _ := cronosDB.Exec(`INSERT INTO cron (Creator, Content, Tag, ParentID) VALUES (?, ?, ?, ?);`, Cron.Creator, Cron.Content, Cron.Tag, Cron.ParentID)
+			result, _ := cronosDB.Exec(`INSERT INTO cron (Creator, Content, ParentID) VALUES (?, ?, ?);`, Cron.Creator, Cron.Content, Cron.ParentID)
 			ID, _ := result.LastInsertId()
-			cronosDB.Exec(`INSERT INTO timeLeft (ID, Year, Month, Day, Hour, Minute) VALUES (?, ?, ?, ?, ?, ?);`, ID, Cron.TimeLeft.Year, Cron.TimeLeft.Month, Cron.TimeLeft.Day, Cron.TimeLeft.Hour, Cron.TimeLeft.Minute)
+			if Cron.TimeLeft.Year != 0 {
+				cronosDB.Exec(`INSERT INTO timeLeft (ID, Year, Month, Day, Hour, Minute) VALUES (?, ?, ?, ?, ?, ?);`, ID, Cron.TimeLeft.Year, Cron.TimeLeft.Month, Cron.TimeLeft.Day, Cron.TimeLeft.Hour, Cron.TimeLeft.Minute)
+			}
 			w.Write([]byte(fmt.Sprintf(`{ "ID" : "%v" }`, ID)))
 		}
-		// else {
-
-		// }
+		w.Write([]byte(`{}`))
 	}
 }
 
@@ -223,9 +222,6 @@ func RedirectCron(cronosDB *sql.DB) http.HandlerFunc {
 		row := cronosDB.QueryRow(sqlStatement)
 		if err := row.Scan(&Cron.Creator); err != nil {
 			w.Write([]byte(`{ "ERROR":"404" }`))
-		} else {
-			url := fmt.Sprintf(`/%v/cron/%v`, Cron.Creator, Cron.ID)
-			http.Redirect(w, r, url, http.StatusMovedPermanently)
 		}
 	}
 }

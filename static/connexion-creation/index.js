@@ -8,7 +8,6 @@ function register() {
     connect.style.left = "-400px";
     signup.style.left = "50px";
     mbg.style.left = "110px";
-    console.log("register");
 }
 
 function login() {
@@ -32,8 +31,6 @@ githubLogin.onclick = function(){
        }};
     
     xhr.send();
-    console.log(xhr)
-    console.log("siuu")
 }
 // console.log(githubLogin)
 
@@ -51,9 +48,10 @@ const confirmLogin = () => {
     }).then((res) => {
         return res.json()
     }).then((res) => {
-        console.log(res.ERROR, res.AUTH_TOKEN)
-        if(typeof res.ERROR === "undefined") {
-            console.log("METTRE LES FONCTIONS")
+        if(res.ERROR == 404) {
+            // METTRE ERROR
+        } else {
+            window.location.href= '/home'
         }
     })
 }
@@ -84,7 +82,11 @@ const confirmRegister = () => {
         }).then((res) => {
                 return res.json()
         }).then((res) => {
-            console.log(res)
+            if(res.ERROR == '409') {
+                // METTRE ERROR
+            } else {
+                window.location.href = '/home'
+            }
         })
     } else {
         console.log("Error: Form unvalide")
