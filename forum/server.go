@@ -10,7 +10,7 @@ import (
 
 func Home() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		t, _ := template.ParseFiles("./static/home/index.html")
+		t := template.Must(template.ParseGlob("./static/home/*.html"))
 		t.Execute(w, "hello world")
 	}
 }
