@@ -46,6 +46,10 @@ func DatabaseInit(folder string) *sql.DB {
 			Banner TEXT NOT NULL,
 			Biography TEXT(240)
 		);
+		CREATE TABLE IF NOT EXISTS tagUsers (
+			Tag TEXT(64) NOT NULL,
+			User REFERENCES accountUsers(UniqueName) 
+		);
 		CREATE TABLE IF NOT EXISTS follow (
 			User REFERENCES accountUsers(UniqueName),
 			FollowUser REFERENCES accountUsers(UniqueName)
@@ -62,7 +66,6 @@ func DatabaseInit(folder string) *sql.DB {
 			ID INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
 			Creator REFERENCES accountUsers(UniqueName),
 			Content TEXT(240) NOT NULL,
-			Tag TEXT(360) NOT NULL,
 			ParentID INTEGER REFERENCES cron(ID)
 		);
 		CREATE TABLE IF NOT EXISTS timeLeft (
@@ -72,6 +75,10 @@ func DatabaseInit(folder string) *sql.DB {
 			Day INTEGER(1) NOT NULL,
 			Hour INTEGER(1) NOT NULL,
 			Minute INTEGER(1) NOT NULL
+		);
+		CREATE TABLE IF NOT EXISTS tagCron (
+			Tag TEXT(64) NOT NULL,
+			ID REFERENCES cron(ID)
 		);
 		CREATE TABLE IF NOT EXISTS cronLike (
 			ID INTEGER REFERENCES cron(ID),
@@ -100,6 +107,7 @@ func CreateNewUser(cronosDB *sql.DB) http.HandlerFunc {
 		} else {
 			cronosDB.Exec(`INSERT INTO accountUsers (UniqueName, Status, ProfilPicture, Banner) VALUES (?, ?, ?, ?);`, NewUser.UniqueName, "member", "../img/profile_pictures/1.png", "../img/banners/1.png")
 			addSession(w, r, NewUser.UniqueName)
+			w.Header().Set("content-type", "text/html; charset=utf-8")
 			http.Redirect(w, r, "/home", http.StatusMovedPermanently)
 		}
 	}
@@ -135,7 +143,7 @@ func CheckUser(cronosDB *sql.DB) http.HandlerFunc {
 			w.Write([]byte(`{ "ERROR":"404" }`))
 		} else {
 			addSession(w, r, User.UniqueName)
-			http.Redirect(w, r, "/home", http.StatusMovedPermanently)
+			// http.Redirect(w, r, "/home", http.StatusMovedPermanently)
 		}
 	}
 }
@@ -156,7 +164,7 @@ func addSession(w http.ResponseWriter, r *http.Request, uniqueName string) {
 // 	session.Save(r, w)
 // }
 
-func validSession(w http.ResponseWriter, r *http.Request) bool {
+func ValidSession(w http.ResponseWriter, r *http.Request) bool {
 	session, _ := store.Get(r, "AUTH_TOKEN")
 	auth, ok := session.Values["authenticated"].(bool)
 	return auth || ok
@@ -169,14 +177,16 @@ type Cron struct {
 	TimeLeft struct {
 		Year, Month, Day, Hour, Minute int
 	} `json:"timeLeft"`
-	Tag      string `json:"tag"`
-	ParentID int    `json:"ParentID"`
+	Tag      string     `json:"tag"`
+	ParentID int        `json:"ParentID"`
+	Likes    []string   `json:"Likes"`
+	Comments [][]string `json:"Comments"`
 }
 
 // TIME LEFT, CONTENT
 func CreateCron(cronosDB *sql.DB) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		if validSession(w, r) {
+		if ValidSession(w, r) {
 			var (
 				Cron = Cron{}
 			)
@@ -188,9 +198,10 @@ func CreateCron(cronosDB *sql.DB) http.HandlerFunc {
 			ID, _ := result.LastInsertId()
 			cronosDB.Exec(`INSERT INTO timeLeft (ID, Year, Month, Day, Hour, Minute) VALUES (?, ?, ?, ?, ?, ?);`, ID, Cron.TimeLeft.Year, Cron.TimeLeft.Month, Cron.TimeLeft.Day, Cron.TimeLeft.Hour, Cron.TimeLeft.Minute)
 			w.Write([]byte(fmt.Sprintf(`{ "ID" : "%v" }`, ID)))
-		} else {
-			http.Redirect(w, r, "/", http.StatusMovedPermanently)
 		}
+		// else {
+
+		// }
 	}
 }
 
@@ -213,7 +224,8 @@ func RedirectCron(cronosDB *sql.DB) http.HandlerFunc {
 		if err := row.Scan(&Cron.Creator); err != nil {
 			w.Write([]byte(`{ "ERROR":"404" }`))
 		} else {
-			http.Redirect(w, r, "/", http.StatusMovedPermanently)
+			url := fmt.Sprintf(`/%v/cron/%v`, Cron.Creator, Cron.ID)
+			http.Redirect(w, r, url, http.StatusMovedPermanently)
 		}
 	}
 }
@@ -234,6 +246,7 @@ func GetCron(cronosDB *sql.DB) http.HandlerFunc {
 			sqlStatement = fmt.Sprintf(`SELECT Year, Month, Day, Hour, Minute FROM timeLeft WHERE ID = %v`, Cron.ID)
 			row = cronosDB.QueryRow(sqlStatement)
 			row.Scan(&Cron.TimeLeft.Year, &Cron.TimeLeft.Month, &Cron.TimeLeft.Day, &Cron.TimeLeft.Hour, &Cron.TimeLeft.Minute)
+			Cron.Comments, Cron.Likes = getComments(cronosDB, Cron), getLikes(cronosDB, Cron)
 			response := fmt.Sprintf(`{
 				"ID":"%v",
 				"Creator":"%v",
@@ -246,9 +259,70 @@ func GetCron(cronosDB *sql.DB) http.HandlerFunc {
 					"Minute":"%v"
 				},
 				"Tag":"%v",
-				"ParentID":%v
-			}`, Cron.ID, Cron.Creator, Cron.Content, Cron.TimeLeft.Year, Cron.TimeLeft.Month, Cron.TimeLeft.Day, Cron.TimeLeft.Hour, Cron.TimeLeft.Minute, Cron.Tag, Cron.ParentID)
+				"ParentID":%v,
+				"Likes":%v,
+				"Comments":%v
+			}`, Cron.ID, Cron.Creator, Cron.Content, Cron.TimeLeft.Year, Cron.TimeLeft.Month, Cron.TimeLeft.Day, Cron.TimeLeft.Hour, Cron.TimeLeft.Minute, Cron.Tag, Cron.ParentID, Cron.Likes, Cron.Comments)
 			w.Write([]byte(response))
+		}
+	}
+}
+
+func getLikes(cronosDB *sql.DB, Cron Cron) []string {
+	var (
+		user  string
+		likes []string
+	)
+	sqlStatement := fmt.Sprintf(`SELECT User FROM cronLike WHERE ID = %v`, Cron.ID)
+	rows, _ := cronosDB.Query(sqlStatement)
+
+	for rows.Next() {
+		rows.Scan(&user)
+		likes = append(likes, user)
+	}
+	return likes
+}
+
+func getComments(cronosDB *sql.DB, Cron Cron) [][]string {
+	var (
+		comments [][]string
+		id, user string
+	)
+	sqlStatement := fmt.Sprintf(`SELECT * FROM cron WHERE ParentID = %v`, Cron.ID)
+	rows, _ := cronosDB.Query(sqlStatement)
+
+	for rows.Next() {
+		rows.Scan(&id, &user)
+		comments = append(comments, addComment(cronosDB, id, []string{user}))
+	}
+
+	return comments
+}
+
+func addComment(cronosDB *sql.DB, id string, tab []string) []string {
+	sqlStatement := fmt.Sprintf(`SELECT * FROM cron WHERE ParentID = %v`, id)
+	rows, _ := cronosDB.Query(sqlStatement)
+	for rows.Next() {
+		var user string
+		rows.Scan(&id, &user)
+		return addComment(cronosDB, id, append(tab, user))
+	}
+	return tab
+}
+
+func CreateLike(cronosDB *sql.DB) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		var (
+			ID, UniqueName string
+		)
+		session, _ := store.Get(r, "AUTH_TOKEN")
+		UniqueName = session.Values["uniqueName"].(string)
+		sqlStatement := fmt.Sprintf(`SELECT * FROM cronLike WHERE ID = %v AND User = "%v"`, ID, UniqueName)
+		row, _ := cronosDB.Query(sqlStatement)
+		if !row.Next() {
+			cronosDB.Exec(`INSERT INTO cronLike (ID, User) VALUES (?, ?);`, ID, UniqueName)
+		} else {
+			cronosDB.Exec(`DELETE FROM cronLike WHERE ID = %v AND User = "%v"`, ID, UniqueName)
 		}
 	}
 }

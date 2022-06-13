@@ -34,6 +34,7 @@ func main() {
 	Env.Router.HandleFunc("/cronosdb/POST/cron/REDIRECT", forum.RedirectCron(Env.DB))
 	Env.Router.HandleFunc("/cronosdb/POST/cron/GET", forum.GetCron(Env.DB))
 	Env.Router.HandleFunc("/cronosdb/POST/cron/DELETE", forum.DeleteCron(Env.DB))
+	Env.Router.HandleFunc("/cronosdb/POST/cron/LIKE", forum.CreateLike(Env.DB))
 
 	s := &http.Server{
 		Addr:    ":8080",
