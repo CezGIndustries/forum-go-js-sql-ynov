@@ -40,7 +40,7 @@ async function drawCrons(id) {
   article.innerText =cron.Creator +" --- "+ cron.Content +" --- Finish Time -"+ cron.TimeLeft.Year +"/"+ cron.TimeLeft.Month+"/"+ cron.TimeLeft.Day+"/"+cron.TimeLeft.Hour+"/"+cron.TimeLeft.Minute +" --- "+ cron.Tag
 
   const userNameDiv = document.getElementById('name-user')
-  userNameDiv.innerHTML = "test"
+  userNameDiv.innerHTML = cron.Creator
 
   
   // const divLike = document.createElement('div')
@@ -173,15 +173,11 @@ function requestOnLoadPage(){
     method:'POST',
     headers: {
       "content-type": "application/json"
-  },
-  body: JSON.stringify({
-    content: "ONLOAD-PAGE",
-  })
-  }).then((res) => {
+  }}).then((res) => {
     return res.json()
   }).then((res) =>{
       //user actuell
-      //img actuell
+      //i mg actuell
       //les tag's actuelles
       //les 20 derniers posts(amis et tag suivis)
   })
