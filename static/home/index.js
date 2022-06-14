@@ -23,11 +23,7 @@ document.getElementById('button-post').addEventListener('click', () => {
       const timeEntry = parseInt(document.getElementById("select-time").value)
       timeLeft = timeLeftFunciton(timeEntry, SetTime())
       const tag = content.match(/(#\w+)/gm)
-      if(tag !== null) {
-          createCron(content, tag.join(' '), timeLeft)
-      } else {
-          createCron(content, tag, timeLeft)
-      }
+      createCron(content, tag, timeLeft)
   }
 })
 
@@ -45,18 +41,14 @@ async function drawCrons(id) {
   const article = document.createElement('article')
   article.classList.add('article')
   article.setAttribute('id', 'test')
-  article.innerText =cron.Creator +" --- "+ cron.Content +" --- Finish Time -"+ cron.TimeLeft.Year +"/"+ cron.TimeLeft.Month+"/"+ cron.TimeLeft.Day+"/"+cron.TimeLeft.Hour+"/"+cron.TimeLeft.Minute +" --- "+ cron.Tag
-  
-  const lastElement = document.getElementById('start')
-  lastElement.after(newCrone)
-  newCrone.append(article)
+  article.innerText =cron.Creator +" --- "+ cron.Content +" --- Finish Time -"+ cron.timeLeft.Year +"/"+ cron.timeLeft.Month+"/"+ cron.timeLeft.Day+"/"+cron.timeLeft.Hour+"/"+cron.timeLeft.Minute +" --- "+ cron.Tag
   
   document.querySelector('textarea').value = ''
 
   return newCrone
 }
 
-async function createCron(content, tag, timeLeft) {
+function createCron(content, tag, timeLeft) {
   // Add cron to database
   fetch('/cronosdb/POST/cron/CREATE', {
     method:'POST',
@@ -72,7 +64,11 @@ async function createCron(content, tag, timeLeft) {
   }).then((res) => {
     return res.json()
   }).then((res) => {
-    drawCrons(res.ID)
+    if(res.ERROR == 403) {
+      window.location.href = `/connexion`
+    } else {
+      drawCrons(res)
+    }
   })
 }
 

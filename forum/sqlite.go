@@ -77,8 +77,8 @@ func DatabaseInit(folder string) *sql.DB {
 			Minute INTEGER(1) NOT NULL
 		);
 		CREATE TABLE IF NOT EXISTS tagCron (
-			Tag TEXT(64) NOT NULL,
-			ID REFERENCES cron(ID)
+			ID REFERENCES cron(ID),
+			Tag TEXT(32) NOT NULL
 		);
 		CREATE TABLE IF NOT EXISTS cronLike (
 			ID INTEGER REFERENCES cron(ID),
@@ -170,14 +170,14 @@ func ValidSession(w http.ResponseWriter, r *http.Request) bool {
 }
 
 type Cron struct {
-	ID       string `json:"ID"`
+	ID       int    `json:"ID"`
 	Creator  string `json:"creator"`
 	Content  string `json:"content"`
 	TimeLeft struct {
 		Year, Month, Day, Hour, Minute int
 	} `json:"timeLeft"`
-	Tag      string     `json:"tag"`
 	ParentID int        `json:"ParentID"`
+	Tag      []string   `json:"tag"`
 	Likes    []string   `json:"Likes"`
 	Comments [][]string `json:"Comments"`
 }
@@ -198,9 +198,14 @@ func CreateCron(cronosDB *sql.DB) http.HandlerFunc {
 			if Cron.TimeLeft.Year != 0 {
 				cronosDB.Exec(`INSERT INTO timeLeft (ID, Year, Month, Day, Hour, Minute) VALUES (?, ?, ?, ?, ?, ?);`, ID, Cron.TimeLeft.Year, Cron.TimeLeft.Month, Cron.TimeLeft.Day, Cron.TimeLeft.Hour, Cron.TimeLeft.Minute)
 			}
-			w.Write([]byte(fmt.Sprintf(`{ "ID" : "%v" }`, ID)))
+			for _, tag := range Cron.Tag {
+				cronosDB.Exec(`INSERT INTO tagCron (ID, Tag) VALUES (?, ?);`, ID, tag)
+			}
+			response, _ := json.Marshal(ID)
+			w.Write(response)
+		} else {
+			w.Write([]byte(`{ "ERROR":"403" }`))
 		}
-		w.Write([]byte(`{}`))
 	}
 }
 
@@ -222,6 +227,8 @@ func RedirectCron(cronosDB *sql.DB) http.HandlerFunc {
 		row := cronosDB.QueryRow(sqlStatement)
 		if err := row.Scan(&Cron.Creator); err != nil {
 			w.Write([]byte(`{ "ERROR":"404" }`))
+		} else {
+			w.Write([]byte(`{}`))
 		}
 	}
 }
@@ -231,35 +238,27 @@ func GetCron(cronosDB *sql.DB) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		var (
 			Cron = Cron{}
+			tag  string
 		)
 		body, _ := ioutil.ReadAll(r.Body)
 		json.Unmarshal(body, &Cron)
 		sqlStatement := fmt.Sprintf(`SELECT * FROM cron WHERE ID = %v`, Cron.ID)
 		row := cronosDB.QueryRow(sqlStatement)
-		if err := row.Scan(&Cron.ID, &Cron.Creator, &Cron.Content, &Cron.Tag, &Cron.ParentID); err != nil {
+		if err := row.Scan(&Cron.ID, &Cron.Creator, &Cron.Content, &Cron.ParentID); err != nil {
 			w.Write([]byte(`{ "ERROR":"404" }`))
 		} else {
 			sqlStatement = fmt.Sprintf(`SELECT Year, Month, Day, Hour, Minute FROM timeLeft WHERE ID = %v`, Cron.ID)
 			row = cronosDB.QueryRow(sqlStatement)
 			row.Scan(&Cron.TimeLeft.Year, &Cron.TimeLeft.Month, &Cron.TimeLeft.Day, &Cron.TimeLeft.Hour, &Cron.TimeLeft.Minute)
+			sqlStatement = fmt.Sprintf(`SELECT Tag FROM tagCron WHERE ID = %v`, Cron.ID)
+			rows, _ := cronosDB.Query(sqlStatement)
+			for rows.Next() {
+				rows.Scan(&tag)
+				Cron.Tag = append(Cron.Tag, tag)
+			}
 			Cron.Comments, Cron.Likes = getComments(cronosDB, Cron), getLikes(cronosDB, Cron)
-			response := fmt.Sprintf(`{
-				"ID":"%v",
-				"Creator":"%v",
-				"Content":"%v",
-				"TimeLeft":{
-					"Year":"%v",
-					"Month":"%v",
-					"Day":"%v",
-					"Hour":"%v",
-					"Minute":"%v"
-				},
-				"Tag":"%v",
-				"ParentID":%v,
-				"Likes":%v,
-				"Comments":%v
-			}`, Cron.ID, Cron.Creator, Cron.Content, Cron.TimeLeft.Year, Cron.TimeLeft.Month, Cron.TimeLeft.Day, Cron.TimeLeft.Hour, Cron.TimeLeft.Minute, Cron.Tag, Cron.ParentID, Cron.Likes, Cron.Comments)
-			w.Write([]byte(response))
+			response, _ := json.Marshal(Cron)
+			w.Write(response)
 		}
 	}
 }
