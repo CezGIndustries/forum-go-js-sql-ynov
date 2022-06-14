@@ -1,3 +1,5 @@
+import { grantParentToParentToChildCron, parentToChildCron, soloCron } from "./templateCron.js"
+
 document.querySelector('body').onload = function() {
   // Function that while be load when page is load
   console.log('Page is loaded.')
@@ -21,31 +23,27 @@ document.getElementById('button-post').addEventListener('click', () => {
   const content = document.getElementById("text-value-entry").value
   if(content !== '') {
       const timeEntry = parseInt(document.getElementById("select-time").value)
-      timeLeft = timeLeftFunciton(timeEntry, SetTime())
+      const timeLeft = timeLeftFunciton(timeEntry, SetTime())
       const tag = content.match(/(#\w+)/gm)
       createCron(content, tag, timeLeft)
   }
 })
 
 async function drawCrons(id) {
-  // DRAW CRON
   const cron = await requestCron(id)
   console.log(cron)
-  const mainCron = document.querySelector('.div-all-article')
-
-  const newCrone = document.createElement('div')
-
-  newCrone.setAttribute('cron-id', cron.ID.toString() )
-  newCrone.classList.add('div-article')
-
-  const article = document.createElement('article')
-  article.classList.add('article')
-  article.setAttribute('id', 'test')
-  article.innerText =cron.Creator +" --- "+ cron.Content +" --- Finish Time -"+ cron.timeLeft.Year +"/"+ cron.timeLeft.Month+"/"+ cron.timeLeft.Day+"/"+cron.timeLeft.Hour+"/"+cron.timeLeft.Minute +" --- "+ cron.Tag
-  
+  if(cron.ParentID == -1) {
+    soloCron(cron)
+  } else {
+    const parentCron = await requestCron(cron.ParentID)
+    if(cron.ParendID == -1) {
+      parentToChildCron(parentCron, cron)
+    } else {
+      // const fatherCron = ""
+      // grantParentToParentToChildCron(fatherCron, parentCron, cron)
+    }
+  }
   document.querySelector('textarea').value = ''
-
-  return newCrone
 }
 
 function createCron(content, tag, timeLeft) {
