@@ -1,108 +1,49 @@
 
-async function drawCrons(id) {
+async function soloCron(id) {
   const cron = await requestCron(id)
   console.log(cron)
   const mainCron = document.querySelector('.div-all-article')
-
-  const article = document.createElement('div')
-  article.classList.add('article')
-
-  const userWrapper = document.createElement("div")
-  userWrapper.classList.add('user-wrapper')
+  // ${}
+  const newArticle = `
+  <div class="article">
+                    <div class="user-wrapper">
+                        <div class="image-user">
+                            <div class="user-image">
+                                <img src="data:image/jpeg;base64,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"
+                                    alt="">
+                            </div>
+                        </div>
+                        <div class="pseudo-user">PseudoPseudoPseudoPseudoPseudoPs</div>
+                        <div class="options-admin">
+                            <i class="fa fa-ellipsis-h"></i>
+                        </div>
+                    </div>
+                    <div class="article-text">
+                        <div class="div-article">
+                            <article class="article-area">${cron.Tag}  "---"  ${cron.Content}</article>
+                        </div>
+                    </div>
+                    <div class="partage">
+                        <div class="vide-gauche"></div>
+                        <div class="like">
+                            <i class="fa fa-thumbs-o-up"></i>
+                        </div>
+                        <div class="share">
+                            <i class="fa fa-share-alt"></i>
+                        </div>
+                        <div class="save">
+                            <i class="fa fa-bookmark-o"></i>
+                        </div>
+                        <div class="vide-droite"></div>
+                        <div class="time">
+                            <i class="fa fa-clock-o">TimeLeft</i>
+                        </div>
+                    </div>
+                </div>
   
-  const imageUser = document.createElement("div")
-  imageUser.classList.add('image-user')
-
-  const img = document.createElement("img")
-  img.src = "../img/profil_pictures/1.png"
-
-  const pseudoUser = document.createElement("div")
-  pseudoUser.classList.add('pseudo-user')
-  pseudoUser.innerText = cron.Creator
-
-  const optionAdmin = document.createElement("div")
-  optionAdmin.classList.add('options-admin')
   
-  const i = document.createElement("i")
-  i.classList.add('fa fa-ellipsis-h')
-
-  const articleText = document.createElement("div")
-  articleText.classList.add('article-text')
-  
-  const divArticle = document.createElement("div")
-  divArticle.classList.add('div-article')
-
-  const articleArea = document.createElement("articles")
-  articleArea.classList.add('article-area')
-  articleArea.innerText = cron.Content
-
-  const partage = document.createElement("div")
-  partage.classList.add('partage')
-
-  const videGauche = document.createElement("div")
-  videGauche.classList.add('vide-gauche')
-
-  const like = document.createElement("div")
-  like.classList.add('like')
-
-  const iLike = document.createElement("i")
-  iLike.classList.add('fa fa-thumbs-o-up')
-
-  const share = document.createElement("div")
-  share.classList.add('share')
-
-  const iShare = document.createElement("i")
-  iShare.classList.add('fa fa-share-alt')
-
-  const save = document.createElement("div")
-  save.classList.add('save')
-
-  const iSave = document.createElement("i")
-  iSave.classList.add('fa fa-bookmark-o')
-
-  const videDroite = document.createElement("div")
-  videDroite.classList.add('vide-droite')
-
-  const time = document.createElement("div")
-  time.classList.add('time')
-
-  const iTime = document.createElement("i")
-  iTime.classList.add('fa fa-clock-o')
-  iTime.innerText = "TimeLeft"
-
-
-  article.append(userWrapper)
-
-  userWrapper.append(imageUser)
-  imageUser.append(img)
-
-  userWrapper.append(pseudoUser)
-  userWrapper.append(optionAdmin)
-  optionAdmin.append(i)
-
-  article.append(articleText)
-  articleText.append(divArticle)
-  divArticle.append(articleArea)
-
-  userWrapper.append(partage)
-  partage.append(videGauche)
-  partage.append(like)
-  like.append(iLike)
-
-  partage.append(share)
-  share.append(iShare)
-
-  partage.append(save)
-  save.append(iSave)
-
-  partage.append(videDroite)
-
-  partage.append(time)
-  time.append(iTime)
-
-  
-  mainCron.append(article)
-  
+  `
+  mainCron.append(newArticle)
  
     
   //Event if click on cron//
@@ -131,3 +72,178 @@ async function drawCrons(id) {
   
   return newCrone
 }
+
+async function parentToChildCron (id1 , id2) {
+  const mainCron = document.querySelector('.div-all-article')
+  const cronParent = await requestCron(id1)
+  const cronChild = await requestCron(id2)
+  const newArticle = `
+  <div class="article">
+    <div class="user-wrapper">
+      <div class="image-user">
+          <div class="user-image">
+              <img src="data:image/jpeg;base64,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"
+                  alt="">
+          </div>
+      </div>
+      <div class="pseudo-user">pseudo</div>
+      <div class="options-admin">
+          <i class="fa fa-ellipsis-h"></i>
+      </div>
+  </div>
+  <div class="article-text">
+      <div class="div-article">
+          <article class="article-area">${cronParent.Tag}  "---"  ${cronParent.Content}</article>
+      </div>
+  </div>
+  <div class="partage">
+      <div class="vide-gauche"></div>
+      <div class="like">
+          <i class="fa fa-thumbs-o-up"></i>
+      </div>
+      <div class="share">
+          <i class="fa fa-share-alt"></i>
+      </div>
+      <div class="save">
+          <i class="fa fa-bookmark-o"></i>
+      </div>
+      <div class="vide-droite"></div>
+      <div class="time">
+          <i class="fa fa-clock-o">TimeLeft</i>
+      </div>
+  </div>
+  <div class="div-child">
+      <div class="draw-coin"></div>
+      <div class="article-child">
+      <div class="user-wrapper">
+          <div class="image-user">
+              <div class="user-image">
+                  <img src="data:image/jpeg;base64,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"
+                      alt="">
+              </div>
+          </div>
+          <div class="pseudo-user">PseudoPseudoPseudoPseudoPseudoPs</div>
+          <div class="options-admin">
+              <i class="fa fa-ellipsis-h"></i>
+          </div>
+      </div>
+      <div class="article-text">
+          <div class="div-article">
+              <article class="article-area">${cronChild.Tag}  "---"  ${cronChild.Content}</article>
+          </div>
+      </div>
+      <div class="partage">
+          <div class="vide-gauche"></div>
+          <div class="like">
+              <i class="fa fa-thumbs-o-up"></i>
+          </div>
+          <div class="share">
+              <i class="fa fa-share-alt"></i>
+          </div>
+          <div class="save">
+              <i class="fa fa-bookmark-o"></i>
+          </div>
+          <div class="vide-droite"></div>
+      </div>
+  </div>
+  </div>
+</div>
+  `
+ mainCron.append(newArticle)
+
+  return newArticle
+}
+
+async function grantParentToParentToChildCron (id1, id2, id3) {
+  const mainCron = document.querySelector('.div-all-article')
+  const cronGrantParent = await requestCron(id1)
+  const cronParent = await requestCron(id2)
+  const cronChild = await requestCron(id3)
+  const newArticle = `
+  <div class="article">
+  <div class="child-to-child">
+      <div class="child-to-child-top">
+          <div class="user-image">
+              <img src="data:image/jpeg;base64,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"
+                  alt="">
+          </div>
+          <div class="pseudo-user">${cronGrantParent.Creator}</div>
+          <p class="redirect-parent">Discussion</p>
+      </div>
+      <div class="child-to-child-bot">
+          <div class="left-coin"><div class="ligne"></div></div>
+      </div>
+     
+  </div>
+  <div class="user-wrapper">
+      <div class="image-user">
+          <div class="user-image">
+              <img src="data:image/jpeg;base64,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"
+                  alt="">
+          </div>
+      </div>
+      <div class="pseudo-user">${cronParent.Creator}</div>
+      <div class="options-admin">
+          <i class="fa fa-ellipsis-h"></i>
+      </div>
+  </div>
+  <div class="article-text">
+      <div class="div-article">
+          <article class="article-area">${cronParent.Tag}  "---"  ${cronParent.Content}</article>
+      </div>
+  </div>
+  <div class="partage">
+      <div class="vide-gauche"></div>
+      <div class="like">
+          <i class="fa fa-thumbs-o-up"></i>
+      </div>
+      <div class="share">
+          <i class="fa fa-share-alt"></i>
+      </div>
+      <div class="save">
+          <i class="fa fa-bookmark-o"></i>
+      </div>
+      <div class="vide-droite"></div>
+  </div>
+  <div class="div-child">
+      <div class="draw-coin"></div>
+      <div class="article-child">
+      <div class="user-wrapper">
+          <div class="image-user">
+              <div class="user-image">
+                  <img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAkGBwgHBgkIBwgKCgkLDRYPDQwMDRsUFRAWIB0iIiAdHx8kKDQsJCYxJx8fLT0tMTU3Ojo6Iys/RD84QzQ5OjcBCgoKDQwNGg8PGjclHyU3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3N//AABEIAHwAhwMBIgACEQEDEQH/xAAbAAEAAgMBAQAAAAAAAAAAAAAABAUBAwYCB//EADQQAAEEAQMCAwYFAwUAAAAAAAEAAgMRBAUSITFBBlFhExQicZGhMkKBscEj0eElM1JTcv/EABoBAQADAQEBAAAAAAAAAAAAAAADBAUCAQb/xAAhEQADAAMAAgIDAQAAAAAAAAAAAQIDBBESITFBEyJRcf/aAAwDAQACEQMRAD8A+4oiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiALFrKpNZzy2f3aM1Qt36qPLlWKfJneOHdcRPlz42GmAvPcjotY1Nv5oyB6G1UY8pJonlSbBKoLbuvaLT15n0y4hyY5h/TcCe47raucfYO5pII6EcKZg6pREeT+j/wC6nxbap8r0RXgaXZLhFgEEAjoVlXCuEREAREQBERAEReJJGxtLnuAAQHsrw+RjBb3AD1KrMjUHvNRfC3z7qGT3c4k+ZVTJtTPwTzgb+S7OZj/9gXJ62/8A1l743gse1p/j+FInyGtCpczM9pO0nsaWdtbf5I8S5g1/CvItMQgOJJJLj3U8EVd8KkxJtxAKtYX7m0Oyq4b6TZJ+yPnZksLyGRF/F8LXCZ3xh7w0bvygdFIEVTOkIdwPqpFU2wpONv2znySXD3p2oOxyI5bdF9wr9j2vaHMILTyCO65V9El1EdlI0zUTjSiKU/0nHr/xV3V2uPworZsHf2k6RFgEEWDwsrVKIREQBEWjLmGPjyTH8jbXjaS6wl30a8zNjxvh/E89Gj+VUzTSTuD3knyb2CgMlfNK6V5JLnKUX7QSSa9SsfJtvJ8ekaMYFH+h79o4FqO+cHuvEs1ktavDIHOsu+G/Icqq7dPiJ1KS9kfKdxdqmziKNFdR7tEPxsa4gfnQ48DyWGKKx1G0FcVgb+ztZUjmtOyvat604cK9xJ6PP3STScQuL2wsjcRyWDb+yjS474OWu3NCi/HcPp06m0XTXhw4WvcSTx8PZV+PlxvppNkc0prZg9poUR91OqTRC54YedxIHbuVFm5sVVdD5rbJJR5CjZDwQLKjdHaRfaBqBe33aY8gfAb+yvFwMEjoXtfG6nNduBXc48onhZK3o8Ara0szuPF/KM7Zxqa6vs2oiK8VgqnxI4jT6HeQAq2UHWcY5WnTRsFvA3NHqFFnl1jpL+HeNpWmzkodQx8cESvAPa1vky2SR3GQQfIqjzcGOfmQH1te8JksGLtO0v52+QC+eaXOGxwsmXyRW93euin49qvw2nYN/wCPurGItFAnk9F7FfSObPTnclpbwR+I9FqOQ1jyC3mrLuy9OcAzkjd3pQZpADyeV5dtHkybDm7i4WCAeOFqdIX2DXPSlEfIAeKC8CQgcm1E7bZJ4oYzZGzSwSAuaPijd2ry+a2wZb4ZjHIef3Xkv3N6quzdzC15dYDqtd17XUC6fMXXz8itEsg72VFx3F7BZ5HkpLGFwNmvkinyZy2kAfio8LtdCJOmQ36/uuQZA9+U1wJ2gUGjuV3GFD7vjRxd2to/NaujDVNlLapNJG9ERaZSCxSyiA53XtJjkLpYTte425vYlUkWOI2tbXLRVrtciD2oXOajiGHMBI4Itvr5rI3sCleco0NXL39WyMwBvXqvcuSWR7W0CVHfiP8AeXzOmOxwoRjoPVeGBzWEPN0eCfJZyf8AC3xHkzHuVom+M3aSEXwgXng2OmktsrBaR0UivktTIdshLncLpQedNcUT2k2Sb6Kr8R5PuuJG0gnc6ya6Af5V+XNa07QXHyHdcxqun5+dM4uaSDwAOwVrHh6ukbvg03Vow2y4fqrCXUPeGexxid7+DsPP1VNh+DZHu3PbMPQOXVaN4TGKQWhwPqVLGszisqL7w9jCBrJJyHSgcAchv9yuojO5tqt0/A9i0blZgUKC1McKZ4jPyV5V0yiIpDgIiIAVX6nEyeEh3Dhy0+RVgomTC54NKPJKqeM7h8fTkpZ/ZvLJCAQfqtEmRGOrgrzM0kT37SO77qmyPB2NMeWvr/0smtFp/qaE7C57KnL1TDx/92eNo9XAKBJ4kw2kbZWOHm02r2PwHp7Xbvd2k+ZCn4/g/DZVQs+i7WnR49iTkG+IY5HVjQyyE9wwgfdSoZc/KPMRa1dvj+HMeOqiaP0VhDpMMf5R9FNOokRVsI43DwspxFggK+wdN6b2hX7MSJo4aPotzWNaKACtxi8SCsvSHBhRsA+EWpTYWN6BbEUqRE2YApZRF6eBERAEREAWCLWUQGNoWNoXpE4DzsCztCyicBillEQBERAEREAREQBERAf/2Q=="
+                      alt="">
+              </div>
+          </div>
+          <div class="pseudo-user">${cronChild.Creator}</div>
+          <div class="options-admin">
+              <i class="fa fa-ellipsis-h"></i>
+          </div>
+      </div>
+      <div class="article-text">
+          <div class="div-article">
+              <article class="article-area">${cronChild.Tag}  "---"  ${cronChild.Content}</article>
+          </div>
+      </div>
+      <div class="partage">
+          <div class="vide-gauche"></div>
+          <div class="like">
+              <i class="fa fa-thumbs-o-up"></i>
+          </div>
+          <div class="share">
+              <i class="fa fa-share-alt"></i>
+          </div>
+          <div class="save">
+              <i class="fa fa-bookmark-o"></i>
+          </div>
+          <div class="vide-droite"></div>
+      </div>
+  </div>
+</div>
+</div>
+  `
+ mainCron.append(newArticle)
+
+  return newArticle
+}
+
