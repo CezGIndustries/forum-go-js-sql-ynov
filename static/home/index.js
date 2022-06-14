@@ -2,6 +2,7 @@ import { grantParentToParentToChildCron, parentToChildCron, soloCron } from "./t
 
 document.querySelector('body').onload = function() {
   // Function that while be load when page is load
+  
   console.log('Page is loaded.')
 }
 
@@ -45,6 +46,7 @@ async function drawCrons(id) {
       grantParentToParentToChildCron(fatherCron, parentCron, cron)
     }
   }
+  document.querySelector('.like').addEventListener('click', addLike)
   document.querySelector('textarea').value = ''
 }
 
@@ -89,20 +91,23 @@ async function requestCron(id) {
   })
 }
 
-function addLike() {
+function addLike(event) {
   // Like or unlike a cron, and change the like database
-
   // AJOUTER OU ENLEVER LIKE EN JS
-
-  return fetch('/cronosdb/POST/cron/LIKE' , {
-      method:'POST',
-      headers: {
-          "content-type": "application/json"
-      },
-      body: JSON.stringify({
-        id: id,
+  for(let i of event.path) {
+    if(typeof i.attributes['id-cron'] != "undefined") {
+      const id = Number(i.attributes['id-cron'].value)
+        return fetch('/cronosdb/POST/cron/LIKE' , {
+          method:'POST',
+          headers: {
+              "content-type": "application/json"
+          },
+          body: JSON.stringify({
+          id: id,
+        })
       })
-    })
+    }
+  }
 }
 
 function createComment(content, tag, parendID) {
