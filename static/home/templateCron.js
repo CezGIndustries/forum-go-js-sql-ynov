@@ -1,7 +1,7 @@
 export async function soloCron(cron) {
-  const allCron = document.querySelector('.div-all-article')
-  const newCron = `
-  <div class="article">
+    const allCron = document.querySelector('.div-all-article')
+    const newCron = `
+    <div class="article">
         <div class="user-wrapper">
             <div class="image-user">
                 <div class="user-image">
@@ -9,14 +9,14 @@ export async function soloCron(cron) {
                     alt="">
                 </div>
             </div>
-            <div class="pseudo-user">PseudoPseudoPseudoPseudoPseudoPs</div>
+            <div class="pseudo-user">${cron.creator}</div>
             <div class="options-admin">
                 <i class="fa fa-ellipsis-h"></i>
             </div>
         </div>
         <div class="article-text">
             <div class="div-article">
-                <article class="article-area">${cron.tag}  "---"  ${cron.content}</article>
+                <article class="article-area">${cron.tag}  ---  ${cron.content}</article>
             </div>
         </div>
         <div class="partage">
@@ -36,13 +36,13 @@ export async function soloCron(cron) {
             </div>
         </div>
     </div>  
-  `
-  allCron.innerHTML = newCron + allCron.innerHTML
+`
+allCron.innerHTML = newCron + allCron.innerHTML
 }
 
 export async function parentToChildCron (parentCron, childCron) {
-  const allCron = document.querySelector('.div-all-article')
-  const newCron = `
+const allCron = document.querySelector('.div-all-article')
+const newCron = `
     <div class="article">
         <div class="user-wrapper">
             <div class="image-user">
@@ -58,7 +58,7 @@ export async function parentToChildCron (parentCron, childCron) {
         </div>
         <div class="article-text">
             <div class="div-article">
-                <article class="article-area">${parentCron.tag}  "---"  ${parentCron.content}</article>
+                <article class="article-area">${parentCron.tag}    ${parentCron.content}</article>
             </div>
         </div>
         <div class="partage">
@@ -94,7 +94,7 @@ export async function parentToChildCron (parentCron, childCron) {
                 </div>
                 <div class="article-text">
                     <div class="div-article">
-                        <article class="article-area">${childCron.tag}  "---"  ${childCron.content}</article>
+                        <article class="article-area">${childCron.tag}    ${childCron.content}</article>
                     </div>
                 </div>
                 <div class="partage">
@@ -118,8 +118,8 @@ export async function parentToChildCron (parentCron, childCron) {
 }
 
 export async function grantParentToParentToChildCron (fatherCron, parentCron, childCron) {
-  const allCron = document.querySelector('.div-all-article')
-  const newCron = `
+const allCron = document.querySelector('.div-all-article')
+const newCron = `
     <div class="article">
         <div class="child-to-child">
             <div class="child-to-child-top">
@@ -148,7 +148,7 @@ export async function grantParentToParentToChildCron (fatherCron, parentCron, ch
         </div>
         <div class="article-text">
             <div class="div-article">
-                <article class="article-area">${parentCron.tag}  "---"  ${parentCron.content}</article>
+                <article class="article-area">${parentCron.tag}    ${parentCron.content}</article>
             </div>
         </div>
         <div class="partage">
@@ -181,7 +181,7 @@ export async function grantParentToParentToChildCron (fatherCron, parentCron, ch
                 </div>
                 <div class="article-text">
                     <div class="div-article">
-                        <article class="article-area">${childCron.tag}  "---"  ${childCron.content}</article>
+                        <article class="article-area">${childCron.tag}    ${childCron.content}</article>
                     </div>
                 </div>
                 <div class="partage">

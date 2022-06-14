@@ -31,7 +31,6 @@ document.getElementById('button-post').addEventListener('click', () => {
 
 async function drawCrons(id) {
   const cron = await requestCron(id)
-  console.log(cron)
   if(cron.ParentID == -1) {
     soloCron(cron)
   } else {
@@ -39,8 +38,11 @@ async function drawCrons(id) {
     if(cron.ParendID == -1) {
       parentToChildCron(parentCron, cron)
     } else {
-      // const fatherCron = ""
-      // grantParentToParentToChildCron(fatherCron, parentCron, cron)
+      let fatherCron = await requestCron(parentCron.ParentID)
+      while(fatherCron.ParendID != -1) {
+        fatherCron = await requestCron(fatherCron.ParentID)
+      }
+      grantParentToParentToChildCron(fatherCron, parentCron, cron)
     }
   }
   document.querySelector('textarea').value = ''
