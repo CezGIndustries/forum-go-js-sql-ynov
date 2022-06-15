@@ -182,7 +182,6 @@ type Cron struct {
 	Comments [][]string `json:"Comments"`
 }
 
-// TIME LEFT, CONTENT
 func CreateCron(cronosDB *sql.DB) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		if ValidSession(w, r) {
@@ -215,7 +214,6 @@ func DeleteCron(cronosDB *sql.DB) http.HandlerFunc {
 	}
 }
 
-// ID
 func RedirectCron(cronosDB *sql.DB) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		var (
@@ -228,12 +226,12 @@ func RedirectCron(cronosDB *sql.DB) http.HandlerFunc {
 		if err := row.Scan(&Cron.Creator); err != nil {
 			w.Write([]byte(`{ "ERROR":"404" }`))
 		} else {
-			w.Write([]byte(`{}`))
+			response := fmt.Sprintf(`{ "ID": %v, "User": "%v" }`, Cron.ID, Cron.Creator)
+			w.Write([]byte(response))
 		}
 	}
 }
 
-// ID
 func GetCron(cronosDB *sql.DB) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		var (
