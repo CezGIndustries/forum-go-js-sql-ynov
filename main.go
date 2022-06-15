@@ -24,6 +24,9 @@ func main() {
 
 	Env.Router.HandleFunc("/", forum.Connexion_Creation())
 	Env.Router.HandleFunc("/home", forum.Home())
+	Env.Router.HandleFunc("/admin", forum.Admin())
+	Env.Router.HandleFunc("/login/github/", forum.Gitlog())
+	Env.Router.HandleFunc("/login/github/callback", forum.Gitlog())
 
 	Env.Router.HandleFunc("/profil/{nameUser}", forum.Profil())
 
