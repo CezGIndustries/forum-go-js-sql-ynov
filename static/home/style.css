@@ -184,10 +184,29 @@ p {
 }
 
 .mediaction {
-    height: 20%;
+    height: 100%;
     display: flex;
-    justify-content: flex-end;
     align-items: center;
+}
+
+.media {
+    display: flex;
+    align-items: center;
+    width: 80%;
+}
+
+.void-right {
+    width: 5%;
+}
+
+.add-image {
+    cursor: pointer;
+    width: 10%;
+    height: 100%;
+}
+
+.timeselecteur {
+    width: 10%;
 }
 
 #select-time {
@@ -205,6 +224,10 @@ p {
 #selecttime:hover {
     transition: 0.4s ease;
     border: #B33CED solid 1px;
+}
+
+.buttonpost {
+    width: 10%;
 }
 
 #button-post {
@@ -343,6 +366,11 @@ p {
     width: 10%;
 }
 
+.comment {
+    cursor: pointer;
+    width: 10%;
+}
+
 .time {
     display: flex;
     justify-content: flex-end;
@@ -350,7 +378,7 @@ p {
 }
 
 .vide-droite {
-    width: 50%;
+    width: 40%;
 }
 
 ::-webkit-scrollbar {
