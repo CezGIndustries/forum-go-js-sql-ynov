@@ -10,8 +10,13 @@ import (
 
 func Home() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
+<<<<<<< HEAD
 		t := template.Must(template.ParseGlob("./static/home/*.html"))
 		t.Execute(w, "hello world")
+=======
+		t, _ := template.ParseFiles("./static/home/index.html", "./static/templates/left/leftTemplate.html", "./static/templates/right/rightTemplate.html")
+		t.Execute(w, "index.html")
+>>>>>>> aa678264931127a9218a9096cf4d91a873606309
 	}
 }
 
@@ -33,7 +38,7 @@ func Connexion_Creation() http.HandlerFunc {
 
 func Profil() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		t, _ := template.ParseFiles("./static/profil/index.html")
+		t, _ := template.ParseFiles("./static/profil/index.html", "./static/templates/left/leftTemplate.html", "./static/templates/right/rightTemplate.html")
 		t.Execute(w, "hello world")
 		username := mux.Vars(r)["nameUser"]
 		fmt.Println(username)
