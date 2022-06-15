@@ -1,29 +1,261 @@
+/* @font-face {
+    font-family: 'orkneyregular';
+    src: url('/font/orkney-regular-webfont.woff2') format('woff2'), url('/font/orkney-regular-webfont.woff') format('woff');
+} */
+
 * {
+    /* font-family: 'orkneyregular'; */
     margin: 0;
     padding: 0;
 }
 
-#background{
+.allcolumns {
+    background-color: #08061A;
+    position: relative;
+    width: 100%;
+    height: 100vh;
     display: flex;
-    background-color: #533164;
-    position: absolute;
+}
+
+.leftcolumn {
+    width: 20%;
     height: 100%;
-    width: 100%;
-    
-    
 }
 
-#title{
-    display:block;
-    font-size: 70px;
-    margin: 10px;
+.navbar {
+    height: 90%;
+    margin: 30px;
+    border-radius: 1.05rem;
+    background-color: #17152A;
+}
+
+.logo {
+    margin-left: 10px;
+}
+
+.fa {
+    margin-right: 10px;
+}
+
+.nave {
+    margin-left: 10px;
+    font-size: 25px;
+}
+
+li {
+    list-style: none;
+    margin: 50px 0px;
+}
+
+a {
+    color: #cacaca;
+    text-decoration: none;
+}
+
+.logout {
+    display: flex;
+    align-items: center;
+    bottom: 10px;
+    border: 1px solid #B33CED;
+    margin: 120px 0px 0px 10px;
+    height: 6%;
+    border-radius: 30px;
+}
+
+.logoutleft {
+    width: 35%;
+}
+
+.logout img {
+    border: 1px solid red;
+    width: 30%;
+    aspect-ratio: 1;
+    border-radius: 50%;
+}
+
+.logoutmid {
+    width: 45%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    border: 1px solid red;
+    color: #cacaca;
+}
+
+.logoutright {
+    width: 15%;
+}
+
+.logoutright .fa-ellipsis {
+    color: #cacaca;
+}
+
+.iconlogout {
+    color: #cacaca;
+}
+
+.midcolumn {
+    width: 60%;
+    height: 100%;
+}
+
+.top {
+    display: flex;
+    justify-content: end;
+    height: 5%;
     width: 100%;
+}
+
+.left {
+    height: 100%;
+    width: 70%;
+}
+
+.right {
+    display: flex;
+    align-items: center;
+    width: 25%;
+    height: 100%;
+}
+
+#selectfilter {
     text-align: center;
-    background-color: aqua;
+    width: 100%;
+    height: 85%;
+    color: #cacaca;
+    background-color: #17152A;
+    border: solid #B33CED 1px;
+    border-radius: 30px;
 }
 
-#liste{
-    background-color: green;
+.userwrapper {
+    margin-bottom: 10px;
+    width: 100%;
+    color: #cacaca;
 }
 
+.user {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    height: 20%;
+}
 
+.userimg img {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+}
+
+.pseudouser {
+    width: 60%;
+    margin: 0 0 0 10px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: 18px;
+    color: #cacaca;
+}
+
+.optionsadmin {
+    border: solid green 2px;
+}
+
+.textareawrapper {
+    height: 60%;
+    border: 1 px solid #B33CED;
+    margin: 5px 0;
+    padding: 3px;
+}
+
+#text {
+    color: #cacaca;
+    resize: none;
+    display: flex;
+    justify-items: center;
+    align-items: center;
+    width: 100%;
+    background-color: #17152A;
+    color: #cacaca;
+    border-color: #B33CED;
+    border-radius: 30px;
+    box-sizing: border-box;
+    padding-left: 39px;
+    padding-right: 39px;
+    padding-top: 10px;
+    font-size: 17px;
+}
+
+.mediaction {
+    height: 20%;
+    background-color: #B33CED;
+   display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+#selecttime {
+    width: 75px;
+    height: 25px;
+    margin: 0 5px 0 0px;
+    color: #cacaca;
+    border: solid 1px #17152A;
+    border-radius: 30px;
+    background-color: #17152A;
+    text-align: center;
+}
+
+#selecttime:hover {
+    transition: 0.4s ease;
+    border: #B33CED solid 1px;
+}
+
+.buttoncrone {
+    width: 75px;
+    height: 25px;
+    margin: 0 25px 0 5px;
+    color: #cacaca;
+    background-color: #B33CED;
+    border: 1px solid #B33CED;
+    border-radius: 30px;
+}
+
+.buttoncrone:hover {
+    transition: 0.4s ease;
+    background-color: #9441be;
+    border-color: #9441be;
+}
+
+.allarticle {
+    display: flex;
+    flex-direction: column;
+    overflow-x: hidden;
+    overflow-y: auto;
+    height: 400px;
+    width: 100%;
+}
+
+.anarticle {
+    display: flex;
+    justify-content: center;
+    width: 90%;
+    height: 20%;
+    margin: 5px;
+    border-radius: 1.05rem;
+}
+
+.article {
+    border: solid #B33CED 1px;
+    border-radius: 1.05rem;
+    font-size: 20px;
+    color: #cacaca;
+    width: 90%;
+    height: 20%;
+    text-align: center;
+    background-color: #17152A;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.rightcolumn {
+    width: 20%;
+    height: 100vh;
+}
