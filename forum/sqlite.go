@@ -109,7 +109,7 @@ func CreateNewUser(cronosDB *sql.DB) http.HandlerFunc {
 		if err != nil {
 			w.Write([]byte(`{ "ERROR":"409" }`))
 		} else {
-			cronosDB.Exec(`INSERT INTO accountUsers (UniqueName, Status, Rank, ProfilPicture, Banner, Biography) VALUES (?, ?, ?, ?, ?, ?);`, NewUser.UniqueName, "Free", "member", "../img/profile_pictures/1.png", "../img/banners/1.png", "")
+			cronosDB.Exec(`INSERT INTO accountUsers (UniqueName, Status, Rank, ProfilPicture, Banner, Biography) VALUES (?, ?, ?, ?, ?, ?);`, NewUser.UniqueName, "Free", "member", "./static/img/profil_pictures/1.png", "./static/img/banners/1.png", "")
 			addSession(w, r, NewUser.UniqueName)
 			w.Write([]byte(`{}`))
 		}
