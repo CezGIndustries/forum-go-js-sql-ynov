@@ -3,7 +3,7 @@
 <html lang="en">
 
 <head>
-    <link rel="stylesheet" href="./static/home/style.css">
+    <link rel="stylesheet" type="text/css" href="./static/home/style.css">
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -31,16 +31,16 @@
                         <nav>
                             <ul>
                                 <li>
-                                    <p><i class="fa fa-home " style="font-size:30px;"></i></p>
+                                    <p><i class="fa fa-home " style="font-size:20px;"></i></p>
                                 </li>
                                 <li>
-                                    <p><i class="fa fa-bell-o" style="font-size:25px;"></i></p>
+                                    <p><i class="fa fa-bell-o" style="font-size:20px;"></i></p>
                                 </li>
                                 <li>
-                                    <p><i class="fa fa-user-o" style="font-size:25px;"></i></p>
+                                    <p><i class="fa fa-user-o" style="font-size:20px;"></i></p>
                                 </li>
                                 <li>
-                                    <p><i class="fa fa-envelope-o" style="font-size:25px;"></i></p>
+                                    <p><i class="fa fa-envelope-o" style="font-size:20px;"></i></p>
                                 </li>
                             </ul>
                     </div>
@@ -80,9 +80,15 @@
             </div>
             <div class="userwrapper">
                 <div class="textareawrapper">
-                    <textarea id="text-value-entry" rows="5%" maxlength="240" placeholder="Quoi de neuf ?!"></textarea>
+                    <textarea id="text-value-entry" rows="5%" maxlength="240" placeholder="Racontes-nous ta vie ?!"></textarea>
                 </div>
                 <div class="mediaction">
+                    <div class="media">
+                        <div class="void-right"></div>
+                        <div class="add-image">
+                            <i class="fa fa-photo"></i>
+                        </div>
+                    </div>
                     <div class="timeselecteur">
                         <select name="selecttime" id="select-time">
                             <option value="1">1 min</option>
@@ -105,16 +111,28 @@
                         </select>
                     </div>
                     <div class="buttonpost">
-                        <button id="button-post" type="button">Cron !</button>
+                        <button id="button-post" type="button">Cron</button>
                     </div>
                 </div>
             </div>
             <div class="div-all-article"></div>
         </div>
-        <div class="rightcolumn"></div>
+        <div class="rightcolumn">
+            <div class="search">
+                <div class="v"></div>
+                <div class="searchbar">
+                    <div class="loupe">
+                        <i class="fa fa-search"></i>
+                    </div>
+                    <div class="search-bar">
+                        <input type="search" id="research" placeholder="Recherche">>
+                    </div>
+                </div>
+                <div class="v"></div>
+            </div>
+            <div class="tags"></div>
+        </div>
     </div>
-
-
 </body>
 <script type="module" src="./static/home/index.js"></script>
 

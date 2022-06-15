@@ -37,6 +37,9 @@ export async function soloCron(cron) {
             <div class="like">
                 <i id-cron="${cron.ID}" class="fa fa-thumbs-o-up"></i>
             </div>
+            <div class="comment">
+                <i class="fa fa-commenting"></i>
+            </div>
             <div class="share">
                 <i class="fa fa-share-alt"></i>
             </div>
@@ -78,6 +81,9 @@ const newCron = `
             <div class="vide-gauche"></div>
             <div class="like">
                 <i id-cron="${parentCron.ID}" class="fa fa-thumbs-o-up"></i>
+            </div>
+            <div class="comment">
+                <i class="fa fa-commenting"></i>
             </div>
             <div class="share">
                 <i class="fa fa-share-alt"></i>
@@ -169,6 +175,9 @@ const newCron = `
             <div class="like">
                 <i id-cron="${parentCron.ID}" class="fa fa-thumbs-o-up"></i>
             </div>
+            <div class="comment">
+                <i class="fa fa-commenting"></i>
+            </div>
             <div class="share">
                 <i class="fa fa-share-alt"></i>
             </div>
@@ -201,6 +210,9 @@ const newCron = `
                     <div class="vide-gauche"></div>
                     <div class="like">
                         <i id-cron="${childCron.ID}" class="fa fa-thumbs-o-up"></i>
+                    </div>
+                    <div class="comment">
+                        <i class="fa fa-commenting"></i>
                     </div>
                     <div class="share">
                         <i class="fa fa-share-alt"></i>
