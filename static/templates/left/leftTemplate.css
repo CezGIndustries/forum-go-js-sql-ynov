@@ -1,0 +1,107 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+.allcolumns {
+    background-color: #08061A;
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    display: flex;
+}
+
+.leftcolumn {
+    width: 20%;
+    height: 100%;
+}
+
+.navbar {
+    height: 90%;
+    margin: 30px;
+    border-radius: 1.05rem;
+    background-color: #08061A;
+}
+
+.logo {
+    margin-left: 10px;
+}
+
+.nave {
+    display: flex;
+    justify-content: flex-start;
+    margin-left: 10px;
+    font-size: 25px;
+    height: 80%;
+}
+
+.fa {
+    color: #cacaca;
+    margin-right: 10px;
+}
+
+.icon {
+    width: 20%;
+}
+
+.nomnave {
+    width: 80%;
+}
+
+li {
+    cursor: pointer;
+    list-style: none;
+    margin: 50px 0px;
+}
+
+p {
+    cursor: pointer;
+    color: #cacaca;
+    text-decoration: none;
+}
+
+.logout {
+    background-color: #17152A;
+    display: flex;
+    align-items: center;
+    margin-left: 10px;
+    height: 6%;
+    border-radius: 30px;
+}
+
+.logout:hover {
+    transform: scaleY(110%);
+    transform: scaleX(105%);
+}
+
+.logoutleft {
+    width: 20%;
+}
+
+.logout img {
+    display: flex;
+    justify-content: center;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+}
+
+.logoutmid {
+    width: 69%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    color: #cacaca;
+    margin-right: 1%;
+}
+
+.logoutright {
+    width: 10%;
+}
+
+.logoutright .fa-ellipsis {
+    color: #cacaca;
+}
+
+.iconlogout {
+    color: #cacaca;
+}

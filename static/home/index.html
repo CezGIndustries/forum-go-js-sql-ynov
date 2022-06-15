@@ -16,6 +16,9 @@
 
 <body>
     <div class="allcolumns">
+<<<<<<< HEAD
+        {{template "LeftColumn" }}
+=======
         <div class="leftcolumn">
             <div class="navbar">
                 <div class="logo">
@@ -74,13 +77,18 @@
                 </div>
             </div>
         </div>
+>>>>>>> 6d201086687cfcf4e682b4f91f0a13a210e54099
         <div class="midcolumn">
             <div class="top">
 
             </div>
             <div class="userwrapper">
                 <div class="textareawrapper">
+<<<<<<< HEAD
+                    <textarea id="text-value-entry" rows="5%" maxlength="240" placeholder="Quoi de neuf ?!"></textarea>
+=======
                     <textarea id="text-value-entry" rows="5%" maxlength="240" placeholder="Racontes-nous ta vie ?!"></textarea>
+>>>>>>> aa678264931127a9218a9096cf4d91a873606309
                 </div>
                 <div class="mediaction">
                     <div class="media">
@@ -117,21 +125,7 @@
             </div>
             <div class="div-all-article"></div>
         </div>
-        <div class="rightcolumn">
-            <div class="search">
-                <div class="v"></div>
-                <div class="searchbar">
-                    <div class="loupe">
-                        <i class="fa fa-search"></i>
-                    </div>
-                    <div class="search-bar">
-                        <input type="search" id="research" placeholder="Recherche">>
-                    </div>
-                </div>
-                <div class="v"></div>
-            </div>
-            <div class="tags"></div>
-        </div>
+        {{template "RightColumn" }}
     </div>
 </body>
 <script type="module" src="./static/home/index.js"></script>
