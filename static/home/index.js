@@ -1,21 +1,23 @@
 import { grantParentToParentToChildCron, parentToChildCron, soloCron } from "./templateCron.js"
 
-document.querySelector('body').onload = function() {
+document.querySelector('body').onload = async function() {
   // Function that while be load when page is load
-  
   console.log('Page is loaded.')
+  const user = await requestUserInfo()
+
+  console.log(user)
 }
 
-function requestUserInfo() {
+async function requestUserInfo() {
   // Get user info for the template
-  fetch('/route/',{
+  return fetch('/cronosdb/POST/userInfo/GET',{
       method:'POST',
       headers: {
         "content-type": "application/json"
   }}).then((res) => {
       return res.json()
   }).then((res) => {
-      // METTRE USER IFNO
+      return res
   })
 }
 
