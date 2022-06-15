@@ -7,6 +7,7 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
+	"os"
 	"time"
 
 	"github.com/gorilla/sessions"
@@ -24,6 +25,8 @@ func DatabaseInit(folder string) *sql.DB {
 	if err != nil {
 		log.Fatal(err)
 	}
+
+	os.Chmod(folder+"cronosDB.db", 0777)
 
 	logUsers := `
 		CREATE TABLE IF NOT EXISTS logUsers (
@@ -228,6 +231,7 @@ func RedirectCron(cronosDB *sql.DB) http.HandlerFunc {
 		} else {
 			response := fmt.Sprintf(`{ "ID": %v, "User": "%v" }`, Cron.ID, Cron.Creator)
 			w.Write([]byte(response))
+
 		}
 	}
 }
@@ -303,19 +307,27 @@ func addComment(cronosDB *sql.DB, id string, tab []string) []string {
 	return tab
 }
 
+type Likes struct {
+	ID int
+}
+
 func CreateLike(cronosDB *sql.DB) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		var (
-			ID, UniqueName string
+			ID         Likes
+			UniqueName string
 		)
+		body, _ := ioutil.ReadAll(r.Body)
+		json.Unmarshal(body, &ID)
 		session, _ := store.Get(r, "AUTH_TOKEN")
 		UniqueName = session.Values["uniqueName"].(string)
-		sqlStatement := fmt.Sprintf(`SELECT * FROM cronLike WHERE ID = %v AND User = "%v"`, ID, UniqueName)
+		sqlStatement := fmt.Sprintf(`SELECT * FROM cronLike WHERE ID = %v AND User = "%v"`, ID.ID, UniqueName)
 		row, _ := cronosDB.Query(sqlStatement)
 		if !row.Next() {
-			cronosDB.Exec(`INSERT INTO cronLike (ID, User) VALUES (?, ?);`, ID, UniqueName)
+			cronosDB.Exec(`INSERT INTO cronLike (ID, User) VALUES (?, ?);`, ID.ID, UniqueName)
 		} else {
-			cronosDB.Exec(`DELETE FROM cronLike WHERE ID = %v AND User = "%v"`, ID, UniqueName)
+			row.Close()
+			cronosDB.Exec(`DELETE FROM cronLike WHERE ID=? AND User=?;`, ID.ID, UniqueName)
 		}
 	}
 }

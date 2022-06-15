@@ -2,6 +2,7 @@ import { grantParentToParentToChildCron, parentToChildCron, soloCron } from "./t
 
 document.querySelector('body').onload = function() {
   // Function that while be load when page is load
+  
   console.log('Page is loaded.')
 }
 
@@ -46,7 +47,19 @@ async function drawCrons(id) {
       grantParentToParentToChildCron(fatherCron, parentCron, cron)
     }
   }
+  everyAddEventListener()
 }
+
+function everyAddEventListener() {
+  const allLikes = document.querySelectorAll('.fa-thumbs-o-up')
+  const allCronID = document.querySelectorAll('.article')
+  for(let likes of allLikes) {
+    likes.addEventListener('click', addLike)
+  }
+  for(let CronID of allCronID) {
+    CronID.addEventListener('click', redirectCron)
+  }
+} 
 
 function createCron(content, tag, timeLeft) {
   // Add cron to database
@@ -89,20 +102,22 @@ async function requestCron(id) {
   })
 }
 
-function addLike() {
+function addLike(event) {
   // Like or unlike a cron, and change the like database
 
   // AJOUTER OU ENLEVER LIKE EN JS
 
+  event.stopPropagation()
+  const id = event.srcElement.getAttribute('id-cron')
   return fetch('/cronosdb/POST/cron/LIKE' , {
-      method:'POST',
-      headers: {
-          "content-type": "application/json"
-      },
-      body: JSON.stringify({
-        id: id,
-      })
+    method:'POST',
+    headers: {
+        "content-type": "application/json"
+    },
+    body: JSON.stringify({
+    id: Number(id),
     })
+  })
 }
 
 function createComment(content, tag, parendID) {
@@ -128,25 +143,29 @@ function createComment(content, tag, parendID) {
   })
 }
 
-function redirectCron(id) {
+function redirectCron(event) {
   // Redirect on cron if cron exist
-  fetch('/cronosdb/POST/cron/REDIRECT',{
-    method:'POST',
-    headers: {
-      "content-type": "application/json"
-  },
-  body: JSON.stringify({
-    id: id,
-    })
-  }).then((res) => {
-      return res.json()
-  }).then((res) => {
-      if(res.ERROR != "404") {
-        window.location.href = `/${res.User}/cron/${res.ID}`
-      } else {
-        location.reload()
-      }
-  })
+  for(let i of event.path) {
+    if(!(i.getAttribute('id-cron') === null)) {
+      return fetch('/cronosdb/POST/cron/REDIRECT',{
+        method:'POST',
+        headers: {
+          "content-type": "application/json"
+      },
+      body: JSON.stringify({
+        id: Number(i.getAttribute('id-cron')),
+        })
+      }).then((res) => {
+          return res.json()
+      }).then((res) => {
+          if(res.ERROR != "404") {
+            window.location.href = `/${res.User}/cron/${res.ID}`
+          } else {
+            location.reload()
+          }
+      })
+    }
+  }
 }
 
 function SetTime() {

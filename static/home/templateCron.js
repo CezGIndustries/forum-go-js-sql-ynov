@@ -1,7 +1,12 @@
 export async function soloCron(cron) {
     const allCron = document.querySelector('.div-all-article')
+    // const urlYtb = cron.content.match(/^(?:https?:\/\/)?(?:www\.)?(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))((\w|-){11})(?:\S+)?$/)
+    // console.log(urlYtb[0])
+    if(cron.tag === null){
+        cron.tag = ''
+    }
     const newCron = `
-    <div class="article">
+    <div id-cron="${cron.ID}" class="article">
         <div class="user-wrapper">
             <div class="image-user">
                 <div class="user-image">
@@ -16,13 +21,21 @@ export async function soloCron(cron) {
         </div>
         <div class="article-text">
             <div class="div-article">
-                <article class="article-area">${cron.tag}  ---  ${cron.content}</article>
+                <article class="article-area">
+                    <div class="text">
+                        ${cron.content}
+                    <div>
+                    <div class="media">
+
+                    <div>
+                
+                </article>
             </div>
         </div>
         <div class="partage">
             <div class="vide-gauche"></div>
             <div class="like">
-                <i class="fa fa-thumbs-o-up"></i>
+                <i id-cron="${cron.ID}" class="fa fa-thumbs-o-up"></i>
             </div>
             <div class="share">
                 <i class="fa fa-share-alt"></i>
@@ -43,7 +56,7 @@ allCron.innerHTML = newCron + allCron.innerHTML
 export async function parentToChildCron (parentCron, childCron) {
 const allCron = document.querySelector('.div-all-article')
 const newCron = `
-    <div class="article">
+    <div id-cron="${parentCron.ID}" class="article">
         <div class="user-wrapper">
             <div class="image-user">
                 <div class="user-image">
@@ -64,7 +77,7 @@ const newCron = `
         <div class="partage">
             <div class="vide-gauche"></div>
             <div class="like">
-                <i class="fa fa-thumbs-o-up"></i>
+                <i id-cron="${parentCron.ID}" class="fa fa-thumbs-o-up"></i>
             </div>
             <div class="share">
                 <i class="fa fa-share-alt"></i>
@@ -77,7 +90,7 @@ const newCron = `
                 <i class="fa fa-clock-o">TimeLeft</i>
             </div>
         </div>
-        <div class="div-child">
+        <div id-cron="${childCron.ID}" class="div-child">
             <div class="draw-coin"></div>
             <div class="article-child">
                 <div class="user-wrapper">
@@ -100,7 +113,7 @@ const newCron = `
                 <div class="partage">
                     <div class="vide-gauche"></div>
                     <div class="like">
-                        <i class="fa fa-thumbs-o-up"></i>
+                        <i id-cron="${childCron.ID}" class="fa fa-thumbs-o-up"></i>
                     </div>
                     <div class="share">
                         <i class="fa fa-share-alt"></i>
@@ -120,7 +133,7 @@ const newCron = `
 export async function grantParentToParentToChildCron (fatherCron, parentCron, childCron) {
 const allCron = document.querySelector('.div-all-article')
 const newCron = `
-    <div class="article">
+    <div id-cron="${fatherCron.ID}" class="article">
         <div class="child-to-child">
             <div class="child-to-child-top">
                 <div class="user-image">
@@ -154,7 +167,7 @@ const newCron = `
         <div class="partage">
             <div class="vide-gauche"></div>
             <div class="like">
-                <i class="fa fa-thumbs-o-up"></i>
+                <i id-cron="${parentCron.ID}" class="fa fa-thumbs-o-up"></i>
             </div>
             <div class="share">
                 <i class="fa fa-share-alt"></i>
@@ -164,7 +177,7 @@ const newCron = `
             </div>
             <div class="vide-droite"></div>
         </div>
-        <div class="div-child">
+        <div id-cron="${childCron.ID}"  class="div-child">
             <div class="draw-coin"></div>
             <div class="article-child">
                 <div class="user-wrapper">
@@ -187,7 +200,7 @@ const newCron = `
                 <div class="partage">
                     <div class="vide-gauche"></div>
                     <div class="like">
-                        <i class="fa fa-thumbs-o-up"></i>
+                        <i id-cron="${childCron.ID}" class="fa fa-thumbs-o-up"></i>
                     </div>
                     <div class="share">
                         <i class="fa fa-share-alt"></i>
