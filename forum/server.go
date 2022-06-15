@@ -43,3 +43,13 @@ func Profil() http.HandlerFunc {
 		fmt.Println(username)
 	}
 }
+func CronPage() http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		t, _ := template.ParseFiles("./static/profil/index.html", "./static/templates/left/leftTemplate.html", "./static/templates/right/rightTemplate.html")
+		t.Execute(w, "hello world")
+		username := mux.Vars(r)["username"]
+		id := mux.Vars(r)["idcron"]
+
+		fmt.Println(username, id)
+	}
+}
