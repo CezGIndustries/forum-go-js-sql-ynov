@@ -22,9 +22,9 @@ func main() {
 
 	Env.Router.PathPrefix("/static/").Handler(http.StripPrefix("/static/", http.FileServer(http.Dir("./static/"))))
 
-	Env.Router.HandleFunc("/", forum.Connexion_Creation())
+	Env.Router.HandleFunc("/connexion", forum.Connexion_Creation())
 	Env.Router.HandleFunc("/home", forum.Home())
-
+	Env.Router.HandleFunc("/admin", forum.Moderation())
 	Env.Router.HandleFunc("/profil/{nameUser}", forum.Profil())
 
 	Env.Router.HandleFunc("/cronosdb/POST/logUsers/CHECK", forum.CheckUser(Env.DB))

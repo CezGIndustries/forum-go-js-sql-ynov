@@ -27,6 +27,7 @@
     margin-bottom: 10px;
     width: 100%;
     color: #cacaca;
+    cursor: pointer;
 }
 
 .user {
@@ -180,7 +181,27 @@
     border-bottom: #17152A 2px solid;
 }
 
+.div-child {
+    display: flex;
+    width: 100%;
+    justify-content: center;
+}
+
+.article-child {
+    border: none;
+    margin-bottom: 2%;
+    /* border-bottom: #17152A 2px solid; */
+    width: 80%;
+}
+
 .user-wrapper {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    color: #cacaca;
+}
+
+.user-wrapper-child {
     display: flex;
     justify-content: flex-start;
     align-items: center;
@@ -215,6 +236,48 @@
     justify-content: flex-end;
     cursor: pointer;
     width: 10%;
+}
+
+.child-to-child {
+    display: flex;
+    flex-direction: column;
+    height: 20%;
+    width: 100%;
+}
+
+.child-to-child-top {
+    display: flex;
+    height: 70%;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+}
+
+.child-to-child-bot {
+    display: flex;
+    height: 30%;
+    width: 100%;
+}
+
+.left-coin {
+    display: flex;
+    width: 100%;
+    height: 90%;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.ligne {
+    margin-left: 23px;
+    height: 100%;
+    width: 2px;
+    background-color: #17152A;
+}
+
+.redirect-parent {
+    margin-left: 8%;
+    color: #B33CED;
+    text-decoration: underline;
 }
 
 .article-text {
