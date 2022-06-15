@@ -21,6 +21,7 @@ function requestUserInfo() {
 document.getElementById('button-post').addEventListener('click', () => {
   // Button that allow user to submit a cron
   const content = document.getElementById("text-value-entry").value
+  document.getElementById("text-value-entry").value = ''
   if(content !== '') {
       const timeEntry = parseInt(document.getElementById("select-time").value)
       const timeLeft = timeLeftFunciton(timeEntry, SetTime())
@@ -45,7 +46,6 @@ async function drawCrons(id) {
       grantParentToParentToChildCron(fatherCron, parentCron, cron)
     }
   }
-  document.querySelector('textarea').value = ''
 }
 
 function createCron(content, tag, timeLeft) {
@@ -130,7 +130,7 @@ function createComment(content, tag, parendID) {
 
 function redirectCron(id) {
   // Redirect on cron if cron exist
-  fetch('/route/',{
+  fetch('/cronosdb/POST/cron/REDIRECT',{
     method:'POST',
     headers: {
       "content-type": "application/json"
@@ -141,8 +141,8 @@ function redirectCron(id) {
   }).then((res) => {
       return res.json()
   }).then((res) => {
-      if(!res.error) {
-        window.location.href = `/${res.user}/cron/${res.id}`
+      if(res.ERROR != "404") {
+        window.location.href = `/${res.User}/cron/${res.ID}`
       } else {
         location.reload()
       }
