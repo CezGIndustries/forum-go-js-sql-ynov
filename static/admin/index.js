@@ -15,6 +15,7 @@ if (user.status == banned){
     users.onclick = ()=>{
         console.log(user.status)
         user.status = null;
+        
     }
 }
 
