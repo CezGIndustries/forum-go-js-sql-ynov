@@ -25,6 +25,12 @@ func Connexion_Creation() http.HandlerFunc {
 	}
 }
 
+func Moderation() http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		t, _ := template.ParseFiles("./static/admin/index.html")
+		t.Execute(w, "hello world")
+	}
+}
 func Profil() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		t, _ := template.ParseFiles("./static/profil/index.html")
