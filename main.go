@@ -27,6 +27,8 @@ func main() {
 
 	Env.Router.HandleFunc("/profil/{nameUser}", forum.Profil())
 
+	Env.Router.HandleFunc("/{username}/cron/{idcron}", forum.CronPage())
+
 	Env.Router.HandleFunc("/cronosdb/POST/logUsers/CHECK", forum.CheckUser(Env.DB))
 	Env.Router.HandleFunc("/cronosdb/POST/logUsers/REGISTER", forum.CreateNewUser(Env.DB))
 
