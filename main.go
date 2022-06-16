@@ -24,7 +24,7 @@ func main() {
 
 	Env.Router.HandleFunc("/connexion", forum.Connexion_Creation())
 	Env.Router.HandleFunc("/home", forum.Home())
-
+	Env.Router.HandleFunc("/admin", forum.Moderation())
 	Env.Router.HandleFunc("/profil/{nameUser}", forum.Profil())
 
 	Env.Router.HandleFunc("/cronosdb/POST/logUsers/CHECK", forum.CheckUser(Env.DB))
