@@ -8,6 +8,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://kit.fontawesome.com/4f6d94b9cb.js" crossorigin="anonymous"></script>
+    <script src="https://kit.fontawesome.com/yourcode.js" crossorigin="anonymous"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <title>Accueil | Cronos</title>
@@ -18,50 +19,62 @@
     <div class="allcolumns">
         {{template "LeftColumn" }}
         <div class="midcolumn">
-            <div class="top">
-
-            </div>
+            <!-- <div id="logo-phone">    <svg width="61" height="80" viewBox="0 0 262 300" fill="#b33ced" xmlns="http://www.w3.org/2000/svg">
+                <path d="M256.066 43.934C234.866 22.7344 207.8 8.37396 178.36 2.70552C148.92 -2.96292 118.457 0.320768 90.9014 12.1329C63.3456 23.9451 39.9618 43.7436 23.7669 68.974C7.57214 94.2045 -0.690489 123.709 0.0451827 153.681C0.780854 183.652 10.4811 212.716 27.8942 237.122C45.3074 261.527 69.6344 280.155 97.7365 290.601C125.839 301.047 156.426 302.832 185.553 295.726C214.679 288.62 241.008 272.949 261.142 250.735L222.747 215.935C209.568 230.475 192.335 240.732 173.271 245.384C154.206 250.035 134.185 248.866 115.791 242.029C97.3974 235.192 81.4743 222.999 70.0767 207.025C58.6791 191.05 52.3299 172.027 51.8483 152.409C51.3668 132.791 56.775 113.48 67.3752 96.9652C77.9754 80.4508 93.2811 67.4918 111.317 59.7603C129.354 52.0287 149.293 49.8794 168.563 53.5897C187.833 57.2999 205.549 66.6994 219.425 80.5754L256.066 43.934Z" fill="#b33ced"/>
+                <path d="M154.884 159.07C154.884 165.62 149.574 170.93 143.023 170.93C136.473 170.93 131.163 165.62 131.163 159.07C131.163 152.519 136.473 147.209 143.023 147.209C149.574 147.209 154.884 152.519 154.884 159.07Z" fill="#b33ced"/>
+                <path d="M143.023 81.628H145.814V140.233H143.023V81.628Z" fill="#b33ced"/>
+                <path d="M154.884 172.917L156.844 170.93L189.251 202.913L187.291 204.899L154.884 172.917Z" fill="#b33ced"/>
+            </svg></div> -->
+            <div class="top"></div>
             <div class="userwrapper">
                 <div class="textareawrapper">
                     <textarea id="text-value-entry" rows="5%" maxlength="240" placeholder="Racontes-nous ta vie ?!"></textarea>
                 </div>
-                <div class="mediaction">
+                
                     <div class="media">
-                        <div class="void-right"></div>
-                        <div class="add-image">
-                            <i class="fa fa-photo"></i>
+                        <div class="media-left">
+                            <div class="add-image">
+                                <i class="fa fa-photo"></i>
+                            </div>
+                        </div>
+                        <div class="media-right">
+                            <div class="timeselecteur">
+                                <select name="selecttime" id="select-time">
+                                    <option value="1">1 min</option>
+                                    <option value="5">5 min</option>
+                                    <option value="10">10 min</option>
+                                    <option value="30">30 min</option>
+                                    <option value="60">1H</option>
+                                    <option value="120">2H</option>
+                                    <option value="180">3H</option>
+                                    <option value="240">4H</option>
+                                    <option value="300">5H</option>
+                                    <option value="360">6H</option>
+                                    <option value="420">7H</option>
+                                    <option value="480">8H</option>
+                                    <option value="540">9H</option>
+                                    <option value="600">10H</option>
+                                    <option value="660">11H</option>
+                                    <option value="720">12H</option>
+                                    <option value="1440">24H</option>
+                                </select>
+                            </div>
+                            <div class="buttonpost">
+                                <button id="button-post" type="button">Cron</button>
+                            </div>
                         </div>
                     </div>
-                    <div class="timeselecteur">
-                        <select name="selecttime" id="select-time">
-                            <option value="1">1 min</option>
-                            <option value="5">5 min</option>
-                            <option value="10">10 min</option>
-                            <option value="30">30 min</option>
-                            <option value="60">1H</option>
-                            <option value="120">2H</option>
-                            <option value="180">3H</option>
-                            <option value="240">4H</option>
-                            <option value="300">5H</option>
-                            <option value="360">6H</option>
-                            <option value="420">7H</option>
-                            <option value="480">8H</option>
-                            <option value="540">9H</option>
-                            <option value="600">10H</option>
-                            <option value="660">11H</option>
-                            <option value="720">12H</option>
-                            <option value="1440">24H</option>
-                        </select>
-                    </div>
-                    <div class="buttonpost">
-                        <button id="button-post" type="button">Cron</button>
-                    </div>
-                </div>
+                    
+
+                  
+               
             </div>
             <div class="div-all-article"></div>
+            <div class="post-popup"><i class="fas fa-paper-plane" style="font-size:25px;"></i></div>
         </div>
         {{template "RightColumn" }}
     </div>
+
 </body>
 <script type="module" src="./static/home/index.js"></script>
 
