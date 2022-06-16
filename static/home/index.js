@@ -2,21 +2,7 @@ import { grantParentToParentToChildCron, parentToChildCron, soloCron } from "./t
 
 document.querySelector('body').onload = function() {
   // Function that while be load when page is load
-  
-  console.log('Page is loaded.')
-}
-
-function requestUserInfo() {
-  // Get user info for the template
-  fetch('/route/',{
-      method:'POST',
-      headers: {
-        "content-type": "application/json"
-  }}).then((res) => {
-      return res.json()
-  }).then((res) => {
-      // METTRE USER IFNO
-  })
+  console.log('Page is loaded.') 
 }
 
 document.getElementById('button-post').addEventListener('click', () => {
