@@ -88,9 +88,6 @@ const newCron = `
             <div class="share">
                 <i class="fa fa-share-alt"></i>
             </div>
-            <div class="save">
-                <i class="fa fa-bookmark-o"></i>
-            </div>
             <div class="vide-droite"></div>
             <div class="time">
                 <i class="fa fa-clock-o">TimeLeft</i>
@@ -124,9 +121,7 @@ const newCron = `
                     <div class="share">
                         <i class="fa fa-share-alt"></i>
                     </div>
-                    <div class="save">
-                        <i class="fa fa-bookmark-o"></i>
-                    </div>
+             
                     <div class="vide-droite"></div>
                 </div>
             </div>
@@ -181,9 +176,7 @@ const newCron = `
             <div class="share">
                 <i class="fa fa-share-alt"></i>
             </div>
-            <div class="save">
-                <i class="fa fa-bookmark-o"></i>
-            </div>
+            
             <div class="vide-droite"></div>
         </div>
         <div id-cron="${childCron.ID}"  class="div-child">
@@ -216,9 +209,6 @@ const newCron = `
                     </div>
                     <div class="share">
                         <i class="fa fa-share-alt"></i>
-                    </div>
-                    <div class="save">
-                        <i class="fa fa-bookmark-o"></i>
                     </div>
                     <div class="vide-droite"></div>
                 </div>

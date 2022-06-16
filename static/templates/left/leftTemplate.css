@@ -58,6 +58,7 @@ p {
     cursor: pointer;
     color: #cacaca;
     text-decoration: none;
+    font-size: 20px;
 }
 
 .logout {
@@ -66,7 +67,9 @@ p {
     align-items: center;
     margin-left: 10px;
     height: 6%;
+    width: 80%;
     border-radius: 30px;
+    /* transition: 200ms; */
 }
 
 .logout:hover {

@@ -2,6 +2,9 @@
     margin: 0;
     padding: 0;
 }
+body{
+    overflow: hidden;
+}
 
 .allcolumns {
     background-color: #08061A;
@@ -151,7 +154,7 @@
     flex-direction: column;
     overflow-x: hidden;
     overflow-y: auto;
-    height: 400px;
+    height: 70%;
     width: 100%;
 }
 
