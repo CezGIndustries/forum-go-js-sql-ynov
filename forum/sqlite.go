@@ -109,19 +109,15 @@ func CreateNewUser(cronosDB *sql.DB) http.HandlerFunc {
 		if err != nil {
 			w.Write([]byte(`{ "ERROR":"409" }`))
 		} else {
-			cronosDB.Exec(`INSERT INTO accountUsers (UniqueName, Status, Rank, ProfilPicture, Banner, Biography) VALUES (?, ?, ?, ?, ?, ?);`, NewUser.UniqueName, "Free", "member", "./static/img/profil_pictures/1.png", "./static/img/banners/1.png", "")
+			cronosDB.Exec(`INSERT INTO accountUsers (UniqueName, Status, Rank, ProfilPicture, Banner, Biography) VALUES (?, ?, ?, ?, ?, ?);`, NewUser.UniqueName, "Free", "member", "./static/img/others/default_pp.png", "./static/img/others/default_banner.png", "")
 			addSession(w, r, NewUser.UniqueName)
 			w.Write([]byte(`{}`))
 		}
 	}
 }
 
-func DeleteUser(cronosDB *sql.DB, uniqueName string) {
-	_, err := cronosDB.Exec(`DELETE FROM logUsers WHERE UniqueName = '?';`, uniqueName)
-	if err != nil {
-		log.Fatal(err)
-		// GESTION D'ERREUR RENVOIE DE L'ERREUR
-	}
+func DeleteUser(cronosDB *sql.DB) {
+	cronosDB.Exec(`DELETE FROM logUsers WHERE UniqueName = '?';`, "uniqueName")
 }
 
 func ModifyUser(cronosDB *sql.DB, uniqueName string, User UserLogin) {
