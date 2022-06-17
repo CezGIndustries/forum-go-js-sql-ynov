@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://kit.fontawesome.com/4f6d94b9cb.js" crossorigin="anonymous"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="./static/contact/style.css">
+    <title>Contact - Report</title>
+</head>
+
+<body>
+
+    <div class="allcolumns">
+        <div class="leftcolumn">
+            <div class="navbar">
+                <div class="logo">
+                    <svg width="102" height="140" viewBox="0 0 262 300" fill="#b33ced" xmlns="http://www.w3.org/2000/svg">
+                <path d="M256.066 43.934C234.866 22.7344 207.8 8.37396 178.36 2.70552C148.92 -2.96292 118.457 0.320768 90.9014 12.1329C63.3456 23.9451 39.9618 43.7436 23.7669 68.974C7.57214 94.2045 -0.690489 123.709 0.0451827 153.681C0.780854 183.652 10.4811 212.716 27.8942 237.122C45.3074 261.527 69.6344 280.155 97.7365 290.601C125.839 301.047 156.426 302.832 185.553 295.726C214.679 288.62 241.008 272.949 261.142 250.735L222.747 215.935C209.568 230.475 192.335 240.732 173.271 245.384C154.206 250.035 134.185 248.866 115.791 242.029C97.3974 235.192 81.4743 222.999 70.0767 207.025C58.6791 191.05 52.3299 172.027 51.8483 152.409C51.3668 132.791 56.775 113.48 67.3752 96.9652C77.9754 80.4508 93.2811 67.4918 111.317 59.7603C129.354 52.0287 149.293 49.8794 168.563 53.5897C187.833 57.2999 205.549 66.6994 219.425 80.5754L256.066 43.934Z" fill="#b33ced"/>
+                <path d="M154.884 159.07C154.884 165.62 149.574 170.93 143.023 170.93C136.473 170.93 131.163 165.62 131.163 159.07C131.163 152.519 136.473 147.209 143.023 147.209C149.574 147.209 154.884 152.519 154.884 159.07Z" fill="#b33ced"/>
+                <path d="M143.023 81.628H145.814V140.233H143.023V81.628Z" fill="#b33ced"/>
+                <path d="M154.884 172.917L156.844 170.93L189.251 202.913L187.291 204.899L154.884 172.917Z" fill="#b33ced"/>
+            </svg>
+                </div>
+                <div class="nave">
+                    <nav>
+                        <ul>
+                            <li>
+                                <p><i class="fa fa-home " style="font-size:30px;"></i>Accueil</p>
+                            </li>
+                            <li>
+                                <p><i class="fa fa-bell-o" style="font-size:25px;"></i>Notifications</p>
+                            </li>
+                            <li>
+                                <p><i class="fa fa-user-o" style="font-size:25px;"></i>Profil</p>
+                            </li>
+                            <li>
+                                <p><i class="fa fa-envelope-o" style="font-size:25px;"></i>Contact</p>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+                <div class="logout">
+                    <div class="logoutleft">
+                        <img src="data:image/jpeg;base64,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"
+                            alt="">
+                    </div>
+                    <div class="logoutmid">PseudoPseudoPseudoPseudoPseudo</div>
+                    <div class="logoutright">
+                        <a href="" class="iconlogout"><i class="fa fa-cogs"></i></a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="midcolumn">
+            <div class="top">
+                <div class="left"></div>
+                <div class="right">
+                    <select name="selectfilter" id="selectfilter">
+                        <option value="Aide">Aide</option>
+                        <option value="SPAM">SPAM</option>
+                        <option value="Racisme">Racisme</option>
+                        <option value="Bug">Bug</option> 
+                        <option value="Nous Contacter">Nous contacter</option>
+                    </select>
+                </div>
+            </div>
+            <div class="userwrapper">
+                <div class="user">
+                    <div class="helping">Besoin d'aide ?</div>
+                </div>
+                <div class="textareawrapper">
+                    <textarea id="text" rows="5%" maxlength="240" placeholder="renseign your report"></textarea>
+                </div>
+                <div class="mailpost">
+                    <textarea id="mailid" rows="2%" maxlength="240" placeholder="Take your email"></textarea>
+                </div>
+                <div class="mediaction">
+                    <div class="buttonpost">
+                        <button class="buttoncrone" type="button">Crone</button>
+                    </div>
+                </div>
+            </div>
+            <div id="report">Welcome to our report page.</div>
+        </div>
+    </div>
+    <script src="./static/contact/index.js"></script>
+</body>
+
+</html>
