@@ -5,8 +5,10 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="google-signin-client_id" content="757055465471-n7mhb9da5853intj9kh9kb4kne7ilnjl.apps.googleusercontent.com">
     <link rel="stylesheet" href="./static/connexion-creation/style.css">
     <script src="https://kit.fontawesome.com/4f6d94b9cb.js" crossorigin="anonymous"></script>
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
     <title>Connexion/Inscription | Cronos</title>
 </head>
 
@@ -49,7 +51,7 @@
                 <button type="button" class="submitbutton" onclick="confirmRegister()">Confirmer</button>
                 <h4>Ou m'inscrire avec :</h4>
                 <div class="iconrow">
-                    <a href="#" class="icon"><i class="fa-brands fa-google"> Google</i></a>
+                    <div class="g-signin2"></div>
                     <a  href="#" class="icon"><i class="fa-brands fa-github"> Github</i></a>
                     <a href="#" class="icon"><i class="fa-brands fa-microsoft"> Microsoft</i></a>
                 </div>

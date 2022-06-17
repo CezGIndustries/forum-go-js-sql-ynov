@@ -1,0 +1,194 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+
+
+.leftcolumn {
+    position:absolute;
+    left: 0px;
+    display: flex;
+    justify-content: flex-end;
+    width: 20%;
+    height: 100%;
+    /* border: 1px solid #17152A; */
+}
+.navbar {
+    height: 95%;
+    margin: 30px;
+    border-radius: 1.05rem;
+    background-color: #08061A;
+}
+
+.logo {
+    margin-left: 10px;
+}
+
+.nave {
+    
+    display: flex;
+    justify-content: flex-start;
+    margin-left: 10px;
+    font-size: 25px;
+    height: 80%;
+}
+
+.fa {
+    color: #cacaca;
+    margin-right: 10px;
+}
+
+.icon {
+    display: flex;
+    justify-content: center;
+    width: 20%;
+}
+
+.nomnave {
+    width: 60%;
+}
+
+li {
+    cursor: pointer;
+    list-style: none;
+    margin: 50px 0px;
+}
+
+p {
+    cursor: pointer;
+    color: #cacaca;
+    text-decoration: none;
+    font-size: 20px;
+}
+.explore-responsive{
+    display: none;
+}
+.logout-bot{
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    height:10% ;
+    width:200px;
+    position: absolute;
+    bottom: 0;
+}
+
+.logout {
+    /* background-color: #17152A; */
+    display: flex;
+    align-items: center;
+   
+    border-radius: 30px;
+    width:  100%;
+    height: 50%;
+    transition: 300ms;
+}
+
+.logout:hover {
+   /* height: 100%;
+   width:30%; */
+
+}
+
+.logoutleft {
+    width: 20%;
+}
+
+.logout img {
+    display: flex;
+    justify-content: center;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+}
+
+.logoutmid {
+    width: 69%;
+    overflow: hidden;
+  
+    color: #cacaca;
+    margin-right: 1%;
+}
+
+.logoutright {
+    width: 10%;
+}
+
+.logoutright .fa-ellipsis {
+    color: #cacaca;
+}
+
+.iconlogout {
+    color: #cacaca;
+}
+
+
+
+
+
+
+
+@media only screen and (max-width: 1100px) {
+    .leftcolumn{
+        width: 12%;
+    }
+    .nave{
+        justify-content: center;
+    }
+    .nomnave {
+    display: none;
+   }
+   .explore-responsive{
+    display: block;
+   }
+   .logout-bot{
+    width:70px;
+   }
+   .logout{
+    justify-content: center;
+    background-color: transparent;
+   }
+   .logoutmid{
+    display: none;
+   }
+   .logoutright{
+    margin-left: 20px;
+   }
+}
+@media only screen and (max-width: 830px) {
+    .leftcolumn{
+        width: 100px;
+    }
+
+    
+}
+@media only screen and (max-width: 580px) {
+    .leftcolumn{
+        justify-content: center;
+        border: none;
+        position: absolute;
+        bottom: 0;              
+        width: 60px;
+
+    }
+    .navbar{
+        /* margin-left: -1px; */
+    }
+    .logout{
+        position: absolute;
+        left:0;
+    }
+    svg{
+        width: 40px;
+        height: 50px;
+    }
+
+    
+}
+
+
+
+
+
