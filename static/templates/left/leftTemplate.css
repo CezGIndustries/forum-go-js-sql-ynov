@@ -62,14 +62,14 @@ p {
 }
 
 .logout {
-    background-color: #17152A;
+    /* background-color: #17152A; */
     display: flex;
     align-items: center;
     margin-left: 10px;
     height: 6%;
-    width: 80%;
+    width: 150px;
     border-radius: 30px;
-    /* transition: 200ms; */
+    transition: 200ms;
 }
 
 .logout:hover {
@@ -92,7 +92,7 @@ p {
 .logoutmid {
     width: 69%;
     overflow: hidden;
-    text-overflow: ellipsis;
+  
     color: #cacaca;
     margin-right: 1%;
 }
