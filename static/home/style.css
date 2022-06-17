@@ -359,6 +359,7 @@ body{
 #more  {
     color: white;
 }
+
 .post-popup{
     display: none;
 }
@@ -421,4 +422,9 @@ body{
     .userwrapper{display: none;}
     .top{display: none;}
    
+}
+
+.liketext {
+    color: white;
+    font-size: 15px;
 }

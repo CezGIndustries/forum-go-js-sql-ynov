@@ -46,6 +46,16 @@ function sleep(ms) {
 async function drawCrons(id, asc=1) {
   // While request and draw cron depends on if its a main cron or a comment
   const cron = await requestCron(id)
+  if(cron.tag === null){
+    cron.tag = ''
+  }
+  if(cron.Likes === null){
+    cron.Likes = []
+  }
+  if(cron.Comments === null){
+    cron.Comments = []
+  }
+  console.log(cron)
   if(cron.ParentID == -1) {
     soloCron(cron, asc)
   } else {

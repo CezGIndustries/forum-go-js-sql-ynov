@@ -2,9 +2,6 @@ export async function soloCron(cron, asc) {
     const allCron = document.querySelector('.div-all-article')
     // const urlYtb = cron.content.match(/^(?:https?:\/\/)?(?:www\.)?(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))((\w|-){11})(?:\S+)?$/)
     // console.log(urlYtb[0])
-    if(cron.tag === null){
-        cron.tag = ''
-    }
     const newCron = `
     <div id-cron="${cron.ID}" class="article">
         <div class="user-wrapper">
@@ -42,9 +39,6 @@ export async function soloCron(cron, asc) {
             </div>
             <div class="share">
                 <i class="fa fa-share-alt"></i>
-            </div>
-            <div class="save">
-                <i class="fa fa-bookmark-o"></i>
             </div>
             <div class="vide-droite"></div>
             <div class="time">
@@ -125,7 +119,6 @@ const newCron = `
                     <div class="share">
                         <i class="fa fa-share-alt"></i>
                     </div>
-             
                     <div class="vide-droite"></div>
                 </div>
             </div>
@@ -176,6 +169,7 @@ const newCron = `
         <div class="partage">
             <div class="vide-gauche"></div>
             <div class="like">
+                
                 <i id-cron="${parentCron.ID}" class="fa fa-thumbs-o-up"></i>
             </div>
             <div class="comment">
@@ -184,7 +178,6 @@ const newCron = `
             <div class="share">
                 <i class="fa fa-share-alt"></i>
             </div>
-            
             <div class="vide-droite"></div>
         </div>
         <div id-cron="${childCron.ID}"  class="div-child">
