@@ -1,10 +1,42 @@
 <!DOCTYPE html>
-<html>
-    <head>
-        <title>Cronos</title>
-    </head>
-    <body>
-        <h1>PAGE PROFIL</h1>
 
-    </body>
-</html> 
+<html lang="en">
+
+<head>
+    <link rel="stylesheet" type="text/css" href="/static/profil/style.css">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://kit.fontawesome.com/4f6d94b9cb.js" crossorigin="anonymous"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <title>Accueil | Cronos</title>
+</head>
+
+
+<body>
+    <div class="allcolumns">
+        {{template "LeftColumn" }}
+        <div class="midcolumn">
+            <div class="top">
+                <div class="ProfilePicture">
+                    <img id="pp" src="https://pbs.twimg.com/profile_images/1416422006682161152/n2K0NX7B_400x400.jpg">
+                </div>
+                <div class="Banniere">
+                    <img src="https://i.pinimg.com/originals/26/ae/12/26ae1241ca65ba8e8ff4a4d442c92566.png">
+                </div>
+                <div class=""></div>
+                <div class="bio">
+                    <div class="subio">
+                        
+                    </div> </div>
+            </div>
+            
+            <div class="div-all-article"></div>
+        </div>
+        {{template "RightColumn" }}
+    </div>
+</body>
+<script type="module" src="/static/profil/index.js"></script>
+
+</html>
