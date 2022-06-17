@@ -1,4 +1,4 @@
-export async function soloCron(cron) {
+export async function soloCron(cron, asc) {
     const allCron = document.querySelector('.div-all-article')
     // const urlYtb = cron.content.match(/^(?:https?:\/\/)?(?:www\.)?(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))((\w|-){11})(?:\S+)?$/)
     // console.log(urlYtb[0])
@@ -52,11 +52,15 @@ export async function soloCron(cron) {
             </div>
         </div>
     </div>  
-`
-allCron.innerHTML = newCron + allCron.innerHTML
+    `
+    if(asc == 1) {
+        allCron.innerHTML = newCron + allCron.innerHTML
+    } else {
+        allCron.innerHTML += newCron
+    }
 }
 
-export async function parentToChildCron (parentCron, childCron) {
+export async function parentToChildCron (parentCron, childCron, asc) {
 const allCron = document.querySelector('.div-all-article')
 const newCron = `
     <div id-cron="${parentCron.ID}" class="article">
@@ -133,10 +137,14 @@ const newCron = `
         </div>
     </div>
     `
-    allCron.innerHTML = newCron + allCron.innerHTML
+    if(asc == 1) {
+        allCron.innerHTML = newCron + allCron.innerHTML
+    } else {
+        allCron.innerHTML += newCron
+    }
 }
 
-export async function grantParentToParentToChildCron (fatherCron, parentCron, childCron) {
+export async function grantParentToParentToChildCron (fatherCron, parentCron, childCron, asc) {
 const allCron = document.querySelector('.div-all-article')
 const newCron = `
     <div id-cron="${fatherCron.ID}" class="article">
@@ -226,5 +234,9 @@ const newCron = `
         </div>
     </div>
     `
-    allCron.innerHTML = newCron + allCron.innerHTML
+    if(asc == 1) {
+        allCron.innerHTML = newCron + allCron.innerHTML
+    } else {
+        allCron.innerHTML += newCron
+    }
 }

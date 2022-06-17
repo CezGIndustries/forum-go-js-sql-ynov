@@ -294,7 +294,7 @@ func getLikes(cronosDB *sql.DB, Cron Cron) []string {
 	)
 	sqlStatement := fmt.Sprintf(`SELECT User FROM cronLike WHERE ID = %v`, Cron.ID)
 	rows, _ := cronosDB.Query(sqlStatement)
-
+	defer rows.Close()
 	for rows.Next() {
 		rows.Scan(&user)
 		likes = append(likes, user)
@@ -309,7 +309,7 @@ func getComments(cronosDB *sql.DB, Cron Cron) [][]string {
 	)
 	sqlStatement := fmt.Sprintf(`SELECT * FROM cron WHERE ParentID = %v`, Cron.ID)
 	rows, _ := cronosDB.Query(sqlStatement)
-
+	defer rows.Close()
 	for rows.Next() {
 		rows.Scan(&id, &user)
 		comments = append(comments, addComment(cronosDB, id, []string{user}))
@@ -321,6 +321,7 @@ func getComments(cronosDB *sql.DB, Cron Cron) [][]string {
 func addComment(cronosDB *sql.DB, id string, tab []string) []string {
 	sqlStatement := fmt.Sprintf(`SELECT * FROM cron WHERE ParentID = %v`, id)
 	rows, _ := cronosDB.Query(sqlStatement)
+	defer rows.Close()
 	for rows.Next() {
 		var user string
 		rows.Scan(&id, &user)
@@ -346,11 +347,52 @@ func CreateLike(cronosDB *sql.DB) http.HandlerFunc {
 		sqlStatement := fmt.Sprintf(`SELECT * FROM cronLike WHERE ID = %v AND User = "%v"`, ID.ID, UniqueName)
 		row, _ := cronosDB.Query(sqlStatement)
 		if !row.Next() {
+			row.Close()
 			cronosDB.Exec(`INSERT INTO cronLike (ID, User) VALUES (?, ?);`, ID.ID, UniqueName)
 		} else {
 			row.Close()
 			cronosDB.Exec(`DELETE FROM cronLike WHERE ID=? AND User=?;`, ID.ID, UniqueName)
 		}
+	}
+}
+
+type MultipleID struct {
+	From int
+	To   int
+	IDs  []int
+}
+
+func GetMutlipleCronID(cronosDB *sql.DB) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		var (
+			IDs        MultipleID
+			UniqueName string
+			ID         int
+		)
+		body, _ := ioutil.ReadAll(r.Body)
+		json.Unmarshal(body, &IDs)
+		session, _ := store.Get(r, "AUTH_TOKEN")
+		UniqueName = session.Values["uniqueName"].(string)
+		rows, _ := cronosDB.Query(`SELECT C.ID FROM cron AS C
+			LEFT JOIN follow AS F ON C.Creator = F.User
+			LEFT JOIN tagCron AS TC ON C.ID = TC.ID
+			LEFT JOIN tagUsers AS TU ON TU.User = ?
+			WHERE C.Creator = ? OR F.FollowUser = ? OR TU.Tag = TC.Tag
+			ORDER BY C.ID DESC;`, UniqueName, UniqueName, UniqueName, UniqueName)
+		defer rows.Close()
+		i := 0
+		for rows.Next() && i < IDs.To {
+			if IDs.From <= i {
+				rows.Scan(&ID)
+				IDs.IDs = append(IDs.IDs, ID)
+			}
+			i++
+		}
+		if i < IDs.To {
+			IDs.IDs = append(IDs.IDs, -1)
+		}
+		response, _ := json.Marshal(IDs.IDs)
+		w.Write(response)
 	}
 }
 

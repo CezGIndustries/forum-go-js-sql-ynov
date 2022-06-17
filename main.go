@@ -37,6 +37,7 @@ func main() {
 	Env.Router.HandleFunc("/cronosdb/POST/cron/CREATE", forum.CreateCron(Env.DB))
 	Env.Router.HandleFunc("/cronosdb/POST/cron/REDIRECT", forum.RedirectCron(Env.DB))
 	Env.Router.HandleFunc("/cronosdb/POST/cron/GET", forum.GetCron(Env.DB))
+	Env.Router.HandleFunc("/cronosdb/POST/cron/MULTIPLE", forum.GetMutlipleCronID(Env.DB))
 	Env.Router.HandleFunc("/cronosdb/POST/cron/DELETE", forum.DeleteCron(Env.DB))
 	Env.Router.HandleFunc("/cronosdb/POST/cron/LIKE", forum.CreateLike(Env.DB))
 

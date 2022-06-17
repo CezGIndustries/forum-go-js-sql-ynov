@@ -1,8 +1,30 @@
 import { grantParentToParentToChildCron, parentToChildCron, soloCron } from "./templateCron.js"
 
-document.querySelector('body').onload = function() {
+let NUMBER_OF_CRON = 0
+
+document.querySelector('body').onload = async function() {
   // Function that while be load when page is load
-  console.log('Page is loaded.') 
+  console.log('Page is loaded.')
+  document.getElementById('more').addEventListener('click', async () => {
+    const cron = await printCrons()
+    for(let i of cron) {
+      if(i == -1) {
+        document.getElementsByClassName('midcolumn')[0].removeChild(document.getElementById('more'))
+        return
+      }
+      await sleep(10)
+      drawCrons(i, -1)
+    }
+  })
+  const cron = await printCrons()
+  for(let i of cron) {
+    if(i == -1) {
+      document.getElementsByClassName('midcolumn')[0].removeChild(document.getElementById('more'))
+      return
+    }
+    await sleep(10)
+    drawCrons(i, -1)
+  }
 }
 
 document.getElementById('button-post').addEventListener('click', () => {
@@ -17,23 +39,28 @@ document.getElementById('button-post').addEventListener('click', () => {
   }
 })
 
-async function drawCrons(id) {
+function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+async function drawCrons(id, asc=1) {
   // While request and draw cron depends on if its a main cron or a comment
   const cron = await requestCron(id)
   if(cron.ParentID == -1) {
-    soloCron(cron)
+    soloCron(cron, asc)
   } else {
     const parentCron = await requestCron(cron.ParentID)
     if(cron.ParendID == -1) {
-      parentToChildCron(parentCron, cron)
+      parentToChildCron(parentCron, cron, asc)
     } else {
       let fatherCron = await requestCron(parentCron.ParentID)
       while(fatherCron.ParendID != -1) {
         fatherCron = await requestCron(fatherCron.ParentID)
       }
-      grantParentToParentToChildCron(fatherCron, parentCron, cron)
+      grantParentToParentToChildCron(fatherCron, parentCron, cron, asc)
     }
   }
+  NUMBER_OF_CRON += 1
   everyAddEventListener()
 }
 
@@ -48,6 +75,26 @@ function everyAddEventListener() {
     CronID.addEventListener('click', redirectCron)
   }
 } 
+
+async function printCrons() {
+  return fetch('/cronosdb/POST/cron/MULTIPLE', {
+    method:'POST',
+    headers: {
+      "content-type": "application/json"
+    },
+    body: JSON.stringify({
+        From: Number(NUMBER_OF_CRON),
+        To: Number(NUMBER_OF_CRON) + 10,
+    })
+  }).then((res) => {
+    return res.json()
+  }).then((res) => {
+    if(res === null) {
+      return [-1]
+    }
+    return res
+  })
+}
 
 function createCron(content, tag, timeLeft) {
   // Add cron to database
