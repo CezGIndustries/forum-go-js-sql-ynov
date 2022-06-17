@@ -43,6 +43,18 @@ func Profil() http.HandlerFunc {
 		fmt.Println(username)
 	}
 }
+func Explore() http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		t, _ := template.ParseFiles("./static/profil/index.html", "./static/templates/left/leftTemplate.html", "./static/templates/right/rightTemplate.html")
+		t.Execute(w, "hello world")
+	}
+}
+func Compose() http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		t, _ := template.ParseFiles("./static/compose-cron/index.html")
+		t.Execute(w, "index.html")
+	}
+}
 func CronPage() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		t, _ := template.ParseFiles("./static/cron/index.html", "./static/templates/left/leftTemplate.html", "./static/templates/right/rightTemplate.html")

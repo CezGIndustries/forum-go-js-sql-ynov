@@ -1,0 +1,138 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+
+#all{
+    display: flex;
+    height: 100vh;
+    width: 100%;
+    background-color:#08061A ;
+    flex-direction: column;
+}
+
+header{
+    display: flex;
+    height: 10%;
+    width: 100%;
+    border-bottom: 3px solid #17152A;
+}
+#quitt-ico{
+    display: flex;
+    height: 100%;
+    width: 30%;
+    align-items: center;
+    margin-left: 10px;
+}
+.midd{
+    display: flex;
+    height: 90%;
+    width: 100%;
+    align-items: center;
+    flex-direction: column;
+}
+#post{
+    display: flex;
+    margin-top: 20%;
+    height: 50%;
+    width: 98%;
+    flex-direction: column;
+}
+#top{
+    display: flex;
+    height: 90%;
+    width: 100%;
+
+}
+#left{
+    display: flex;
+    height: 100%;
+    width: 20%;
+    justify-content: center;
+    align-items: flex-start;
+}
+#img{
+    display: flex;
+ 
+    height: 60px;
+    aspect-ratio: 1/1;
+    
+}
+img{
+    border-radius: 50%;
+}
+
+
+#right{
+    display: flex;
+    height: 100%;
+    width: 80%;
+    justify-content: center;
+    align-items: center;
+}
+
+textarea{
+    outline: none;
+    display: flex;
+    height: 100%;
+    width: 100%;
+    border: none;
+    box-sizing: border-box;
+    resize: none;
+    justify-items: center;
+    align-items: center;
+    padding-left: 39px;
+    padding-right: 39px;
+    padding-top: 10px;
+    font-size: 17px;
+    color:#cacaca;
+    background-color: transparent;
+}
+#bot{
+    display: flex;
+    height: 10%;
+    width: 100%;
+    border-top: 1px solid #17152A;
+   
+}
+#bot-left{
+    display: flex;
+    height: 100%;
+    width: 50%;
+    justify-content: center;
+    align-items: center;
+}
+#bot-rigth{
+    display: flex;
+    height: 100%;
+    width: 50%;
+    justify-content:flex-end;
+    align-items: center;
+}
+#media{
+    display: flex;
+    justify-content: center;
+}
+#select-time {
+    cursor: pointer;
+    width: 75px;
+    height: 25px;
+    margin: 0 5px 0 0px;
+    color: #cacaca;
+    border: solid 1px #17152A;
+    border-radius: 30px;
+    background-color: #17152A;
+    text-align: center;
+}
+
+button{
+    cursor: pointer;
+    width: 75px;
+    height: 25px;
+    margin: 0 25px 0 5px;
+    color: #cacaca;
+    background-color: #B33CED;
+    border: 1px solid #B33CED;
+    border-radius: 30px;
+    margin: 0 5px 0 0px;
+}

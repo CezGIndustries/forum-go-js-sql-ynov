@@ -18,6 +18,7 @@ document.getElementById('button-post').addEventListener('click', () => {
 })
 
 async function drawCrons(id) {
+  // While request and draw cron depends on if its a main cron or a comment
   const cron = await requestCron(id)
   if(cron.ParentID == -1) {
     soloCron(cron)
@@ -37,6 +38,7 @@ async function drawCrons(id) {
 }
 
 function everyAddEventListener() {
+  // Add every listener to the div
   const allLikes = document.querySelectorAll('.fa-thumbs-o-up')
   const allCronID = document.querySelectorAll('.article')
   for(let likes of allLikes) {

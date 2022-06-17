@@ -15,16 +15,19 @@
                 <nav>
                     <ul>
                         <li>
-                            <p><i class="fa fa-home " style="font-size:25px;"></i></p>
+                            <p><i class="fa fa-home accueil" style="font-size:30px;"></i></p>
                         </li>
                         <li>
-                            <p><i class="fa fa-bell-o" style="font-size:20px;"></i></p>
+                            <p><i class="fa fa-bell-o notif" style="font-size:25px;"></i></p>
                         </li>
                         <li>
-                            <p><i class="fa fa-user-o" style="font-size:20px;"></i></p>
+                            <p><i class="fa fa-user-o profil" style="font-size:25px;"></i></p>
                         </li>
                         <li>
-                            <p><i class="fa fa-envelope-o" style="font-size:20px;"></i></p>
+                            <p><i class="fa fa-envelope-o contact" style="font-size:25px;"></i></p>
+                        </li>
+                        <li class="explore-responsive">
+                            <p><i class="fa fa-search" style="font-size:25px;"></i></p>
                         </li>
                     </ul>
             </div>
@@ -32,32 +35,41 @@
                 <nav>
                     <ul>
                         <li>
-                            <p>Accueil</p>
+                            <p class="accueil">Accueil</p>
                         </li>
                         <li>
-                            <p>Notifications</p>
+                            <p class="notif">Notifications</p>
                         </li>
                         <li>
-                            <p>Profil</p>
+                            <p class="profil">Profil</p>
                         </li>
                         <li>
-                            <p>Contact</p>
+                            <p class="contact">Contact</p>
                         </li>
+                        <li class="explore-responsive">
+                            <p>Explore</p>
+                        </li>
+                        
                     </ul>
             </div>
         </div>
-        <div class="logout">
-            <div class="logoutleft">
-                <!-- USER IMAGE -->
-            </div>
-            <div class="logoutmid">
-                <!-- USERNAME -->
-            </div>
-            <div class="logoutright">
-                <a href="" class="iconlogout"><i class="fa fa-cogs"></i></a>
+        <div class="logout-bot">
+            <div class="logout">
+                <div class="logoutleft">
+                    <!-- USER IMAGE -->
+                </div>
+                <div class="logoutmid">
+                    <!-- USERNAME -->
+                </div>
+                <div class="logoutright">
+                    <a href="" class="iconlogout"><i class="fa fa-sign-out"></i></a>
+                </div>
             </div>
         </div>
+        
     </div>
+    
 </div>
 <script src="./static/templates/left/index.js"></script>
+
 {{end}}
