@@ -3,21 +3,26 @@
     padding: 0;
 }
 
+body {
+    overflow: hidden;
+}
+
 .allcolumns {
     background-color: #08061A;
-    position: relative;
     width: 100%;
     height: 100vh;
     display: flex;
+    justify-content: center;
 }
 
 .midcolumn {
-    width: 60%;
+    display: flex;
+    flex-direction: column;
+    width: 50%;
     height: 100%;
 }
 
 .top {
-    display: flex;
     justify-content: end;
     height: 5%;
     width: 100%;
@@ -59,7 +64,7 @@
 
 .textareawrapper {
     height: 60%;
-    border: 1 px solid #B33CED;
+    /* border: 1px solid #B33CED; */
     margin: 5px 0;
     padding: 3px;
 }
@@ -82,31 +87,31 @@
     font-size: 17px;
 }
 
-.mediaction {
-    height: 100%;
-    display: flex;
-    align-items: center;
-}
-
 .media {
     display: flex;
     align-items: center;
-    width: 80%;
+    width: 100%;
+    margin-top: 20px;
+    /* background-color: red; */
 }
 
-.void-right {
-    width: 5%;
+.media-left {
+    display: flex;
+    width: 50%;
+}
+
+.media-right {
+    display: flex;
+    justify-content: flex-end;
+    width: 50%;
 }
 
 .add-image {
+    padding-left: 3%;
     cursor: pointer;
-    width: 10%;
-    height: 100%;
 }
 
-.timeselecteur {
-    width: 10%;
-}
+.timeselecteur {}
 
 #select-time {
     cursor: pointer;
@@ -125,9 +130,7 @@
     border: #B33CED solid 1px;
 }
 
-.buttonpost {
-    width: 10%;
-}
+.buttonpost {}
 
 #button-post {
     cursor: pointer;
@@ -151,7 +154,7 @@
     flex-direction: column;
     overflow-x: hidden;
     overflow-y: auto;
-    height: 400px;
+    height: 75%;
     width: 100%;
 }
 
@@ -350,4 +353,67 @@
     border-radius: 30px;
     border: solid 1px #B33CED;
     width: 10px;
+}
+
+.post-popup {
+    display: none;
+}
+
+#logo-phone {
+    display: none;
+}
+
+@media only screen and (max-width: 830px) {
+    .midcolumn {
+        margin-left: 15%;
+        width: 80%;
+    }
+}
+
+@media only screen and (max-width: 610px) {
+    .midcolumn {
+        margin-left: 15%;
+        width: 80%;
+    }
+}
+
+@media only screen and (max-width: 580px) {
+    .allcolumns {
+        width: 100%;
+        align-items: flex-end;
+        /* justify-content: center; */
+    }
+    .midcolumn {
+        height: 95%;
+    }
+    .post-popup {
+        display: block;
+        position: absolute;
+        bottom: 10px;
+        right: 10px;
+        height: 70px;
+        aspect-ratio: 1/1;
+        border-radius: 50%;
+        background-color: #B33CED;
+        cursor: pointer;
+    }
+    .post-popup i {
+        position: absolute;
+        top: 30%;
+        left: 30%;
+    }
+    .div-all-article {
+        align-items: center;
+        height: 100%;
+        width: 100%;
+    }
+    .article {
+        width: 80%;
+    }
+    .userwrapper {
+        display: none;
+    }
+    .top {
+        display: none;
+    }
 }

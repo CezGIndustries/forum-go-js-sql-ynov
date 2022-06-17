@@ -2,21 +2,7 @@ import { grantParentToParentToChildCron, parentToChildCron, soloCron } from "./t
 
 document.querySelector('body').onload = function() {
   // Function that while be load when page is load
-  
-  console.log('Page is loaded.')
-}
-
-function requestUserInfo() {
-  // Get user info for the template
-  fetch('/route/',{
-      method:'POST',
-      headers: {
-        "content-type": "application/json"
-  }}).then((res) => {
-      return res.json()
-  }).then((res) => {
-      // METTRE USER IFNO
-  })
+  console.log('Page is loaded.') 
 }
 
 document.getElementById('button-post').addEventListener('click', () => {
@@ -32,6 +18,7 @@ document.getElementById('button-post').addEventListener('click', () => {
 })
 
 async function drawCrons(id) {
+  // While request and draw cron depends on if its a main cron or a comment
   const cron = await requestCron(id)
   if(cron.ParentID == -1) {
     soloCron(cron)
@@ -51,6 +38,7 @@ async function drawCrons(id) {
 }
 
 function everyAddEventListener() {
+  // Add every listener to the div
   const allLikes = document.querySelectorAll('.fa-thumbs-o-up')
   const allCronID = document.querySelectorAll('.article')
   for(let likes of allLikes) {

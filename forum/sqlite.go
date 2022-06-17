@@ -45,9 +45,10 @@ func DatabaseInit(folder string) *sql.DB {
 		CREATE TABLE IF NOT EXISTS accountUsers (
 			UniqueName TEXT(32) NOT NULL PRIMARY KEY,
 			Status TEXT(16) NOT NULL,
+			Rank TEXT(16) NOT NULL,
 			ProfilPicture TEXT NOT NULL,
 			Banner TEXT NOT NULL,
-			Biography TEXT(240)
+			Biography TEXT(240) NOT NULL
 		);
 		CREATE TABLE IF NOT EXISTS tagUsers (
 			Tag TEXT(64) NOT NULL,
@@ -108,19 +109,15 @@ func CreateNewUser(cronosDB *sql.DB) http.HandlerFunc {
 		if err != nil {
 			w.Write([]byte(`{ "ERROR":"409" }`))
 		} else {
-			cronosDB.Exec(`INSERT INTO accountUsers (UniqueName, Status, ProfilPicture, Banner) VALUES (?, ?, ?, ?);`, NewUser.UniqueName, "member", "../img/profile_pictures/1.png", "../img/banners/1.png")
+			cronosDB.Exec(`INSERT INTO accountUsers (UniqueName, Status, Rank, ProfilPicture, Banner, Biography) VALUES (?, ?, ?, ?, ?, ?);`, NewUser.UniqueName, "Free", "member", "./static/img/others/default_pp.png", "./static/img/others/default_banner.png", "")
 			addSession(w, r, NewUser.UniqueName)
 			w.Write([]byte(`{}`))
 		}
 	}
 }
 
-func DeleteUser(cronosDB *sql.DB, uniqueName string) {
-	_, err := cronosDB.Exec(`DELETE FROM logUsers WHERE UniqueName = '?';`, uniqueName)
-	if err != nil {
-		log.Fatal(err)
-		// GESTION D'ERREUR RENVOIE DE L'ERREUR
-	}
+func DeleteUser(cronosDB *sql.DB) {
+	cronosDB.Exec(`DELETE FROM logUsers WHERE UniqueName = '?';`, "uniqueName")
 }
 
 func ModifyUser(cronosDB *sql.DB, uniqueName string, User UserLogin) {
@@ -146,6 +143,31 @@ func CheckUser(cronosDB *sql.DB) http.HandlerFunc {
 		} else {
 			addSession(w, r, User.UniqueName)
 			w.Write([]byte(`{}`))
+		}
+	}
+}
+
+type UserInfo struct {
+	UniqueName, Status, Rank, ProfilPicture, Banner, Biography string
+	Tag                                                        []string
+	UFollow, FollowU                                           []string
+}
+
+func GetUser(cronosDB *sql.DB) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		if ValidSession(w, r) {
+			var (
+				User UserInfo
+			)
+			session, _ := store.Get(r, "AUTH_TOKEN")
+			User.UniqueName = session.Values["uniqueName"].(string)
+			sqlStatement := fmt.Sprintf(`SELECT * FROM accountUsers WHERE UniqueName = '%s';`, User.UniqueName)
+			row := cronosDB.QueryRow(sqlStatement)
+			row.Scan(&User.UniqueName, &User.Status, &User.Rank, &User.ProfilPicture, &User.Banner, &User.Biography)
+			response, _ := json.Marshal(User)
+			w.Write(response)
+		} else {
+			w.Write([]byte(`{ "ERROR":"404" }`))
 		}
 	}
 }

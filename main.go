@@ -25,12 +25,17 @@ func main() {
 	Env.Router.HandleFunc("/connexion", forum.Connexion_Creation())
 	Env.Router.HandleFunc("/home", forum.Home())
 	Env.Router.HandleFunc("/admin", forum.Moderation())
+	Env.Router.HandleFunc("/explore", forum.Explore())
+	Env.Router.HandleFunc("/compose/cron", forum.Compose())
+
 	Env.Router.HandleFunc("/profil/{nameUser}", forum.Profil())
 
 	Env.Router.HandleFunc("/{username}/cron/{idcron}", forum.CronPage())
 
 	Env.Router.HandleFunc("/cronosdb/POST/logUsers/CHECK", forum.CheckUser(Env.DB))
 	Env.Router.HandleFunc("/cronosdb/POST/logUsers/REGISTER", forum.CreateNewUser(Env.DB))
+
+	Env.Router.HandleFunc("/cronosdb/POST/userInfo/GET", forum.GetUser(Env.DB))
 
 	Env.Router.HandleFunc("/cronosdb/POST/cron/CREATE", forum.CreateCron(Env.DB))
 	Env.Router.HandleFunc("/cronosdb/POST/cron/REDIRECT", forum.RedirectCron(Env.DB))
