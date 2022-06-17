@@ -2,22 +2,26 @@
     margin: 0;
     padding: 0;
 }
+body{
+    overflow: hidden;
+}
 
 .allcolumns {
     background-color: #08061A;
-    position: relative;
     width: 100%;
     height: 100vh;
     display: flex;
+    justify-content: center;
 }
 
 .midcolumn {
-    width: 60%;
+    display: flex;
+    flex-direction: column;
+    width: 50%;
     height: 100%;
 }
 
 .top {
-    display: flex;
     justify-content: end;
     height: 5%;
     width: 100%;
@@ -29,7 +33,6 @@
     color: #cacaca;
     cursor: pointer;
 }
-
 
 .user {
     display: flex;
@@ -60,7 +63,7 @@
 
 .textareawrapper {
     height: 60%;
-    border: 1 px solid #B33CED;
+    /* border: 1px solid #B33CED; */
     margin: 5px 0;
     padding: 3px;
 }
@@ -83,31 +86,33 @@
     font-size: 17px;
 }
 
-.mediaction {
-    height: 100%;
-    display: flex;
-    align-items: center;
-}
 
 .media {
     display: flex;
     align-items: center;
-    width: 80%;
+    width: 100%;
+    margin-top: 20px;
+    /* background-color: red; */
+}
+.media-left{
+    display: flex;
+    width: 50%;
+}
+.media-right{
+    display: flex;
+    justify-content: flex-end;
+    width: 50%;
+    
 }
 
-.void-right {
-    width: 5%;
-}
 
 .add-image {
+    padding-left: 3%;
     cursor: pointer;
-    width: 10%;
-    height: 100%;
+    
 }
 
-.timeselecteur {
-    width: 10%;
-}
+.timeselecteur {}
 
 #select-time {
     cursor: pointer;
@@ -126,9 +131,7 @@
     border: #B33CED solid 1px;
 }
 
-.buttonpost {
-    width: 10%;
-}
+.buttonpost {}
 
 #button-post {
     cursor: pointer;
@@ -152,7 +155,7 @@
     flex-direction: column;
     overflow-x: hidden;
     overflow-y: auto;
-    height: 400px;
+    height: 75%;
     width: 100%;
 }
 
@@ -181,7 +184,8 @@
     margin-bottom: 2%;
     border-bottom: #17152A 2px solid;
 }
-.div-child{
+
+.div-child {
     display: flex;
     width: 100%;
     justify-content: center;
@@ -200,6 +204,7 @@
     align-items: center;
     color: #cacaca;
 }
+
 .user-wrapper-child {
     display: flex;
     justify-content: flex-start;
@@ -237,40 +242,43 @@
     width: 10%;
 }
 
-.child-to-child{
+.child-to-child {
     display: flex;
     flex-direction: column;
     height: 20%;
     width: 100%;
 }
 
-.child-to-child-top{
+.child-to-child-top {
     display: flex;
     height: 70%;
     width: 100%;
     justify-content: center;
     align-items: center;
 }
-.child-to-child-bot{
+
+.child-to-child-bot {
     display: flex;
     height: 30%;
     width: 100%;
 }
 
-.left-coin{
+.left-coin {
     display: flex;
     width: 100%;
     height: 90%;
     justify-content: flex-start;
     align-items: center;
 }
-.ligne{
+
+.ligne {
     margin-left: 23px;
     height: 100%;
-    width: 2px; 
+    width: 2px;
     background-color: #17152A;
 }
-.redirect-parent{
+
+.redirect-parent {
     margin-left: 8%;
     color: #B33CED;
     text-decoration: underline;
@@ -350,4 +358,67 @@
 
 #more  {
     color: white;
+}
+.post-popup{
+    display: none;
+}
+#logo-phone{
+    display: none;
+}
+
+@media only screen and (max-width: 830px) {
+    .midcolumn{
+       margin-left: 15%;
+        width: 80%;
+    }
+    
+    
+}
+@media only screen and (max-width: 610px) {
+    .midcolumn{
+        margin-left: 15%;
+        width: 80%;
+    }
+
+   
+    
+    
+}
+@media only screen and (max-width: 580px) {
+    .allcolumns{
+        width: 100%;
+        align-items: flex-end;
+        /* justify-content: center; */
+    }
+    .midcolumn{
+        height: 95%;
+    }
+    .post-popup{
+        display: block;
+        position:absolute;
+        bottom: 10px;
+        right:10px;
+        height: 70px;
+        aspect-ratio: 1/1;
+        border-radius: 50%;
+        background-color:#B33CED ;
+        cursor: pointer;
+    }
+    .post-popup i{
+        position:absolute;
+        top:30%;
+        left:30%;
+    }
+   
+ 
+    .div-all-article{
+       align-items: center;
+        height: 100%;
+        width: 100%;
+    }
+    .article{width: 80%;}
+
+    .userwrapper{display: none;}
+    .top{display: none;}
+   
 }

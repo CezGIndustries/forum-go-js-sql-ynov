@@ -3,11 +3,12 @@
 <html lang="en">
 
 <head>
-    <link rel="stylesheet" type="text/css" href="./static/home/style.css">
+    <link rel="stylesheet" type="text/css" href="/static/home/style.css">
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://kit.fontawesome.com/4f6d94b9cb.js" crossorigin="anonymous"></script>
+    <script src="https://kit.fontawesome.com/yourcode.js" crossorigin="anonymous"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <title>Accueil | Cronos</title>
@@ -18,53 +19,58 @@
     <div class="allcolumns">
         {{template "LeftColumn" }}
         <div class="midcolumn">
-            <div class="top">
-
-            </div>
+            <div class="top"></div>
             <div class="userwrapper">
                 <div class="textareawrapper">
                     <textarea id="text-value-entry" rows="5%" maxlength="240" placeholder="Racontes-nous ta vie ?!"></textarea>
                 </div>
-                <div class="mediaction">
+                <div id="post-phone">
+                    
+                </div>
+                
                     <div class="media">
-                        <div class="void-right"></div>
-                        <div class="add-image">
-                            <i class="fa fa-photo"></i>
+                        <div class="media-left">
+                            <div class="add-image">
+                                <i class="fa fa-photo"></i>
+                            </div>
+                        </div>
+                        <div class="media-right">
+                            <div class="timeselecteur">
+                                <select name="selecttime" id="select-time">
+                                    <option value="1">1 min</option>
+                                    <option value="5">5 min</option>
+                                    <option value="10">10 min</option>
+                                    <option value="30">30 min</option>
+                                    <option value="60">1H</option>
+                                    <option value="120">2H</option>
+                                    <option value="180">3H</option>
+                                    <option value="240">4H</option>
+                                    <option value="300">5H</option>
+                                    <option value="360">6H</option>
+                                    <option value="420">7H</option>
+                                    <option value="480">8H</option>
+                                    <option value="540">9H</option>
+                                    <option value="600">10H</option>
+                                    <option value="660">11H</option>
+                                    <option value="720">12H</option>
+                                    <option value="1440">24H</option>
+                                </select>
+                            </div>
+                            <div class="buttonpost">
+                                <button id="button-post" type="button">Cron</button>
+                            </div>
                         </div>
                     </div>
-                    <div class="timeselecteur">
-                        <select name="selecttime" id="select-time">
-                            <option value="1">1 min</option>
-                            <option value="5">5 min</option>
-                            <option value="10">10 min</option>
-                            <option value="30">30 min</option>
-                            <option value="60">1H</option>
-                            <option value="120">2H</option>
-                            <option value="180">3H</option>
-                            <option value="240">4H</option>
-                            <option value="300">5H</option>
-                            <option value="360">6H</option>
-                            <option value="420">7H</option>
-                            <option value="480">8H</option>
-                            <option value="540">9H</option>
-                            <option value="600">10H</option>
-                            <option value="660">11H</option>
-                            <option value="720">12H</option>
-                            <option value="1440">24H</option>
-                        </select>
-                    </div>
-                    <div class="buttonpost">
-                        <button id="button-post" type="button">Cron</button>
-                    </div>
                 </div>
-            </div>
             <div class="div-all-article"></div>
             <div id="more">
                 Afficher plus
             </div>
+            <div class="post-popup"><i class="fas fa-paper-plane" style="font-size:25px;"></i></div>
         </div>
         {{template "RightColumn" }}
     </div>
+
 </body>
 <script type="module" src="./static/home/index.js"></script>
 
