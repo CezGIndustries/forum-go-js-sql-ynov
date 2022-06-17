@@ -24,6 +24,9 @@ header{
     align-items: center;
     margin-left: 10px;
 }
+i {
+    cursor: pointer;
+}
 .midd{
     display: flex;
     height: 90%;

@@ -17,7 +17,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     // Function that while be load when page is load
     console.log("Template is loaded.")
     const user = await requestUserInfo()
-    // console.log(user)
 
     // const img = document.querySelector('img')
     // img.src = user.ProfilPicture
@@ -29,8 +28,8 @@ document.addEventListener("DOMContentLoaded", async () => {
             window.location.href = `/home`
         })
     }
+ 
 
-    const post = document.getElementsByClassName("button")
    
 })
 
