@@ -1,5 +1,8 @@
 export async function soloCron(cron, asc) {
     const allCron = document.querySelector('.div-all-article')
+    console.log(cron)
+    const Like = cron.Likes.length
+    const Comment = cron.Comments.length
     // const urlYtb = cron.content.match(/^(?:https?:\/\/)?(?:www\.)?(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))((\w|-){11})(?:\S+)?$/)
     // console.log(urlYtb[0])
     const newCron = `
@@ -32,9 +35,11 @@ export async function soloCron(cron, asc) {
         <div class="partage">
             <div class="vide-gauche"></div>
             <div class="like">
-                <i id-cron="${cron.ID}" class="fa fa-thumbs-o-up"></i>
+                <p id="${cron.ID}" click="false">${Like}</p>
+                <i id-cron="${cron.ID}" class="fa fa-thumbs-o-up" style="color:red;"></i>
             </div>
             <div class="comment">
+                <p id="${cron.ID}">${Comment}</</p>
                 <i class="fa fa-commenting"></i>
             </div>
             <div class="share">

@@ -183,6 +183,7 @@ body{
     border: none;
     margin-bottom: 2%;
     border-bottom: #17152A 2px solid;
+    font-size: 20px;
 }
 
 .div-child {
@@ -298,10 +299,14 @@ body{
     padding-bottom: 10px;
     word-wrap: break-word;
 }
+.text{
+    
+}
 
 .partage {
     display: flex;
     justify-content: flex-start;
+    align-items: center;
     margin-bottom: 2%;
 }
 
@@ -310,26 +315,19 @@ body{
 }
 
 .like {
+    display: flex;
     cursor: pointer;
     width: 10%;
 }
-
-.dislike {
-    cursor: pointer;
-    width: 10%;
-}
-
 .share {
+    display: flex;
     cursor: pointer;
     width: 10%;
 }
 
-.save {
-    cursor: pointer;
-    width: 10%;
-}
 
 .comment {
+    display: flex;
     cursor: pointer;
     width: 10%;
 }
@@ -338,6 +336,9 @@ body{
     display: flex;
     justify-content: flex-end;
     width: 10%;
+}
+#more{
+    color: #cacaca;
 }
 
 .vide-droite {
@@ -354,10 +355,6 @@ body{
     border-radius: 30px;
     border: solid 1px #B33CED;
     width: 10px;
-}
-
-#more  {
-    color: white;
 }
 
 .post-popup{
@@ -410,6 +407,7 @@ body{
         top:30%;
         left:30%;
     }
+    
    
  
     .div-all-article{
@@ -421,10 +419,8 @@ body{
 
     .userwrapper{display: none;}
     .top{display: none;}
-   
-}
 
-.liketext {
-    color: white;
-    font-size: 15px;
+    
+
+   
 }

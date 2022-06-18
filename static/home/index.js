@@ -55,7 +55,7 @@ async function drawCrons(id, asc=1) {
   if(cron.Comments === null){
     cron.Comments = []
   }
-  console.log(cron)
+  // console.log(cron)
   if(cron.ParentID == -1) {
     soloCron(cron, asc)
   } else {
@@ -80,6 +80,7 @@ function everyAddEventListener() {
   const allCronID = document.querySelectorAll('.article')
   for(let likes of allLikes) {
     likes.addEventListener('click', addLike)
+    
   }
   for(let CronID of allCronID) {
     CronID.addEventListener('click', redirectCron)
@@ -106,7 +107,7 @@ async function printCrons() {
   })
 }
 
-function createCron(content, tag, timeLeft) {
+export function createCron(content, tag, timeLeft) {
   // Add cron to database
   fetch('/cronosdb/POST/cron/CREATE', {
     method:'POST',
@@ -125,7 +126,12 @@ function createCron(content, tag, timeLeft) {
     if(res.ERROR == 403) {
       window.location.href = `/connexion`
     } else {
-      drawCrons(res)
+        try {
+          console.log("good !")
+          window.location.href = "/home"
+        }catch{
+          drawCrons(res)
+        }
     }
   })
 }
@@ -148,12 +154,24 @@ async function requestCron(id) {
 }
 
 function addLike(event) {
+  // (event.srcElement.attributes["id-cron"].value)
+  // const likeIncrement = document.getElementById("")
   // Like or unlike a cron, and change the like database
 
   // AJOUTER OU ENLEVER LIKE EN JS
 
   event.stopPropagation()
   const id = event.srcElement.getAttribute('id-cron')
+  const likeIncrement = document.getElementById(`${id}`)
+  const boolLike = likeIncrement.getAttribute("click")
+  if(boolLike === "false"){
+    likeIncrement.setAttribute("click","true")
+    likeIncrement.innerText =  (parseInt(likeIncrement.textContent)+1).toString()
+  }else{
+    likeIncrement.innerText =  (parseInt(likeIncrement.textContent)-1).toString()
+    likeIncrement.setAttribute("click","false")
+  }
+  // window.location.reload()
   return fetch('/cronosdb/POST/cron/LIKE' , {
     method:'POST',
     headers: {
@@ -163,6 +181,7 @@ function addLike(event) {
     id: Number(id),
     })
   })
+  
 }
 
 function createComment(content, tag, parendID) {
@@ -213,7 +232,7 @@ function redirectCron(event) {
   }
 }
 
-function SetTime() {
+export function SetTime() {
   // Put current time in a variable
   const timeLeft = {}
   let date = new Date()
@@ -225,7 +244,7 @@ function SetTime() {
   return timeLeft
 }
 
-function timeLeftFunciton(timeLeft, timeNow) {
+export function timeLeftFunciton(timeLeft, timeNow) {
   // Set an end time for the cron
   const monthe30 = "4-6-9"
   const monthe31 = "1-3-5-7-8-10-12"
