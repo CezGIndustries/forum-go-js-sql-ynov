@@ -18,13 +18,15 @@
 
 .top {
     display: grid;
-    grid-template-columns: 0.3fr 1fr;
+    grid-template-columns: 0.5fr 1fr;
+    grid-template-rows: 1.6fr 0.7fr;
     border-bottom: #911da0 1px solid;
     grid-column-gap: 0px;
-    grid-row-gap: 0px;
+    grid-row-gap: 40px;
     width: 100%;
-    
     color: #cacaca;
+    background: #11071d;
+    box-shadow: 0px 0px 10px 5px #311444;
 }
 
 .ProfilePicture{
@@ -33,28 +35,50 @@
     margin: 5%;
     z-index: 2;
     grid-area: 1 / 1 / 2 / 2;
-    border: #090913 5px solid;
-    border-radius: 50%;
-    width: 96.5%;
-    
-    
-    
+     width: 96.5%;
 }
 
 #pp{
     display: flex;
     height: auto;
     border-radius: 50%;
+    border: #090913 5px solid;
+
 }
 
 .Banniere{
-    display: flex;
-    min-width: 100%;
-    max-height: 90%;
-    overflow: hidden;
-    object-fit: cover;
+    position:fixed;
+    display: block;
+    width: 60%;
+    height: 30%;
+    overflow: clip;
+    object-fit: contain;
     z-index: 1;
     grid-area: 1 / 1 / 2 / 3;
+}
+.ban{
+    
+    object-fit: contain;
+    max-width: 100%;
+    max-height: 100%;
+}
+
+.Crone{
+    display: grid;
+    text-align: center;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 10px;
+    max-width: 45%;
+    color: #cacaca;
+    
+}
+
+.Crones{
+    margin: 3px;
+    padding: 7%;
+    background: rgb(44,7,56);
+    background: radial-gradient(circle, rgb(74, 15, 94) 14%, rgba(136,52,164,1) 77%, rgba(172,77,219,1) 100%);
+    border: rgb(66, 14, 83) 5px solid;
 }
 
 
@@ -197,7 +221,7 @@
     flex-direction: column;
     overflow-x: hidden;
     overflow-y: auto;
-    border: #911da0 3px solid;
+    
     height: 400px;
     width: 100%;
 }
