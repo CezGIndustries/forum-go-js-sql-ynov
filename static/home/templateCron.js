@@ -1,6 +1,9 @@
+import { SetTime, timeLeftFunciton  } from "./index.js"
+
 export async function soloCron(cron, asc) {
     const allCron = document.querySelector('.div-all-article')
-    console.log(cron)
+    timeRemaining(SetTime(), cron.timeLeft)
+    console.log(cron.timeLeft)
     const Like = cron.Likes.length
     const Comment = cron.Comments.length
     // const urlYtb = cron.content.match(/^(?:https?:\/\/)?(?:www\.)?(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))((\w|-){11})(?:\S+)?$/)
@@ -47,7 +50,7 @@ export async function soloCron(cron, asc) {
             </div>
             <div class="vide-droite"></div>
             <div class="time">
-                <i class="fa fa-clock-o">TimeLeft</i>
+                <i class="fa fa-clock-o">${cron.timeLeft.Year}</i>
             </div>
         </div>
     </div>  
@@ -227,4 +230,20 @@ const newCron = `
     } else {
         allCron.innerHTML += newCron
     }
+}
+
+function timeRemaining(timeNow,timeLeft){
+    console.log(timeNow,timeLeft)
+    const yearLeft =  timeLeft.Year - timeNow.year
+    const monthLeft = timeLeft.Month - timeNow.month  
+    const dayLeft = timeLeft.Day - timeNow.day 
+    const hourLeft =timeLeft.Hour - timeNow.hour 
+    const minuteLeft =timeLeft.Minute - timeNow.minute
+
+    // if(minuteLeft < 0 && monthLeft != 0 || minuteLeft == 0 && monthLeft == 0 ){
+    //     minuteLeft = 0
+    // }
+    
+    console.log(yearLeft,monthLeft,dayLeft,hourLeft,minuteLeft)
+
 }
