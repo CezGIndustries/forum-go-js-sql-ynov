@@ -1,72 +1,80 @@
-*{
+* {
     margin: 0;
     padding: 0;
 }
 
-#all{
+#all {
     display: flex;
     height: 100vh;
     width: 100%;
-    background-color:#08061A ;
+    background-color: #08061A;
     flex-direction: column;
 }
 
-header{
+header {
     display: flex;
     height: 10%;
     width: 100%;
     border-bottom: 3px solid #17152A;
 }
-#quitt-ico{
+
+#quitt-ico {
     display: flex;
     height: 100%;
     width: 30%;
     align-items: center;
     margin-left: 10px;
 }
+
 i {
     cursor: pointer;
 }
-.midd{
+
+.midd {
     display: flex;
     height: 90%;
     width: 100%;
     align-items: center;
     flex-direction: column;
 }
-#post{
+
+#post {
     display: flex;
     margin-top: 20%;
     height: 50%;
     width: 98%;
     flex-direction: column;
 }
-#top{
+
+#top {
     display: flex;
     height: 90%;
     width: 100%;
 
 }
-#left{
+
+#left {
     display: flex;
     height: 100%;
     width: 20%;
     justify-content: center;
     align-items: flex-start;
 }
-#img{
+
+#img {
     display: flex;
- 
+
     height: 60px;
     aspect-ratio: 1/1;
-    
+
 }
-img{
+
+img {
     border-radius: 50%;
 }
 
 
-#right{
+#right {
     display: flex;
     height: 100%;
     width: 80%;
@@ -74,7 +82,7 @@ img{
     align-items: center;
 }
 
-textarea{
+textarea {
     outline: none;
     display: flex;
     height: 100%;
@@ -88,34 +96,39 @@ textarea{
     padding-right: 39px;
     padding-top: 10px;
     font-size: 17px;
-    color:#cacaca;
+    color: #cacaca;
     background-color: transparent;
 }
-#bot{
+
+#bot {
     display: flex;
     height: 10%;
     width: 100%;
     border-top: 1px solid #17152A;
-   
+
 }
-#bot-left{
+
+#bot-left {
     display: flex;
     height: 100%;
     width: 50%;
     justify-content: center;
     align-items: center;
 }
-#bot-rigth{
+
+#bot-rigth {
     display: flex;
     height: 100%;
     width: 50%;
-    justify-content:flex-end;
+    justify-content: flex-end;
     align-items: center;
 }
-#media{
+
+#media {
     display: flex;
     justify-content: center;
 }
+
 #select-time {
     cursor: pointer;
     width: 75px;
@@ -128,7 +141,7 @@ textarea{
     text-align: center;
 }
 
-button{
+button {
     cursor: pointer;
     width: 75px;
     height: 25px;

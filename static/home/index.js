@@ -55,7 +55,9 @@ async function drawCrons(id, asc = 1) {
   if (cron.Comments === null) {
     cron.Comments = []
   }
-  // console.log(cron)
+  if (cron.Likes.includes(document.getElementsByClassName('logoutmid')[0].textContent)) {
+    // AJOUTER CLASSE AU POUCE
+  }
   if (cron.ParentID == -1) {
     soloCron(cron, asc)
   } else {
@@ -124,7 +126,7 @@ export function createCron(content, tag, timeLeft) {
     return res.json()
   }).then((res) => {
     if (res.ERROR == 403) {
-      window.location.href = `/`
+      window.location.href = `/connexion`
     } else {
       try {
         console.log("good !")
@@ -154,24 +156,17 @@ async function requestCron(id) {
 }
 
 function addLike(event) {
-  // (event.srcElement.attributes["id-cron"].value)
-  // const likeIncrement = document.getElementById("")
   // Like or unlike a cron, and change the like database
-
-  // AJOUTER OU ENLEVER LIKE EN JS
-
   event.stopPropagation()
   const id = event.srcElement.getAttribute('id-cron')
   const likeIncrement = document.getElementById(`${id}`)
-  const boolLike = likeIncrement.getAttribute("click")
-  if (boolLike === "false") {
-    likeIncrement.setAttribute("click", "true")
-    likeIncrement.innerText = (parseInt(likeIncrement.textContent) + 1).toString()
-  } else {
-    likeIncrement.innerText = (parseInt(likeIncrement.textContent) - 1).toString()
-    likeIncrement.setAttribute("click", "false")
-  }
-  // window.location.reload()
+
+  // SI POUCE A CLASS, ENLEVER 1 ET METTRE AUTRE CLASSE, SINON AJOUTER 1 ET METTRE CLASSE
+  // if (!liked) {
+  //   likeIncrement.innerText = (parseInt(likeIncrement.textContent) + 1).toString()
+  // } else {
+  //   likeIncrement.innerText = (parseInt(likeIncrement.textContent) - 1).toString()
+  // }
   return fetch('/cronosdb/POST/cron/LIKE', {
     method: 'POST',
     headers: {

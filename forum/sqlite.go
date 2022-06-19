@@ -15,12 +15,6 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 
-type UserLogin struct {
-	UniqueName string `json:"uniqueName"`
-	Email      string `json:"email"`
-	Password   string `json:"password"`
-}
-
 func DatabaseInit(folder string) *sql.DB {
 	cronosDB, err := sql.Open("sqlite3", folder+"cronosDB.db")
 	if err != nil {
@@ -30,9 +24,9 @@ func DatabaseInit(folder string) *sql.DB {
 	os.Chmod(folder+"cronosDB.db", 0770)
 
 	logUsers := `
-		CREATE TABLE IF NOT EXISTS logUsers (
+	CREATE TABLE IF NOT EXISTS logUsers (
 			UniqueName TEXT(32) NOT NULL PRIMARY KEY,
-			Email TEXT(256) NOT NULL,
+			Email TEXT(256) NOT NULL UNIQUE,
 			Password TEXT(64) NOT NULL
 		);
 	`
@@ -99,6 +93,12 @@ func DatabaseInit(folder string) *sql.DB {
 	return cronosDB
 }
 
+type UserLogin struct {
+	UniqueName string `json:"uniqueName"`
+	Email      string `json:"email"`
+	Password   string `json:"password"`
+}
+
 func CreateNewUser(cronosDB *sql.DB) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		var (
@@ -117,9 +117,31 @@ func CreateNewUser(cronosDB *sql.DB) http.HandlerFunc {
 	}
 }
 
+type GoogleUser struct {
+	UniqueName    string
+	ProfilPicture string
+}
+
+func GoogleLog(cronosDB *sql.DB) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		var (
+			GoogleUser GoogleUser
+		)
+		body, _ := ioutil.ReadAll(r.Body)
+		json.Unmarshal(body, &GoogleUser)
+		cronosDB.Exec(`INSERT INTO accountUsers (UniqueName, Status, Rank, ProfilPicture, Banner, Biography) VALUES (?, ?, ?, ?, ?, ?);`, GoogleUser.UniqueName, "Free", "member", GoogleUser.ProfilPicture, "./static/img/others/default_banner.png", "")
+		addSession(w, r, GoogleUser.UniqueName)
+	}
+}
+
 func HashPassword(password string) string {
 	bytes, _ := bcrypt.GenerateFromPassword([]byte(password), 14)
 	return string(bytes)
+}
+
+func CheckPasswordHash(password, hash string) bool {
+	err := bcrypt.CompareHashAndPassword([]byte(hash), []byte(password))
+	return err == nil
 }
 
 func DeleteUser(cronosDB *sql.DB) {
@@ -137,18 +159,21 @@ func ModifyUser(cronosDB *sql.DB, uniqueName string, User UserLogin) {
 func CheckUser(cronosDB *sql.DB) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		var (
-			uniqueName, email, password string
-			User                        UserLogin
+			uniqueName, password string
+			User                 UserLogin
 		)
 		body, _ := ioutil.ReadAll(r.Body)
 		json.Unmarshal(body, &User)
-		sqlStatement := fmt.Sprintf(`SELECT * FROM logUsers WHERE (UniqueName = '%s' OR Email = '%s') AND Password = '%s';`, User.UniqueName, User.Email, HashPassword(User.Password))
-		row := cronosDB.QueryRow(sqlStatement)
-		if err := row.Scan(&uniqueName, &email, &password); err != nil {
+		row := cronosDB.QueryRow(`SELECT UniqueName, Password FROM logUsers WHERE UniqueName = ? OR Email = ?`, User.UniqueName, User.Email)
+		if err := row.Scan(&uniqueName, &password); err != nil {
 			w.Write([]byte(`{ "ERROR":"404" }`))
 		} else {
-			addSession(w, r, User.UniqueName)
-			w.Write([]byte(`{}`))
+			if CheckPasswordHash(User.Password, password) {
+				addSession(w, r, User.UniqueName)
+				w.Write([]byte(`{}`))
+			} else {
+				w.Write([]byte(`{ "ERROR":"404" }`))
+			}
 		}
 	}
 }
@@ -187,12 +212,14 @@ func addSession(w http.ResponseWriter, r *http.Request, uniqueName string) {
 	session.Save(r, w)
 }
 
-// func leaveSession(w http.ResponseWriter, r *http.Request) {
-// 	session, _ := store.Get(r, "AUTH_TOKEN")
-// 	session.Values["authenticated"] = false
-// 	session.Values["uniqueName"] = ""
-// 	session.Save(r, w)
-// }
+func LeaveSession() http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		session, _ := store.Get(r, "AUTH_TOKEN")
+		session.Values["authenticated"] = false
+		session.Values["uniqueName"] = ""
+		session.Save(r, w)
+	}
+}
 
 func ValidSession(w http.ResponseWriter, r *http.Request) bool {
 	session, _ := store.Get(r, "AUTH_TOKEN")
@@ -320,7 +347,6 @@ func getComments(cronosDB *sql.DB, Cron Cron) [][]string {
 		rows.Scan(&id, &user)
 		comments = append(comments, addComment(cronosDB, id, []string{user}))
 	}
-
 	return comments
 }
 
@@ -370,48 +396,61 @@ type MultipleID struct {
 
 func GetMutlipleCronID(cronosDB *sql.DB) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		var (
-			IDs        MultipleID
-			UniqueName string
-			ID         int
-		)
-		body, _ := ioutil.ReadAll(r.Body)
-		json.Unmarshal(body, &IDs)
-		session, _ := store.Get(r, "AUTH_TOKEN")
-		UniqueName = session.Values["uniqueName"].(string)
-		rows, _ := cronosDB.Query(`SELECT C.ID FROM cron AS C
-			LEFT JOIN follow AS F ON C.Creator = F.User
-			LEFT JOIN tagCron AS TC ON C.ID = TC.ID
-			LEFT JOIN tagUsers AS TU ON TU.User = ?
-			WHERE C.Creator = ? OR F.FollowUser = ? OR TU.Tag = TC.Tag
-			ORDER BY C.ID DESC;`, UniqueName, UniqueName, UniqueName, UniqueName)
-		defer rows.Close()
-		i := 0
-		for rows.Next() && i < IDs.To {
-			if IDs.From <= i {
-				rows.Scan(&ID)
-				IDs.IDs = append(IDs.IDs, ID)
+		if ValidSession(w, r) {
+			var (
+				IDs        MultipleID
+				UniqueName string
+				ID         int
+			)
+			body, _ := ioutil.ReadAll(r.Body)
+			json.Unmarshal(body, &IDs)
+			session, _ := store.Get(r, "AUTH_TOKEN")
+			UniqueName = session.Values["uniqueName"].(string)
+			rows, _ := cronosDB.Query(`SELECT C.ID FROM cron AS C
+				LEFT JOIN follow AS F ON C.Creator = F.User
+				LEFT JOIN tagCron AS TC ON C.ID = TC.ID
+				LEFT JOIN tagUsers AS TU ON TU.User = ?
+				WHERE C.Creator = ? OR F.FollowUser = ? OR TU.Tag = TC.Tag
+				ORDER BY C.ID DESC;`, UniqueName, UniqueName, UniqueName, UniqueName)
+			defer rows.Close()
+			i := 0
+			for rows.Next() && i < IDs.To {
+				if IDs.From <= i {
+					rows.Scan(&ID)
+					IDs.IDs = append(IDs.IDs, ID)
+				}
+				i++
 			}
-			i++
+			if i < IDs.To {
+				IDs.IDs = append(IDs.IDs, -1)
+			}
+			response, _ := json.Marshal(IDs.IDs)
+			w.Write(response)
+		} else {
+			w.Write([]byte(`{ "ERROR": 404 }`))
 		}
-		if i < IDs.To {
-			IDs.IDs = append(IDs.IDs, -1)
-		}
-		response, _ := json.Marshal(IDs.IDs)
-		w.Write(response)
 	}
 }
 
 func GoDeleteCron(cronosDB *sql.DB) {
 	for {
+		var (
+			ID  int
+			IDs []int
+		)
 		date := time.Now()
-		fmt.Println(date.Format("2006 01 02 15 04"))
-		fmt.Println(date.Format("2006")) // Année
-		fmt.Println(date.Format("01"))   // Mois
-		fmt.Println(date.Format("02"))   // Jour
-		fmt.Println(date.Format("15"))   // Heure
-		fmt.Println(date.Format("04"))   // Minute
-
-		time.Sleep(time.Second * 5)
+		rows, _ := cronosDB.Query(`SELECT ID FROM timeLeft WHERE Year <= ? AND Month <= ? AND Day <= ? AND Hour <= ? AND Minute <= ?`, date.Format("2006"), date.Format("01"), date.Format("02"), date.Format("15"), date.Format("04"))
+		for rows.Next() {
+			rows.Scan(&ID)
+			IDs = append(IDs, ID)
+		}
+		rows.Close()
+		for _, i := range IDs {
+			cronosDB.Exec(`DELETE FROM cron WHERE ID = ?`, i)
+			cronosDB.Exec(`DELETE FROM timeLeft WHERE ID = ?`, i)
+			cronosDB.Exec(`DELETE FROM tagCron WHERE ID = ?`, i)
+			cronosDB.Exec(`DELETE FROM cronLike WHERE ID = ?`, i)
+		}
+		time.Sleep(time.Second * 30)
 	}
 }

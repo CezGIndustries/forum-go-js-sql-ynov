@@ -1,4 +1,4 @@
-import { SetTime, timeLeftFunciton  } from "./index.js"
+import { SetTime, timeLeftFunciton } from "./index.js"
 
 export async function soloCron(cron, asc) {
     const allCron = document.querySelector('.div-all-article')
@@ -56,16 +56,16 @@ export async function soloCron(cron, asc) {
         </div>
     </div>  
     `
-    if(asc == 1) {
+    if (asc == 1) {
         allCron.innerHTML = newCron + allCron.innerHTML
     } else {
         allCron.innerHTML += newCron
     }
 }
 
-export async function parentToChildCron (parentCron, childCron, asc) {
-const allCron = document.querySelector('.div-all-article')
-const newCron = `
+export async function parentToChildCron(parentCron, childCron, asc) {
+    const allCron = document.querySelector('.div-all-article')
+    const newCron = `
     <div id-cron="${parentCron.ID}" class="article">
         <div class="user-wrapper">
             <div class="image-user">
@@ -134,16 +134,16 @@ const newCron = `
         </div>
     </div>
     `
-    if(asc == 1) {
+    if (asc == 1) {
         allCron.innerHTML = newCron + allCron.innerHTML
     } else {
         allCron.innerHTML += newCron
     }
 }
 
-export async function grantParentToParentToChildCron (fatherCron, parentCron, childCron, asc) {
-const allCron = document.querySelector('.div-all-article')
-const newCron = `
+export async function grantParentToParentToChildCron(fatherCron, parentCron, childCron, asc) {
+    const allCron = document.querySelector('.div-all-article')
+    const newCron = `
     <div id-cron="${fatherCron.ID}" class="article">
         <div class="child-to-child">
             <div class="child-to-child-top">
@@ -226,7 +226,7 @@ const newCron = `
         </div>
     </div>
     `
-    if(asc == 1) {
+    if (asc == 1) {
         allCron.innerHTML = newCron + allCron.innerHTML
     } else {
         allCron.innerHTML += newCron

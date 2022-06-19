@@ -36,7 +36,9 @@ func main() {
 	Env.Router.HandleFunc("/{username}/cron/{idcron}", forum.CronPage())
 
 	Env.Router.HandleFunc("/cronosdb/POST/logUsers/CHECK", forum.CheckUser(Env.DB)).Methods("POST")
+	Env.Router.HandleFunc("/cronosdb/POST/logUsers/DISCONNECT", forum.LeaveSession()).Methods("POST")
 	Env.Router.HandleFunc("/cronosdb/POST/logUsers/REGISTER", forum.CreateNewUser(Env.DB)).Methods("POST")
+	Env.Router.HandleFunc("/cronosdb/POST/logUsers/GOOGLE_REGISTER", forum.GoogleLog(Env.DB)).Methods("POST")
 
 	Env.Router.HandleFunc("/cronosdb/POST/userInfo/GET", forum.GetUser(Env.DB)).Methods("POST")
 
@@ -47,10 +49,18 @@ func main() {
 	Env.Router.HandleFunc("/cronosdb/POST/cron/DELETE", forum.DeleteCron(Env.DB)).Methods("POST")
 	Env.Router.HandleFunc("/cronosdb/POST/cron/LIKE", forum.CreateLike(Env.DB)).Methods("POST")
 
+	Env.Router.HandleFunc("/cronosdb/POST/contact/REQUEST", temp(Env.DB)).Methods("POST")
+
 	credentials := handlers.AllowCredentials()
 	origins := handlers.AllowedOrigins([]string{"http://localhost:8080"})
 
-	// go forum.GoDeleteCron(Env.DB)
+	go forum.GoDeleteCron(Env.DB)
 
 	log.Fatal(http.ListenAndServe(":8080", handlers.CORS(credentials, origins)(Env.Router)))
+}
+
+func temp(cronosDB *sql.DB) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+
+	}
 }

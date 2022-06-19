@@ -3,7 +3,6 @@ const signup = document.getElementById("signupform");
 const mbg = document.getElementById("mainbuttongroup");
 const githubLogin = document.getElementById("login-github")
 
-
 function register() {
     connect.style.left = "-400px";
     signup.style.left = "50px";
@@ -16,20 +15,21 @@ function login() {
     mbg.style.left = "0";
 }
 
-githubLogin.onclick = function(){
+githubLogin.onclick = function () {
     var url = "https://api.github.com/user";
 
     var xhr = new XMLHttpRequest();
     xhr.open("GET", url);
-    
+
     xhr.setRequestHeader("Authorization", "Basic dXNlcm5hbWU6dG9rZW4=");
-    
+
     xhr.onreadystatechange = function () {
-       if (xhr.readyState === 4) {
-          console.log(xhr.status);
-          console.log(xhr.responseText);
-       }};
-    
+        if (xhr.readyState === 4) {
+            console.log(xhr.status);
+            console.log(xhr.responseText);
+        }
+    };
+
     xhr.send();
 }
 // console.log(githubLogin)
@@ -48,10 +48,10 @@ const confirmLogin = () => {
     }).then((res) => {
         return res.json()
     }).then((res) => {
-        if(res.ERROR == 404) {
+        if (res.ERROR == 404) {
             // METTRE ERROR
         } else {
-            window.location.href= '/home'
+            window.location.href = '/home'
         }
     })
 }
@@ -68,7 +68,7 @@ const confirmRegister = () => {
     // --------------
 
     // Condition that check the validity of the values
-    if(pseudoIsGood(pseudo) && validateEmail(email) && passwordIsGood(password, confirmPassword)){
+    if (pseudoIsGood(pseudo) && validateEmail(email) && passwordIsGood(password, confirmPassword)) {
         fetch('/cronosdb/POST/logUsers/REGISTER', {
             method: 'POST',
             header: {
@@ -80,9 +80,9 @@ const confirmRegister = () => {
                 password: password,
             })
         }).then((res) => {
-                return res.json()
+            return res.json()
         }).then((res) => {
-            if(res.ERROR == '409') {
+            if (res.ERROR == '409') {
                 // METTRE ERROR
             } else {
                 window.location.href = '/home'
@@ -103,10 +103,10 @@ function passwordIsGood(password, confirmPassword) {
 
 function validateEmail(email) {
     return email.match(/^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/) !== null
-  }
+}
 
 
-function onSignIn(googleUser){
+function onSignIn(googleUser) {
     console.log('prout')
     console.log(JSON.stringify(googleUser.getBasicProfile))
 }
