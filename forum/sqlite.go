@@ -347,7 +347,6 @@ func getComments(cronosDB *sql.DB, Cron Cron) [][]string {
 		rows.Scan(&id, &user)
 		comments = append(comments, addComment(cronosDB, id, []string{user}))
 	}
-
 	return comments
 }
 

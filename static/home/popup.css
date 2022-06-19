@@ -64,7 +64,7 @@ hr {
 }
 
 span {
-    color:#f970fe;
+    color: #f970fe;
     font-style: italic;
     font-weight: bold;
 }
@@ -118,7 +118,7 @@ span {
     font-size: 17px;
     color: #cacaca;
     border: 1px solid #b33ced;
-    background: linear-gradient(135deg, rgba(249,112,254,1) 15%, rgba(179,60,237,1) 100%);
+    background: linear-gradient(135deg, rgba(249, 112, 254, 1) 15%, rgba(179, 60, 237, 1) 100%);
     border-radius: 30px;
     padding: 8px;
     transition: 0.2s;
@@ -127,7 +127,8 @@ span {
 .button-confirm-selection:after {
     content: '»';
     position: absolute;
-    opacity: 0; /*mettre à 1 pr l'afficher*/
+    opacity: 0;
+    /*mettre à 1 pr l'afficher*/
     right: 0;
     transition: 0.2s;
 }
@@ -154,6 +155,7 @@ span {
         margin-bottom: 10px;
         font-size: 24px;
     }
+
     .button-confirm-selection:hover:after {
         opacity: 1;
         right: 30px;

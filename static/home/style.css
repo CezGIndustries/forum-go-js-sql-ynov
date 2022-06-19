@@ -366,15 +366,17 @@ body {
     color: #cacaca;
 
 }
-#more-text{
+
+#more-text {
     font-size: 20px;
     padding-right: 2px;
 }
-#more i{
+
+#more i {
     font-size: 20px;
 }
 
-#more:hover{
+#more:hover {
     text-decoration: underline;
 }
 
@@ -399,7 +401,7 @@ body {
     display: none;
 }
 
-@media only screen and (max-width: 830px) {
+@media only screen and (max-width: 800px) {
     .midcolumn {
         margin-left: 15%;
         width: 80%;
@@ -413,7 +415,7 @@ body {
     }
 }
 
-@media only screen and (max-width: 580px) {
+@media only screen and (max-width: 500px) {
     .allcolumns {
         width: 100%;
         align-items: flex-end;
@@ -509,18 +511,21 @@ body {
     .time p {
         font-size: 13px;
     }
+
     #more {
         display: flex;
         justify-content: center;
         align-items: center;
         color: #cacaca;
-    
+
     }
-    #more-text{
+
+    #more-text {
         font-size: 15px;
         padding-right: 2px;
     }
-    #more i{
+
+    #more i {
         font-size: 10px;
     }
 

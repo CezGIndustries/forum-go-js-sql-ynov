@@ -5,12 +5,12 @@
 }
 
 #background {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 100vh;
-        width: 100%;
-        background-color: #08061a;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    width: 100%;
+    background-color: #08061a;
 }
 
 .loginsignupform {
@@ -29,7 +29,7 @@
     align-items: center;
     justify-content: center;
 
- 
+
 }
 
 .loginsignupbutton {
@@ -51,7 +51,7 @@
     border-radius: 30px;
     outline: none;
     color: #cacaca;
-    
+
 }
 
 #mainbuttongroup {
@@ -61,7 +61,7 @@
     width: 110px;
     height: 100%;
     border-radius: 30px;
-    background: linear-gradient(135deg, rgba(249,112,254,1) 15%, rgba(179,60,237,1) 100%);
+    background: linear-gradient(135deg, rgba(249, 112, 254, 1) 15%, rgba(179, 60, 237, 1) 100%);
     transition: 0.5s ease;
 }
 
@@ -93,7 +93,7 @@ h4 {
     outline: none;
     background: transparent;
     color: #cacaca;
-    
+
 }
 
 .submitbutton {
@@ -103,12 +103,12 @@ h4 {
     margin: auto;
     margin-top: 25px;
     padding: 10px 30px;
-    background: linear-gradient(135deg, rgba(249,112,254,1) 15%, rgba(179,60,237,1) 100%);
+    background: linear-gradient(135deg, rgba(249, 112, 254, 1) 15%, rgba(179, 60, 237, 1) 100%);
     border: 1px solid #b33ced;
     border-radius: 30px;
     outline: none;
     margin-bottom: 28px;
-    
+
     color: #cacaca;
     transition: 0.4s;
 }
@@ -116,12 +116,13 @@ h4 {
 .submitbutton:after {
     content: '»';
     position: absolute;
-    opacity: 0; /*mettre à 1 pr l'afficher*/
+    opacity: 0;
+    /*mettre à 1 pr l'afficher*/
     right: 0;
     transition: 0.4s;
 }
 
-.submitbutton:hover{
+.submitbutton:hover {
     padding-right: 28px;
     padding-left: -31px;
 }
@@ -144,7 +145,7 @@ span {
 .iconrow {
     display: flex;
     flex-direction: column;
-    justify-content:center;
+    justify-content: center;
     align-items: center;
     margin-bottom: 20px;
 }
@@ -176,7 +177,7 @@ p a:link {
     text-align: center;
     text-decoration: none;
     color: #cacaca;
-   
+
 }
 
 p a:hover {
@@ -192,18 +193,19 @@ p a:hover {
     left: 450px;
 }
 
-.buttonDiv{
+.buttonDiv {
     border-radius: 26px;
     margin-top: 20px;
 }
-#no-connexion{
+
+#no-connexion {
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
 @media only screen and (max-width: 400px) {
-    #background{
+    #background {
         display: flex;
         justify-content: center;
         align-items: center;
@@ -211,7 +213,8 @@ p a:hover {
         width: 100%;
 
     }
-    .loginsignupform{
+
+    .loginsignupform {
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -220,7 +223,7 @@ p a:hover {
         border-radius: 0px;
     }
 
-    .logo{
+    .logo {
         display: flex;
         height: auto;
         width: 100%;

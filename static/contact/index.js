@@ -28,24 +28,24 @@ document.getElementById('which-contact').addEventListener('change', () => {
 document.getElementById('submit').addEventListener('click', () => {
     errorWhy.style.display = 'none'
     errorEmail.style.display = 'none'
-    if(why.value.match(/^\s+\w|\w/gi) === null) {
+    if (why.value.match(/^\s+\w|\w/gi) === null) {
         errorWhy.style.display = 'block'
         return
     }
-    if(noValidateEmail(email.value)) {
+    if (noValidateEmail(email.value)) {
         errorEmail.style.display = 'block'
         return
     }
     why.value = why.value.replace(/\s+/gi, " ")
-    
+
     fetch('/cronosdb/POST/contact/REQUEST', {
-        method:'POST',
+        method: 'POST',
         headers: {
-          "content-type": "application/json"
+            "content-type": "application/json"
         },
         body: JSON.stringify({
-          content: why.value,
-          mail: email.value,
+            content: why.value,
+            mail: email.value,
         })
     })
 

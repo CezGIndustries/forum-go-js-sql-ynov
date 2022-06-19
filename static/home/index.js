@@ -2,13 +2,13 @@ import { grantParentToParentToChildCron, parentToChildCron, soloCron } from "./t
 
 let NUMBER_OF_CRON = 0
 
-document.querySelector('body').onload = async function() {
+document.querySelector('body').onload = async function () {
   // Function that while be load when page is load
   console.log('Page is loaded.')
   document.getElementById('more').addEventListener('click', async () => {
     const cron = await printCrons()
-    for(let i of cron) {
-      if(i == -1) {
+    for (let i of cron) {
+      if (i == -1) {
         document.getElementsByClassName('midcolumn')[0].removeChild(document.getElementById('more'))
         return
       }
@@ -17,8 +17,8 @@ document.querySelector('body').onload = async function() {
     }
   })
   const cron = await printCrons()
-  for(let i of cron) {
-    if(i == -1) {
+  for (let i of cron) {
+    if (i == -1) {
       document.getElementsByClassName('midcolumn')[0].removeChild(document.getElementById('more'))
       return
     }
@@ -31,11 +31,11 @@ document.getElementById('button-post').addEventListener('click', () => {
   // Button that allow user to submit a cron
   const content = document.getElementById("text-value-entry").value
   document.getElementById("text-value-entry").value = ''
-  if(content !== '') {
-      const timeEntry = parseInt(document.getElementById("select-time").value)
-      const timeLeft = timeLeftFunciton(timeEntry, SetTime())
-      const tag = content.match(/(#\w+)/gm)
-      createCron(content, tag, timeLeft)
+  if (content !== '') {
+    const timeEntry = parseInt(document.getElementById("select-time").value)
+    const timeLeft = timeLeftFunciton(timeEntry, SetTime())
+    const tag = content.match(/(#\w+)/gm)
+    createCron(content, tag, timeLeft)
   }
 })
 
@@ -43,28 +43,30 @@ function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-async function drawCrons(id, asc=1) {
+async function drawCrons(id, asc = 1) {
   // While request and draw cron depends on if its a main cron or a comment
   const cron = await requestCron(id)
-  if(cron.tag === null){
+  if (cron.tag === null) {
     cron.tag = ''
   }
-  if(cron.Likes === null){
+  if (cron.Likes === null) {
     cron.Likes = []
   }
-  if(cron.Comments === null){
+  if (cron.Comments === null) {
     cron.Comments = []
   }
-  // console.log(cron)
-  if(cron.ParentID == -1) {
+  if (cron.Likes.includes(document.getElementsByClassName('logoutmid')[0].textContent)) {
+    // AJOUTER CLASSE AU POUCE
+  }
+  if (cron.ParentID == -1) {
     soloCron(cron, asc)
   } else {
     const parentCron = await requestCron(cron.ParentID)
-    if(cron.ParendID == -1) {
+    if (cron.ParendID == -1) {
       parentToChildCron(parentCron, cron, asc)
     } else {
       let fatherCron = await requestCron(parentCron.ParentID)
-      while(fatherCron.ParendID != -1) {
+      while (fatherCron.ParendID != -1) {
         fatherCron = await requestCron(fatherCron.ParentID)
       }
       grantParentToParentToChildCron(fatherCron, parentCron, cron, asc)
@@ -78,29 +80,29 @@ function everyAddEventListener() {
   // Add every listener to the div
   const allLikes = document.querySelectorAll('.fa-thumbs-o-up')
   const allCronID = document.querySelectorAll('.article')
-  for(let likes of allLikes) {
+  for (let likes of allLikes) {
     likes.addEventListener('click', addLike)
-    
+
   }
-  for(let CronID of allCronID) {
+  for (let CronID of allCronID) {
     CronID.addEventListener('click', redirectCron)
   }
-} 
+}
 
 async function printCrons() {
   return fetch('/cronosdb/POST/cron/MULTIPLE', {
-    method:'POST',
+    method: 'POST',
     headers: {
       "content-type": "application/json"
     },
     body: JSON.stringify({
-        From: Number(NUMBER_OF_CRON),
-        To: Number(NUMBER_OF_CRON) + 10,
+      From: Number(NUMBER_OF_CRON),
+      To: Number(NUMBER_OF_CRON) + 10,
     })
   }).then((res) => {
     return res.json()
   }).then((res) => {
-    if(res === null) {
+    if (res === null) {
       return [-1]
     }
     return res
@@ -110,7 +112,7 @@ async function printCrons() {
 export function createCron(content, tag, timeLeft) {
   // Add cron to database
   fetch('/cronosdb/POST/cron/CREATE', {
-    method:'POST',
+    method: 'POST',
     headers: {
       "content-type": "application/json"
     },
@@ -123,78 +125,71 @@ export function createCron(content, tag, timeLeft) {
   }).then((res) => {
     return res.json()
   }).then((res) => {
-    if(res.ERROR == 403) {
+    if (res.ERROR == 403) {
       window.location.href = `/connexion`
     } else {
-        try {
-          console.log("good !")
-          window.location.href = "/home"
-        }catch{
-          drawCrons(res)
-        }
+      try {
+        console.log("good !")
+        window.location.href = "/home"
+      } catch {
+        drawCrons(res)
+      }
     }
   })
 }
 
 async function requestCron(id) {
   // Ask to database every information on a cron
-  return fetch('/cronosdb/POST/cron/GET' , {
-    method:'POST',
+  return fetch('/cronosdb/POST/cron/GET', {
+    method: 'POST',
     headers: {
-        "content-type": "application/json"
+      "content-type": "application/json"
     },
     body: JSON.stringify({
       id: id,
     })
   }).then((res) => {
     return res.json()
-  }).then((res) =>{
+  }).then((res) => {
     return res
   })
 }
 
 function addLike(event) {
-  // (event.srcElement.attributes["id-cron"].value)
-  // const likeIncrement = document.getElementById("")
   // Like or unlike a cron, and change the like database
-
-  // AJOUTER OU ENLEVER LIKE EN JS
-
   event.stopPropagation()
   const id = event.srcElement.getAttribute('id-cron')
   const likeIncrement = document.getElementById(`${id}`)
-  const boolLike = likeIncrement.getAttribute("click")
-  if(boolLike === "false"){
-    likeIncrement.setAttribute("click","true")
-    likeIncrement.innerText =  (parseInt(likeIncrement.textContent)+1).toString()
-  }else{
-    likeIncrement.innerText =  (parseInt(likeIncrement.textContent)-1).toString()
-    likeIncrement.setAttribute("click","false")
-  }
-  // window.location.reload()
-  return fetch('/cronosdb/POST/cron/LIKE' , {
-    method:'POST',
+
+  // SI POUCE A CLASS, ENLEVER 1 ET METTRE AUTRE CLASSE, SINON AJOUTER 1 ET METTRE CLASSE
+  // if (!liked) {
+  //   likeIncrement.innerText = (parseInt(likeIncrement.textContent) + 1).toString()
+  // } else {
+  //   likeIncrement.innerText = (parseInt(likeIncrement.textContent) - 1).toString()
+  // }
+  return fetch('/cronosdb/POST/cron/LIKE', {
+    method: 'POST',
     headers: {
-        "content-type": "application/json"
+      "content-type": "application/json"
     },
     body: JSON.stringify({
-    id: Number(id),
+      id: Number(id),
     })
   })
-  
+
 }
 
 function createComment(content, tag, parendID) {
   // Add cron comment to database
   fetch('/cronosdb/POST/cron/CREATE', {
-    method:'POST',
+    method: 'POST',
     headers: {
       "content-type": "application/json"
     },
     body: JSON.stringify({
       content: content,
       timeLeft: {
-          year: 0
+        year: 0
       },
       tag: tag,
       parentID: parendID,
@@ -202,31 +197,31 @@ function createComment(content, tag, parendID) {
   }).then((res) => {
     return res.json()
   }).then((res) => {
-      // drawCrons(res.ID)
-      // A VOIR
+    // drawCrons(res.ID)
+    // A VOIR
   })
 }
 
 function redirectCron(event) {
   // Redirect on cron if cron exist
-  for(let i of event.path) {
-    if(!(i.getAttribute('id-cron') === null)) {
-      return fetch('/cronosdb/POST/cron/REDIRECT',{
-        method:'POST',
+  for (let i of event.path) {
+    if (!(i.getAttribute('id-cron') === null)) {
+      return fetch('/cronosdb/POST/cron/REDIRECT', {
+        method: 'POST',
         headers: {
           "content-type": "application/json"
-      },
-      body: JSON.stringify({
-        id: Number(i.getAttribute('id-cron')),
+        },
+        body: JSON.stringify({
+          id: Number(i.getAttribute('id-cron')),
         })
       }).then((res) => {
-          return res.json()
+        return res.json()
       }).then((res) => {
-          if(res.ERROR != "404") {
-            window.location.href = `/${res.User}/cron/${res.ID}`
-          } else {
-            location.reload()
-          }
+        if (res.ERROR != "404") {
+          window.location.href = `/${res.User}/cron/${res.ID}`
+        } else {
+          location.reload()
+        }
       })
     }
   }
@@ -237,8 +232,8 @@ export function SetTime() {
   const timeLeft = {}
   let date = new Date()
   timeLeft.year = date.getFullYear();
-  timeLeft.month =  date.getMonth()+1
-  timeLeft.day =  date.getDate();
+  timeLeft.month = date.getMonth() + 1
+  timeLeft.day = date.getDate();
   timeLeft.hour = date.getHours();
   timeLeft.minute = date.getMinutes();
   return timeLeft
@@ -249,40 +244,40 @@ export function timeLeftFunciton(timeLeft, timeNow) {
   const monthe30 = "4-6-9"
   const monthe31 = "1-3-5-7-8-10-12"
   timeNow.minute += timeLeft
-  if(timeNow.minute >= 60) {
+  if (timeNow.minute >= 60) {
     timeNow.hour += Math.floor(timeNow.minute / 60)
     timeNow.minute %= 60
-    if(timeNow.hour >= 24) {
+    if (timeNow.hour >= 24) {
       timeNow.day += Math.floor(timeNow.hour / 24)
       timeNow.hour %= 24
-      while(timeNow.day > 28) {
-        if(timeNow.month > 12) {
+      while (timeNow.day > 28) {
+        if (timeNow.month > 12) {
           timeNow.month = 1
           timeNow.year += 1
-        } else if(timeNow.month === 8) {
-          if(timeNow.day > 31) {
+        } else if (timeNow.month === 8) {
+          if (timeNow.day > 31) {
             timeNow.day -= 31
             timeNow.month += 1
           } else {
             break
           }
-        } else if(timeNow.month === 2) {
-          if(timeNow.year % 4 === 0 && (timeNow.year % 400 === 0 || timeNow.year % 100 !== 0)) {
+        } else if (timeNow.month === 2) {
+          if (timeNow.year % 4 === 0 && (timeNow.year % 400 === 0 || timeNow.year % 100 !== 0)) {
             timeNow.day -= 29
             timeNow.month += 1
           } else {
             timeNow.day -= 28
             timeNow.month += 1
           }
-        } else if(monthe30.includes(timeNow.month) || timeNow.month === 11) {
-          if(timeNow.day > 30) {
+        } else if (monthe30.includes(timeNow.month) || timeNow.month === 11) {
+          if (timeNow.day > 30) {
             timeNow.day -= 30
             timeNow.month += 1
           } else {
             break
           }
-        } else if(monthe31.includes(timeNow.month) ) {
-          if(timeNow.day > 31) {
+        } else if (monthe31.includes(timeNow.month)) {
+          if (timeNow.day > 31) {
             timeNow.day -= 31
             timeNow.month += 1
           } else {
