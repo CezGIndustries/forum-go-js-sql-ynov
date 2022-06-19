@@ -16,8 +16,53 @@
 
 
 <body>
+    <script>
+
+    function previewImage() {
+        var file = document.getElementById("file").files;
+        if (file.length > 0) {
+            var fileReader = new FileReader();
+ 
+            fileReader.onload = function (event) {
+                document.getElementById("img-popup").setAttribute("src", event.target.result);
+                console.log(event.target.result)
+
+            };
+            
+             fileReader.readAsDataURL(file[0])
+        }
+        
+    }
+
+    </script>
+</form>
     <div class="allcolumns">
+        <div id="edit-box" >
+            <div id="popup">
+                <div id="top-popup">
+                    <div id="popup-banner">
+                        
+                    </div>
+                    <div id="popup-img">
+                        
+                    </div>
+                </div>
+                <div id="mid-popup">
+                    <div id="popup-name"></div>
+                    <div id="popup-bio"></div>
+
+                </div>
+                <div id="bot-popup">
+                    <div id="popup-err"></div>
+                    <div id="popup-retour"></div>
+                    <div id="popup-confirm"></div>
+
+
+                </div>
+            </div>
+        </div>
         {{template "LeftColumn" }}
+       
         <div class="midcolumn">
             <div id="top">
                 <div id="banner-div">
@@ -58,23 +103,18 @@
                 </div>
             </div>
             <div id="mid">
-                <div class="btn-cron" id="my-post">
-                    <p class="text-btn" id="myPost">Mes crons</p>
+                <div class="btn-cron active"  id="my-post">
+                    <p class="text-btn " id="myPost">Mes crons</p>
                 </div>
                 <div class="btn-cron" id="friend-post">
-                    <p class="text-btn" id="FriendlyPost">Amis</p>
-
+                    <p  class="text-btn" id="FriendlyPost">Amis</p>
                 </div>
-                <div class="btn-cron" id="tag-post">
-                    <p class="text-btn" clicl id="interestPost">Interets</p>
-
+                <div class="btn-cron " id="tag-post">
+                    <p  class="text-btn" clicl id="interestPost">Interets</p>
                 </div>
             </div>
             <div id="bot">
-
             </div>
-
-
         </div>
         {{template "RightColumn" }}
     </div>
