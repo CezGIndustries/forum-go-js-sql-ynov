@@ -45,7 +45,10 @@ function sleep(ms) {
 
 async function drawCrons(id, asc = 1) {
   // While request and draw cron depends on if its a main cron or a comment
-  const cron = await requestCron(id)
+  const cron = await requestCron(id)  
+  if (cron.timeLeft.Minute < 10) {
+    cron.timeLeft.Minute = String(`0${cron.timeLeft.Minute}`)
+  }
   if (cron.tag === null) {
     cron.tag = ''
   }
@@ -54,9 +57,6 @@ async function drawCrons(id, asc = 1) {
   }
   if (cron.Comments === null) {
     cron.Comments = []
-  }
-  if (cron.Likes.includes(document.getElementsByClassName('logoutmid')[0].textContent)) {
-    // AJOUTER CLASSE AU POUCE
   }
   if (cron.ParentID == -1) {
     soloCron(cron, asc)
@@ -79,8 +79,12 @@ async function drawCrons(id, asc = 1) {
 function everyAddEventListener() {
   // Add every listener to the div
   const allLikes = document.querySelectorAll('.fa-thumbs-o-up')
+  const allLiked = document.querySelectorAll('.fa-thumbs-up')
   const allCronID = document.querySelectorAll('.article')
   for (let likes of allLikes) {
+    likes.addEventListener('click', addLike)
+  }
+  for (let likes of allLiked) {
     likes.addEventListener('click', addLike)
 
   }
@@ -129,8 +133,7 @@ export function createCron(content, tag, timeLeft) {
       window.location.href = `/connexion`
     } else {
       try {
-        console.log("good !")
-        window.location.href = "/home"
+        window.location.href = "/home" // A REVOIR
       } catch {
         drawCrons(res)
       }
@@ -161,12 +164,14 @@ function addLike(event) {
   const id = event.srcElement.getAttribute('id-cron')
   const likeIncrement = document.getElementById(`${id}`)
 
-  // SI POUCE A CLASS, ENLEVER 1 ET METTRE AUTRE CLASSE, SINON AJOUTER 1 ET METTRE CLASSE
-  // if (!liked) {
-  //   likeIncrement.innerText = (parseInt(likeIncrement.textContent) + 1).toString()
-  // } else {
-  //   likeIncrement.innerText = (parseInt(likeIncrement.textContent) - 1).toString()
-  // }
+  const liked = event.srcElement.classList[1] === "fa-thumbs-up"
+  if (!liked) {
+    event.srcElement.classList.replace('fa-thumbs-o-up', 'fa-thumbs-up')
+    likeIncrement.innerText = (parseInt(likeIncrement.textContent) + 1).toString()
+  } else {
+    event.srcElement.classList.replace('fa-thumbs-up', 'fa-thumbs-o-up')
+    likeIncrement.innerText = (parseInt(likeIncrement.textContent) - 1).toString()
+  }
   return fetch('/cronosdb/POST/cron/LIKE', {
     method: 'POST',
     headers: {
