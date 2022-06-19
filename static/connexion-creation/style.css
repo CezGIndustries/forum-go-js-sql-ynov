@@ -1,27 +1,24 @@
-@import url('https://fonts.googleapis.com/css2?family=Raleway:wght@100&family=Red+Hat+Mono:ital,wght@1,300&display=swap');
-
 * {
     margin: 0;
     padding: 0;
-    box-sizing: border-box;
-    font-family: 'Raleway', sans-serif;
+    overflow: hidden;
 }
 
 #background {
-    background-color: #08061a;
-    position: absolute;
-    height: 100%;
-    width: 100%;
-    display: flex;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        width: 100%;
+        background-color: #08061a;
 }
-
 
 .loginsignupform {
     position: relative;
-    margin: 2.5% auto;
-    padding: 2px;
+    margin: 1.5% auto;
+    padding: 5px;
     width: 380px;
-    height: 620px;
+    height: 680px;
     background: #17152a;
     border-radius: 30px;
     overflow: hidden;
@@ -31,46 +28,41 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    position: relative;
-    width: 100%;
-    height: 50%;
-    top: -70px;
+
+ 
 }
 
 .loginsignupbutton {
     position: relative;
-    display: flex;
-    width: 80%;
-    margin: 10px auto;
+    width: 220px;
+    margin: 200px auto;
     border-radius: 30px;
     border: 1px solid #b33ced;
     background: transparent;
-    top: -160px;
+    top: -140px;
 }
 
 .mainbuttons {
     position: relative;
-    display: flex;
     cursor: pointer;
-    padding: 10px 30px;
+    padding: 10px 20px;
     border: 0;
     background: transparent;
     border-radius: 30px;
     outline: none;
     color: #cacaca;
-    width: 100%;
+    
 }
 
 #mainbuttongroup {
     position: absolute;
-    display: flex;
     top: 0;
     left: 0;
     width: 110px;
     height: 100%;
     border-radius: 30px;
     background: linear-gradient(135deg, rgba(249,112,254,1) 15%, rgba(179,60,237,1) 100%);
-    transition: 0.3s ease;
+    transition: 0.5s ease;
 }
 
 h4 {
@@ -80,20 +72,18 @@ h4 {
     margin-bottom: 15px;
     color: #cacaca;
     font-family: 'orkneyregular';
-    display: flex;
-    justify-content: center;
+    text-align: center;
 }
 
 .input-group {
     position: absolute;
-    top: 260px;
+    top: 280px;
     width: 280px;
-    transition: 0.3s ease;
+    transition: 0.5s ease;
 }
 
 .input-field {
     width: 100%;
-    display: flex;
     padding: 10px 0;
     margin: 5px 0;
     border-left: 0;
@@ -102,12 +92,13 @@ h4 {
     border-bottom: 1px solid #f970fe;
     outline: none;
     background: transparent;
-    color: #cacaca; 
+    color: #cacaca;
+    
 }
 
 .submitbutton {
     cursor: pointer;
-    display: flex; /*anciennement block*/
+    display: block;
     width: 85%;
     margin: auto;
     margin-top: 25px;
@@ -117,8 +108,9 @@ h4 {
     border-radius: 30px;
     outline: none;
     margin-bottom: 28px;
+    
     color: #cacaca;
-    transition: 0.2s;
+    transition: 0.4s;
 }
 
 .submitbutton:after {
@@ -126,7 +118,7 @@ h4 {
     position: absolute;
     opacity: 0; /*mettre à 1 pr l'afficher*/
     right: 0;
-    transition: 0.2s;
+    transition: 0.4s;
 }
 
 .submitbutton:hover{
@@ -139,17 +131,31 @@ h4 {
     right: 85px;
 }
 
+.check-box {
+    margin: 10px 10px 20px 0;
+}
+
+span {
+    font-size: 12px;
+    color: #cacaca;
+    bottom: 68px;
+}
+
 .iconrow {
     display: flex;
-    justify-content: space-evenly;
+    flex-direction: column;
+    justify-content:center;
+    align-items: center;
     margin-bottom: 20px;
 }
 
+
 .icon {
+    height: 20px;
     border: 1px solid #17152a;
     border-radius: 30px;
     padding: 5px 8px;
-    box-shadow: 3px 3px 5px -4px #b33ced;
+    /* box-shadow: 3px 3px 5px -4px #b33ced; */
     color: #cacaca;
 }
 
@@ -165,12 +171,12 @@ h4 {
     color: #81bc06;
 }
 
-p a {
-    display: flex;
+p a:link {
     font-size: 12px;
     text-align: center;
     text-decoration: none;
     color: #cacaca;
+   
 }
 
 p a:hover {
@@ -186,47 +192,38 @@ p a:hover {
     left: 450px;
 }
 
-@media (max-width: 768px) {
-    #background {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-    }
-    .logo {
-        position: absolute;
-    }
-    .loginsignupbutton {
-        position: sticky;
-        width: 80%;
-        margin: 10px auto;
-        border-radius: 30px;
-        border: 1px solid #b33ced;
-        background: transparent;
-        top: -16px;
-    }
-    .loginsignupform {
+.buttonDiv{
+    border-radius: 26px;
+    margin-top: 20px;
+}
+#no-connexion{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+@media only screen and (max-width: 400px) {
+    #background{
         display: flex;
         justify-content: center;
         align-items: center;
-        width: 80%;
-        height: 90%;
-        overflow: hidden;
-        z-index: 2;
-    }
-    .input-group {
-        position: relative;
-        display: block;
-        justify-content: center;
-        top: 260px;
-        width: 200px;
-        transition: 0.3s ease;
-    }
-    section .loginsignupcontent .form {
+        height: 100vh;
         width: 100%;
-        padding: 40px;
-        margin: 50px;
-        background-color: rgba(255, 255, 255, 0.9);
+
+    }
+    .loginsignupform{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        height: 100%;
+        width: 100%;
+        border-radius: 0px;
+    }
+
+    .logo{
+        display: flex;
+        height: auto;
+        width: 100%;
+        align-items: center;
     }
 }
