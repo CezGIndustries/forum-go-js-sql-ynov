@@ -52,7 +52,7 @@ func main() {
 	Env.Router.HandleFunc("/cronosdb/POST/contact/REQUEST", temp(Env.DB)).Methods("POST")
 
 	credentials := handlers.AllowCredentials()
-	origins := handlers.AllowedOrigins([]string{"http://localhost:8080"})
+	origins := handlers.AllowedOrigins([]string{"http://localhost"})
 
 	go forum.GoDeleteCron(Env.DB)
 

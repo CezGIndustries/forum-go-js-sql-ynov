@@ -99,6 +99,11 @@ type UserLogin struct {
 	Password   string `json:"password"`
 }
 
+const (
+	DEFAULT_PP_PATH     = "static/img/others/default_pp.png"
+	DEFAULT_BANNER_PATH = "static/img/others/default_banner.png"
+)
+
 func CreateNewUser(cronosDB *sql.DB) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		var (
@@ -106,7 +111,7 @@ func CreateNewUser(cronosDB *sql.DB) http.HandlerFunc {
 		)
 		body, _ := ioutil.ReadAll(r.Body)
 		json.Unmarshal(body, &NewUser)
-		_, err := cronosDB.Exec(`INSERT INTO logUsers (UniqueName, Email, Password) VALUES (?, ?, ?);`, NewUser.UniqueName, NewUser.Email, HashPassword(NewUser.Password))
+		_, err := cronosDB.Exec(`INSERT INTO logUsers (UniqueName, Email, Password) VALUES (?, ?, ?);`, NewUser.UniqueName, NewUser.Email, hashPassword(NewUser.Password))
 		if err != nil {
 			w.Write([]byte(`{ "ERROR":"409" }`))
 		} else {
@@ -125,21 +130,25 @@ type GoogleUser struct {
 func GoogleLog(cronosDB *sql.DB) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		var (
+			uniqueName string
 			GoogleUser GoogleUser
 		)
 		body, _ := ioutil.ReadAll(r.Body)
 		json.Unmarshal(body, &GoogleUser)
-		cronosDB.Exec(`INSERT INTO accountUsers (UniqueName, Status, Rank, ProfilPicture, Banner, Biography) VALUES (?, ?, ?, ?, ?, ?);`, GoogleUser.UniqueName, "Free", "member", GoogleUser.ProfilPicture, "./static/img/others/default_banner.png", "")
+		row := cronosDB.QueryRow(`SELECT UniqueName FROM accountUsers WHERE UniqueName = ?`, GoogleUser.UniqueName)
+		if err := row.Scan(&uniqueName); err != nil {
+			cronosDB.Exec(`INSERT INTO accountUsers (UniqueName, Status, Rank, ProfilPicture, Banner, Biography) VALUES (?, ?, ?, ?, ?, ?);`, GoogleUser.UniqueName, "Free", "member", GoogleUser.ProfilPicture, "./static/img/others/default_banner.png", "")
+		}
 		addSession(w, r, GoogleUser.UniqueName)
 	}
 }
 
-func HashPassword(password string) string {
+func hashPassword(password string) string {
 	bytes, _ := bcrypt.GenerateFromPassword([]byte(password), 14)
 	return string(bytes)
 }
 
-func CheckPasswordHash(password, hash string) bool {
+func checkPasswordHash(password, hash string) bool {
 	err := bcrypt.CompareHashAndPassword([]byte(hash), []byte(password))
 	return err == nil
 }
@@ -168,7 +177,7 @@ func CheckUser(cronosDB *sql.DB) http.HandlerFunc {
 		if err := row.Scan(&uniqueName, &password); err != nil {
 			w.Write([]byte(`{ "ERROR":"404" }`))
 		} else {
-			if CheckPasswordHash(User.Password, password) {
+			if checkPasswordHash(User.Password, password) {
 				addSession(w, r, User.UniqueName)
 				w.Write([]byte(`{}`))
 			} else {
@@ -224,7 +233,7 @@ func LeaveSession() http.HandlerFunc {
 func ValidSession(w http.ResponseWriter, r *http.Request) bool {
 	session, _ := store.Get(r, "AUTH_TOKEN")
 	auth, ok := session.Values["authenticated"].(bool)
-	return auth || ok
+	return auth && ok
 }
 
 type Cron struct {

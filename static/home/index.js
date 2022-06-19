@@ -5,7 +5,20 @@ let NUMBER_OF_CRON = 0
 document.querySelector('body').onload = async function () {
   // Function that while be load when page is load
   console.log('Page is loaded.')
-  document.getElementById('more').addEventListener('click', async () => {
+  await sleep(35)
+  console.log(document.getElementsByClassName('logoutmid')[0].textContent == "undefined")
+  if (document.getElementsByClassName('logoutmid')[0].textContent != "undefined") {
+    document.getElementById('more').addEventListener('click', async () => {
+      const cron = await printCrons()
+      for (let i of cron) {
+        if (i == -1) {
+          document.getElementsByClassName('midcolumn')[0].removeChild(document.getElementById('more'))
+          return
+        }
+        await sleep(10)
+        drawCrons(i, -1)
+      }
+    })
     const cron = await printCrons()
     for (let i of cron) {
       if (i == -1) {
@@ -15,15 +28,8 @@ document.querySelector('body').onload = async function () {
       await sleep(10)
       drawCrons(i, -1)
     }
-  })
-  const cron = await printCrons()
-  for (let i of cron) {
-    if (i == -1) {
-      document.getElementsByClassName('midcolumn')[0].removeChild(document.getElementById('more'))
-      return
-    }
-    await sleep(10)
-    drawCrons(i, -1)
+  } else {
+    document.getElementsByClassName('midcolumn')[0].removeChild(document.getElementById('more'))
   }
 }
 
@@ -45,7 +51,7 @@ function sleep(ms) {
 
 async function drawCrons(id, asc = 1) {
   // While request and draw cron depends on if its a main cron or a comment
-  const cron = await requestCron(id)  
+  const cron = await requestCron(id)
   if (cron.timeLeft.Minute < 10) {
     cron.timeLeft.Minute = String(`0${cron.timeLeft.Minute}`)
   }
