@@ -38,7 +38,7 @@ func Moderation() http.HandlerFunc {
 func Profil() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		t, _ := template.ParseFiles("./static/profil/index.html", "./static/templates/left/leftTemplate.html", "./static/templates/right/rightTemplate.html")
-		t.Execute(w, "hello world")
+		t.Execute(w, "index.html")
 		username := mux.Vars(r)["nameUser"]
 		fmt.Println(username)
 	}
