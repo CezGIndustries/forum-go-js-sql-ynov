@@ -53,7 +53,7 @@ func main() {
 	credentials := handlers.AllowCredentials()
 	origins := handlers.AllowedOrigins([]string{"http://localhost:8080"})
 
-	// go forum.GoDeleteCron(Env.DB)
+	go forum.GoDeleteCron(Env.DB)
 
 	log.Fatal(http.ListenAndServe(":8080", handlers.CORS(credentials, origins)(Env.Router)))
 }

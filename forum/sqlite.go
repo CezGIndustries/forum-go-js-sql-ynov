@@ -425,14 +425,23 @@ func GetMutlipleCronID(cronosDB *sql.DB) http.HandlerFunc {
 
 func GoDeleteCron(cronosDB *sql.DB) {
 	for {
+		var (
+			ID  int
+			IDs []int
+		)
 		date := time.Now()
-		fmt.Println(date.Format("2006 01 02 15 04"))
-		fmt.Println(date.Format("2006")) // Année
-		fmt.Println(date.Format("01"))   // Mois
-		fmt.Println(date.Format("02"))   // Jour
-		fmt.Println(date.Format("15"))   // Heure
-		fmt.Println(date.Format("04"))   // Minute
-
-		time.Sleep(time.Second * 5)
+		rows, _ := cronosDB.Query(`SELECT ID FROM timeLeft WHERE Year <= ? AND Month <= ? AND Day <= ? AND Hour <= ? AND Minute <= ?`, date.Format("2006"), date.Format("01"), date.Format("02"), date.Format("15"), date.Format("04"))
+		for rows.Next() {
+			rows.Scan(&ID)
+			IDs = append(IDs, ID)
+		}
+		rows.Close()
+		for _, i := range IDs {
+			cronosDB.Exec(`DELETE FROM cron WHERE ID = ?`, i)
+			cronosDB.Exec(`DELETE FROM timeLeft WHERE ID = ?`, i)
+			cronosDB.Exec(`DELETE FROM tagCron WHERE ID = ?`, i)
+			cronosDB.Exec(`DELETE FROM cronLike WHERE ID = ?`, i)
+		}
+		time.Sleep(time.Second * 30)
 	}
 }
