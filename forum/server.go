@@ -16,7 +16,7 @@ func Home() http.HandlerFunc {
 }
 
 // tmpl, _ := template.ParseFiles("./index.html")
-// 	tmpl.Execute(w, nil)
+//  tmpl.Execute(w, nil)
 
 func Connexion_Creation() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {

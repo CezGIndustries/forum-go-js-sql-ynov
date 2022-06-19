@@ -34,21 +34,24 @@ export async function soloCron(cron, asc) {
             </div>
         </div>
         <div class="partage">
-            <div class="vide-gauche"></div>
-            <div class="like">
-                <p id="${cron.ID}" click="false">${Like}</p>
-                <i id-cron="${cron.ID}" class="fa fa-thumbs-o-up" style="color:red;"></i>
+            <div class="left-partage">
+                <div class="like btn-action">
+                    <p id="${cron.ID}" click="false">${Like}</p>
+                    <i id-cron="${cron.ID}" class="fa fa-thumbs-o-up" style="color:red;"></i>
+                </div>
+                <div class="comment btn-action">
+                    <p id="${cron.ID}">${Comment}</</p>
+                    <i class="fa fa-commenting"></i>
+                </div>
+                <div class="share btn-action">
+                    <i class="fa fa-share-alt"></i>
+                </div>
             </div>
-            <div class="comment">
-                <p id="${cron.ID}">${Comment}</</p>
-                <i class="fa fa-commenting"></i>
-            </div>
-            <div class="share">
-                <i class="fa fa-share-alt"></i>
-            </div>
-            <div class="vide-droite"></div>
-            <div class="time">
-                <i class="fa fa-clock-o">${cron.timeLeft.Year}/${cron.timeLeft.Month}/${cron.timeLeft.Day} - ${cron.timeLeft.Hour}:${cron.timeLeft.Minute}</i>
+            <div class="right-partage">
+                <div class="time">
+                    <i class="fa fa-clock-o"></i>
+                    <p> ${cron.timeLeft.Year}/${cron.timeLeft.Month}/${cron.timeLeft.Day} ${cron.timeLeft.Hour}:${cron.timeLeft.Minute} </p>
+                </div>
             </div>
         </div>
     </div>  
