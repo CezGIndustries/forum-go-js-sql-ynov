@@ -1,6 +1,8 @@
-import { SetTime, timeLeftFunciton } from "./index.js"
-
 export async function soloCron(cron, asc) {
+    let liked = 'fa-thumbs-o-up'
+    if (cron.Likes.includes(document.getElementsByClassName('logoutmid')[0].textContent)) {
+        liked = "fa fa-thumbs-up"
+    }
     const allCron = document.querySelector('.div-all-article')
     const Like = cron.Likes.length
     const Comment = cron.Comments.length
@@ -37,7 +39,7 @@ export async function soloCron(cron, asc) {
             <div class="left-partage">
                 <div class="like btn-action">
                     <p id="${cron.ID}" click="false">${Like}</p>
-                    <i id-cron="${cron.ID}" class="fa fa-thumbs-o-up" style="color:red;"></i>
+                    <i id-cron="${cron.ID}" class="fa ${liked}" style="color:#F970FE;"></i>
                 </div>
                 <div class="comment btn-action">
                     <p id="${cron.ID}">${Comment}</</p>
@@ -50,7 +52,7 @@ export async function soloCron(cron, asc) {
             <div class="right-partage">
                 <div class="time">
                     <i class="fa fa-clock-o"></i>
-                    <p> ${cron.timeLeft.Year}/${cron.timeLeft.Month}/${cron.timeLeft.Day} ${cron.timeLeft.Hour}:${cron.timeLeft.Minute} </p>
+                    <p>${cron.timeLeft.Hour}:${cron.timeLeft.Minute} ${cron.timeLeft.Day}/${cron.timeLeft.Month}/${cron.timeLeft.Year}</p>
                 </div>
             </div>
         </div>
