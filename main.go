@@ -6,6 +6,7 @@ import (
 	"log"
 	"net/http"
 
+	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
 )
 
@@ -32,24 +33,22 @@ func main() {
 
 	Env.Router.HandleFunc("/{username}/cron/{idcron}", forum.CronPage())
 
-	Env.Router.HandleFunc("/cronosdb/POST/logUsers/CHECK", forum.CheckUser(Env.DB))
-	Env.Router.HandleFunc("/cronosdb/POST/logUsers/REGISTER", forum.CreateNewUser(Env.DB))
+	Env.Router.HandleFunc("/cronosdb/POST/logUsers/CHECK", forum.CheckUser(Env.DB)).Methods("POST")
+	Env.Router.HandleFunc("/cronosdb/POST/logUsers/REGISTER", forum.CreateNewUser(Env.DB)).Methods("POST")
 
-	Env.Router.HandleFunc("/cronosdb/POST/userInfo/GET", forum.GetUser(Env.DB))
+	Env.Router.HandleFunc("/cronosdb/POST/userInfo/GET", forum.GetUser(Env.DB)).Methods("POST")
 
-	Env.Router.HandleFunc("/cronosdb/POST/cron/CREATE", forum.CreateCron(Env.DB))
-	Env.Router.HandleFunc("/cronosdb/POST/cron/REDIRECT", forum.RedirectCron(Env.DB))
-	Env.Router.HandleFunc("/cronosdb/POST/cron/GET", forum.GetCron(Env.DB))
-	Env.Router.HandleFunc("/cronosdb/POST/cron/MULTIPLE", forum.GetMutlipleCronID(Env.DB))
-	Env.Router.HandleFunc("/cronosdb/POST/cron/DELETE", forum.DeleteCron(Env.DB))
-	Env.Router.HandleFunc("/cronosdb/POST/cron/LIKE", forum.CreateLike(Env.DB))
+	Env.Router.HandleFunc("/cronosdb/POST/cron/CREATE", forum.CreateCron(Env.DB)).Methods("POST")
+	Env.Router.HandleFunc("/cronosdb/POST/cron/REDIRECT", forum.RedirectCron(Env.DB)).Methods("POST")
+	Env.Router.HandleFunc("/cronosdb/POST/cron/GET", forum.GetCron(Env.DB)).Methods("POST")
+	Env.Router.HandleFunc("/cronosdb/POST/cron/MULTIPLE", forum.GetMutlipleCronID(Env.DB)).Methods("POST")
+	Env.Router.HandleFunc("/cronosdb/POST/cron/DELETE", forum.DeleteCron(Env.DB)).Methods("POST")
+	Env.Router.HandleFunc("/cronosdb/POST/cron/LIKE", forum.CreateLike(Env.DB)).Methods("POST")
 
-	s := &http.Server{
-		Addr:    ":8080",
-		Handler: Env.Router,
-	}
+	credentials := handlers.AllowCredentials()
+	origins := handlers.AllowedOrigins([]string{"http://localhost:8080"})
 
 	// go forum.GoDeleteCron(Env.DB)
 
-	log.Fatal(s.ListenAndServe())
+	log.Fatal(http.ListenAndServe(":8080", handlers.CORS(credentials, origins)(Env.Router)))
 }
