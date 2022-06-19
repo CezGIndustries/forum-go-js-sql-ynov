@@ -1,5 +1,16 @@
 document.addEventListener("DOMContentLoaded", async () => {
 
+
+    //IMG//
+    function myFuncPP(e){
+        console.log(e)
+    }
+
+    //----//
+
+
+
+
     // Function that while be load when page is load
     console.log("Template is loaded.")
     const user = await requestUserInfo()
@@ -9,10 +20,10 @@ document.addEventListener("DOMContentLoaded", async () => {
     user.Biography = "je veux du cul du cul du cul"
 
     const userName = document.getElementById("username")
-    userName.innerText = "@"+ user.UniqueName
+    userName.innerText = "@" + user.UniqueName
 
-    document.getElementById('div-img').innerHTML = `<img src="./.${user.ProfilPicture}" alt="">`
-    document.getElementById('banner-div').style.backgroundImage = `url(./.${user.Banner})`
+    document.getElementById('div-img').innerHTML = `<img src="${user.ProfilPicture}" alt="">`
+    document.getElementById('banner-div').style.backgroundImage = `url(${user.Banner})`
 
     icon(user.Rank)
 
@@ -35,56 +46,95 @@ document.addEventListener("DOMContentLoaded", async () => {
         <div id="btn-profil">
             <p id="edit-profil">Editer le profil</p>
         </div>
-        ` 
-                                                                    
+        `
+
     } else if (window.location.href.split("/")[4] != user.UniqueName && user.Rank === "member") {
 
         document.getElementById('top-right-profil').innerHTML = `<p id="follow">Follow !</p>`
 
     } else if (window.location.href.split("/")[4] != user.UniqueName && user.Rank === "moderator") {
         document.getElementById('top-right-profil').innerHTML = `<p id="follow">Follow !</p>`
-                                                                    
+
 
     } else if (window.location.href.split("/")[4] != user.UniqueName && user.Rank === "administrator") {
         document.getElementById('top-right-profil').innerHTML = `<p id="follow">Follow !</p>`
-                                                                     
+
     }
 
 
 
 
 
-    const myPost = document.getElementsByClassName('my-post')
-    for (let i of myPost) {
-        i.addEventListener('click', () => {
-            //Function request my all cron//
+    const selectOption = document.getElementsByClassName('btn-cron')
+    for (let i of selectOption) {
+        i.addEventListener('click', e => {
+            const btnSelected = e.path[1]
+            let current = document.getElementsByClassName("active");
+            current[0].className = current[0].className.replace(" active", "");
+            btnSelected.className += " active"
 
-            //-------/
+            if (btnSelected.id == "my-post") {
+                //Fetch//
 
+                //-----//
+            } else if (btnSelected.id == "friend-post") {
+                //Fetch//  
+
+                //-----//
+            } else if (btnSelected.id == "tag-post") {
+                //Fetch//
+
+                //-----//
+            }
         })
     }
-    const friendPost = document.getElementsByClassName('friend-post')
-    for (let i of friendPost) {
-        i.addEventListener('click', () => {
-            //Function request friendly cron//
 
-            //-------/
 
-           
-        })
-    }
-
-    const tagPost = document.getElementsByClassName('tag-post')
-    for (let i of tagPost) {
-        i.addEventListener('click', () => {
-            //Function request interest cron//
+    const edit = document.getElementById('edit-profil')
+    
+        edit.addEventListener('click', () => {
+            document.getElementById("edit-box").style.display = "flex"
             
-            //-------/
-        })
-    }
+            document.getElementById('popup-img').innerHTML = 
+            `
+            <label for="file">
+                <img id="img-popup" src="${user.ProfilPicture}">
+                <input type="file" name="file" id="file" accept="image/png, image/jpeg, image/gif, image/jpg" onchange="previewImage();">
+            </label>
+            
+            `
+            
+            document.getElementById('popup-name').innerHTML = 
+            `
+            <p>@${user.UniqueName}</p>
+            `
 
+            document.getElementById('popup-bio').innerHTML = 
+            `
+            <div  id="popup-titleBio">
+                <p>Bio: </p>
+            </div>
+            <div id="popup-text">
+                <textarea id="popup-bio">${user.Biography}</textarea>
+            </div>
+            `
 
+            document.getElementById('popup-retour').innerHTML = 
+            `
+            <p  id="popup-btnLogout">Retour </p>
+            `
+
+            document.getElementById('popup-confirm').innerHTML = 
+            `
+            <p  id="popup-btnLogout">Enregistrer </p>
+            `
+    })
+
+    
 })
+
+
+
 
 async function requestUserInfo() {
     // Get user info for the template
@@ -110,3 +160,4 @@ function icon(string) {
         document.getElementById('div-i').innerHTML = `<i class='fas fa-chess-queen' style="color:#F970FE;"></i>`
     }
 }
+
