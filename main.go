@@ -37,6 +37,7 @@ func main() {
 
 	Env.Router.HandleFunc("/cronosdb/POST/logUsers/CHECK", forum.CheckUser(Env.DB)).Methods("POST")
 	Env.Router.HandleFunc("/cronosdb/POST/logUsers/REGISTER", forum.CreateNewUser(Env.DB)).Methods("POST")
+	Env.Router.HandleFunc("/cronosdb/POST/logUsers/GOOGLE_REGISTER", forum.GoogleLog(Env.DB)).Methods("POST")
 
 	Env.Router.HandleFunc("/cronosdb/POST/userInfo/GET", forum.GetUser(Env.DB)).Methods("POST")
 

@@ -124,7 +124,7 @@ export function createCron(content, tag, timeLeft) {
     return res.json()
   }).then((res) => {
     if(res.ERROR == 403) {
-      window.location.href = `/`
+      window.location.href = `/connexion`
     } else {
         try {
           console.log("good !")

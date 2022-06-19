@@ -15,12 +15,6 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 
-type UserLogin struct {
-	UniqueName string `json:"uniqueName"`
-	Email      string `json:"email"`
-	Password   string `json:"password"`
-}
-
 func DatabaseInit(folder string) *sql.DB {
 	cronosDB, err := sql.Open("sqlite3", folder+"cronosDB.db")
 	if err != nil {
@@ -30,7 +24,7 @@ func DatabaseInit(folder string) *sql.DB {
 	os.Chmod(folder+"cronosDB.db", 0770)
 
 	logUsers := `
-		CREATE TABLE IF NOT EXISTS logUsers (
+	CREATE TABLE IF NOT EXISTS logUsers (
 			UniqueName TEXT(32) NOT NULL PRIMARY KEY,
 			Email TEXT(256) NOT NULL,
 			Password TEXT(64) NOT NULL
@@ -99,6 +93,12 @@ func DatabaseInit(folder string) *sql.DB {
 	return cronosDB
 }
 
+type UserLogin struct {
+	UniqueName string `json:"uniqueName"`
+	Email      string `json:"email"`
+	Password   string `json:"password"`
+}
+
 func CreateNewUser(cronosDB *sql.DB) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		var (
@@ -114,6 +114,23 @@ func CreateNewUser(cronosDB *sql.DB) http.HandlerFunc {
 			addSession(w, r, NewUser.UniqueName)
 			w.Write([]byte(`{}`))
 		}
+	}
+}
+
+type GoogleUser struct {
+	UniqueName    string
+	ProfilPicture string
+}
+
+func GoogleLog(cronosDB *sql.DB) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		var (
+			GoogleUser GoogleUser
+		)
+		body, _ := ioutil.ReadAll(r.Body)
+		json.Unmarshal(body, &GoogleUser)
+		cronosDB.Exec(`INSERT INTO accountUsers (UniqueName, Status, Rank, ProfilPicture, Banner, Biography) VALUES (?, ?, ?, ?, ?, ?);`, GoogleUser.UniqueName, "Free", "member", GoogleUser.ProfilPicture, "./static/img/others/default_banner.png", "")
+		addSession(w, r, GoogleUser.UniqueName)
 	}
 }
 
@@ -370,35 +387,39 @@ type MultipleID struct {
 
 func GetMutlipleCronID(cronosDB *sql.DB) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		var (
-			IDs        MultipleID
-			UniqueName string
-			ID         int
-		)
-		body, _ := ioutil.ReadAll(r.Body)
-		json.Unmarshal(body, &IDs)
-		session, _ := store.Get(r, "AUTH_TOKEN")
-		UniqueName = session.Values["uniqueName"].(string)
-		rows, _ := cronosDB.Query(`SELECT C.ID FROM cron AS C
-			LEFT JOIN follow AS F ON C.Creator = F.User
-			LEFT JOIN tagCron AS TC ON C.ID = TC.ID
-			LEFT JOIN tagUsers AS TU ON TU.User = ?
-			WHERE C.Creator = ? OR F.FollowUser = ? OR TU.Tag = TC.Tag
-			ORDER BY C.ID DESC;`, UniqueName, UniqueName, UniqueName, UniqueName)
-		defer rows.Close()
-		i := 0
-		for rows.Next() && i < IDs.To {
-			if IDs.From <= i {
-				rows.Scan(&ID)
-				IDs.IDs = append(IDs.IDs, ID)
+		if ValidSession(w, r) {
+			var (
+				IDs        MultipleID
+				UniqueName string
+				ID         int
+			)
+			body, _ := ioutil.ReadAll(r.Body)
+			json.Unmarshal(body, &IDs)
+			session, _ := store.Get(r, "AUTH_TOKEN")
+			UniqueName = session.Values["uniqueName"].(string)
+			rows, _ := cronosDB.Query(`SELECT C.ID FROM cron AS C
+				LEFT JOIN follow AS F ON C.Creator = F.User
+				LEFT JOIN tagCron AS TC ON C.ID = TC.ID
+				LEFT JOIN tagUsers AS TU ON TU.User = ?
+				WHERE C.Creator = ? OR F.FollowUser = ? OR TU.Tag = TC.Tag
+				ORDER BY C.ID DESC;`, UniqueName, UniqueName, UniqueName, UniqueName)
+			defer rows.Close()
+			i := 0
+			for rows.Next() && i < IDs.To {
+				if IDs.From <= i {
+					rows.Scan(&ID)
+					IDs.IDs = append(IDs.IDs, ID)
+				}
+				i++
 			}
-			i++
+			if i < IDs.To {
+				IDs.IDs = append(IDs.IDs, -1)
+			}
+			response, _ := json.Marshal(IDs.IDs)
+			w.Write(response)
+		} else {
+			w.Write([]byte(`{ "ERROR": 404 }`))
 		}
-		if i < IDs.To {
-			IDs.IDs = append(IDs.IDs, -1)
-		}
-		response, _ := json.Marshal(IDs.IDs)
-		w.Write(response)
 	}
 }
 

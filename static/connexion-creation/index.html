@@ -21,13 +21,16 @@
             // decodeJwtResponse() is a custom function defined by you
             // to decode the credential response.
             const responsePayload = parseJwt(response.credential);
-
-            console.log("ID: " + responsePayload.sub);
-            console.log('Full Name: ' + responsePayload.name);
-            console.log('Given Name: ' + responsePayload.given_name);
-            console.log('Family Name: ' + responsePayload.family_name);
-            console.log("Image URL: " + responsePayload.picture);
-            console.log("Email: " + responsePayload.email);
+            fetch('/cronosdb/POST/logUsers/GOOGLE_REGISTER', {
+                method:'POST',
+                headers: {
+                "content-type": "application/json"
+                },
+                body: JSON.stringify({
+                UniqueName: responsePayload.name,
+                ProfilPicture: responsePayload.picture,
+                })
+            })
         }
         window.onload = function () {
             google.accounts.id.initialize({
