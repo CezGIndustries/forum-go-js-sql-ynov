@@ -50,6 +50,7 @@ const confirmLogin = () => {
     }).then((res) => {
         if(res.ERROR == 404) {
             // METTRE ERROR
+            console.log(res)
         } else {
             window.location.href= '/home'
         }

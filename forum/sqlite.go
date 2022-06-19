@@ -26,7 +26,7 @@ func DatabaseInit(folder string) *sql.DB {
 	logUsers := `
 	CREATE TABLE IF NOT EXISTS logUsers (
 			UniqueName TEXT(32) NOT NULL PRIMARY KEY,
-			Email TEXT(256) NOT NULL,
+			Email TEXT(256) NOT NULL UNIQUE,
 			Password TEXT(64) NOT NULL
 		);
 	`
@@ -139,6 +139,11 @@ func HashPassword(password string) string {
 	return string(bytes)
 }
 
+func CheckPasswordHash(password, hash string) bool {
+	err := bcrypt.CompareHashAndPassword([]byte(hash), []byte(password))
+	return err == nil
+}
+
 func DeleteUser(cronosDB *sql.DB) {
 	cronosDB.Exec(`DELETE FROM logUsers WHERE UniqueName = '?';`, "uniqueName")
 }
@@ -154,18 +159,21 @@ func ModifyUser(cronosDB *sql.DB, uniqueName string, User UserLogin) {
 func CheckUser(cronosDB *sql.DB) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		var (
-			uniqueName, email, password string
-			User                        UserLogin
+			uniqueName, password string
+			User                 UserLogin
 		)
 		body, _ := ioutil.ReadAll(r.Body)
 		json.Unmarshal(body, &User)
-		sqlStatement := fmt.Sprintf(`SELECT * FROM logUsers WHERE (UniqueName = '%s' OR Email = '%s') AND Password = '%s';`, User.UniqueName, User.Email, HashPassword(User.Password))
-		row := cronosDB.QueryRow(sqlStatement)
-		if err := row.Scan(&uniqueName, &email, &password); err != nil {
+		row := cronosDB.QueryRow(`SELECT UniqueName, Password FROM logUsers WHERE UniqueName = ? OR Email = ?`, User.UniqueName, User.Email)
+		if err := row.Scan(&uniqueName, &password); err != nil {
 			w.Write([]byte(`{ "ERROR":"404" }`))
 		} else {
-			addSession(w, r, User.UniqueName)
-			w.Write([]byte(`{}`))
+			if CheckPasswordHash(User.Password, password) {
+				addSession(w, r, User.UniqueName)
+				w.Write([]byte(`{}`))
+			} else {
+				w.Write([]byte(`{ "ERROR":"404" }`))
+			}
 		}
 	}
 }
@@ -204,12 +212,14 @@ func addSession(w http.ResponseWriter, r *http.Request, uniqueName string) {
 	session.Save(r, w)
 }
 
-// func leaveSession(w http.ResponseWriter, r *http.Request) {
-// 	session, _ := store.Get(r, "AUTH_TOKEN")
-// 	session.Values["authenticated"] = false
-// 	session.Values["uniqueName"] = ""
-// 	session.Save(r, w)
-// }
+func LeaveSession() http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		session, _ := store.Get(r, "AUTH_TOKEN")
+		session.Values["authenticated"] = false
+		session.Values["uniqueName"] = ""
+		session.Save(r, w)
+	}
+}
 
 func ValidSession(w http.ResponseWriter, r *http.Request) bool {
 	session, _ := store.Get(r, "AUTH_TOKEN")

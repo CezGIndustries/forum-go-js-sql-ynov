@@ -42,14 +42,23 @@ document.addEventListener("DOMContentLoaded", async () => {
         i.addEventListener('click', () => {
             window.location.href ="/compose/cron"
         })
-    }   
-    const signout = document.getElementsByClassName('fa-sign-out')
-    for(let i of signout) {
-        i.addEventListener('click', () => {
-            document.cookie.split(";").forEach(function(c) { document.cookie = c.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/"); })
-            window.location.href = '/connexion'
-        })
-    }   
+    }
+    console.log(user)
+    if(user.ERROR == 404) {
+        document.getElementsByClassName('logout-bot')[0].style.display = 'none'
+    } else {
+        const signout = document.getElementsByClassName('fa-sign-out')
+        for(let i of signout) {
+            i.addEventListener('click', () => {
+                fetch('/cronosdb/POST/logUsers/DISCONNECT',{
+                    method:'POST',
+                    headers: {
+                      "content-type": "application/json"
+                }})
+                window.location.href = '/connexion'
+            })
+        }   
+    }
 })
 
 

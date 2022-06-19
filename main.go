@@ -36,6 +36,7 @@ func main() {
 	Env.Router.HandleFunc("/{username}/cron/{idcron}", forum.CronPage())
 
 	Env.Router.HandleFunc("/cronosdb/POST/logUsers/CHECK", forum.CheckUser(Env.DB)).Methods("POST")
+	Env.Router.HandleFunc("/cronosdb/POST/logUsers/DISCONNECT", forum.LeaveSession()).Methods("POST")
 	Env.Router.HandleFunc("/cronosdb/POST/logUsers/REGISTER", forum.CreateNewUser(Env.DB)).Methods("POST")
 	Env.Router.HandleFunc("/cronosdb/POST/logUsers/GOOGLE_REGISTER", forum.GoogleLog(Env.DB)).Methods("POST")
 
