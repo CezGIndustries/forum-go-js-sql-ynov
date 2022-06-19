@@ -2,7 +2,8 @@
     margin: 0;
     padding: 0;
 }
-body{
+
+body {
     overflow: hidden;
 }
 
@@ -86,7 +87,6 @@ body{
     font-size: 17px;
 }
 
-
 .media {
     display: flex;
     align-items: center;
@@ -94,22 +94,21 @@ body{
     margin-top: 20px;
     /* background-color: red; */
 }
-.media-left{
+
+.media-left {
     display: flex;
     width: 50%;
 }
-.media-right{
+
+.media-right {
     display: flex;
     justify-content: flex-end;
     width: 50%;
-    
 }
-
 
 .add-image {
     padding-left: 3%;
     cursor: pointer;
-    
 }
 
 .timeselecteur {}
@@ -357,70 +356,65 @@ body{
     width: 10px;
 }
 
-.post-popup{
+.post-popup {
     display: none;
 }
-#logo-phone{
+
+#logo-phone {
     display: none;
 }
 
 @media only screen and (max-width: 830px) {
-    .midcolumn{
-       margin-left: 15%;
-        width: 80%;
-    }
-    
-    
-}
-@media only screen and (max-width: 610px) {
-    .midcolumn{
+    .midcolumn {
         margin-left: 15%;
         width: 80%;
     }
-
-   
-    
-    
 }
+
+@media only screen and (max-width: 610px) {
+    .midcolumn {
+        margin-left: 15%;
+        width: 80%;
+    }
+}
+
 @media only screen and (max-width: 580px) {
-    .allcolumns{
+    .allcolumns {
         width: 100%;
         align-items: flex-end;
         /* justify-content: center; */
     }
-    .midcolumn{
+    .midcolumn {
         height: 95%;
     }
-    .post-popup{
+    .post-popup {
         display: block;
-        position:absolute;
+        position: absolute;
         bottom: 10px;
-        right:10px;
+        right: 10px;
         height: 70px;
         aspect-ratio: 1/1;
         border-radius: 50%;
-        background-color:#B33CED ;
+        background-color: #B33CED;
         cursor: pointer;
     }
-    .post-popup i{
-        position:absolute;
-        top:30%;
-        left:30%;
+    .post-popup i {
+        position: absolute;
+        top: 30%;
+        left: 30%;
     }
-    
-   
- 
-    .div-all-article{
-       align-items: center;
+    .div-all-article {
+        align-items: center;
         height: 100%;
         width: 100%;
     }
-    .article{width: 80%;}
-
-    .userwrapper{display: none;}
-    .top{display: none;}
-
-    
-
-   
+    .article {
+        width: 80%;
+    }
+    .userwrapper {
+        display: none;
+    }
+    .top {
+        display: none;
+    }
 }
