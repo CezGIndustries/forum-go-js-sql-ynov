@@ -12,6 +12,7 @@ import (
 
 	"github.com/gorilla/sessions"
 	_ "github.com/mattn/go-sqlite3"
+	"golang.org/x/crypto/bcrypt"
 )
 
 type UserLogin struct {
@@ -26,7 +27,7 @@ func DatabaseInit(folder string) *sql.DB {
 		log.Fatal(err)
 	}
 
-	os.Chmod(folder+"cronosDB.db", 0777)
+	os.Chmod(folder+"cronosDB.db", 0770)
 
 	logUsers := `
 		CREATE TABLE IF NOT EXISTS logUsers (
@@ -105,7 +106,7 @@ func CreateNewUser(cronosDB *sql.DB) http.HandlerFunc {
 		)
 		body, _ := ioutil.ReadAll(r.Body)
 		json.Unmarshal(body, &NewUser)
-		_, err := cronosDB.Exec(`INSERT INTO logUsers (UniqueName, Email, Password) VALUES (?, ?, ?);`, NewUser.UniqueName, NewUser.Email, NewUser.Password)
+		_, err := cronosDB.Exec(`INSERT INTO logUsers (UniqueName, Email, Password) VALUES (?, ?, ?);`, NewUser.UniqueName, NewUser.Email, HashPassword(NewUser.Password))
 		if err != nil {
 			w.Write([]byte(`{ "ERROR":"409" }`))
 		} else {
@@ -114,6 +115,11 @@ func CreateNewUser(cronosDB *sql.DB) http.HandlerFunc {
 			w.Write([]byte(`{}`))
 		}
 	}
+}
+
+func HashPassword(password string) string {
+	bytes, _ := bcrypt.GenerateFromPassword([]byte(password), 14)
+	return string(bytes)
 }
 
 func DeleteUser(cronosDB *sql.DB) {
@@ -136,7 +142,7 @@ func CheckUser(cronosDB *sql.DB) http.HandlerFunc {
 		)
 		body, _ := ioutil.ReadAll(r.Body)
 		json.Unmarshal(body, &User)
-		sqlStatement := fmt.Sprintf(`SELECT * FROM logUsers WHERE (UniqueName = '%s' OR Email = '%s') AND Password = '%s';`, User.UniqueName, User.Email, User.Password)
+		sqlStatement := fmt.Sprintf(`SELECT * FROM logUsers WHERE (UniqueName = '%s' OR Email = '%s') AND Password = '%s';`, User.UniqueName, User.Email, HashPassword(User.Password))
 		row := cronosDB.QueryRow(sqlStatement)
 		if err := row.Scan(&uniqueName, &email, &password); err != nil {
 			w.Write([]byte(`{ "ERROR":"404" }`))
