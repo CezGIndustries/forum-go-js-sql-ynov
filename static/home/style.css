@@ -424,7 +424,7 @@ body {
     }
 
     .midcolumn {
-        height: 100%;
+        height: 96%;
     }
 
     .post-popup {
@@ -447,7 +447,7 @@ body {
 
     .div-all-article {
         align-items: center;
-        height: 98%;
+        height: 90%;
         width: 100%;
         margin-top: 1%;
     }

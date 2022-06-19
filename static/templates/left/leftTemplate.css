@@ -3,16 +3,13 @@
     padding: 0;
 }
 
-
-
 .leftcolumn {
-    position:fixed;
+    position: fixed;
     left: 0px;
     display: flex;
     justify-content: flex-end;
     width: 20%;
     height: 100%;
-    /* border: 1px solid #17152A; */
 }
 
 .navbar {
@@ -27,7 +24,6 @@
 }
 
 .nave {
-
     display: flex;
     justify-content: flex-start;
     margin-left: 10px;
@@ -78,7 +74,6 @@ p {
 }
 
 .logout {
-    /* background-color: #17152A; */
     display: flex;
     align-items: center;
 
@@ -86,12 +81,6 @@ p {
     width: 100%;
     height: 50%;
     transition: 300ms;
-}
-
-.logout:hover {
-    /* height: 100%;
-   width:30%; */
-
 }
 
 .logoutleft {
@@ -110,7 +99,6 @@ p {
 .logoutmid {
     width: 69%;
     overflow: hidden;
-
     color: #cacaca;
     margin-right: 1%;
 }
@@ -127,12 +115,6 @@ p {
     color: #cacaca;
 }
 
-
-
-
-
-
-
 @media only screen and (max-width: 1100px) {
     .leftcolumn {
         width: 12%;
@@ -146,9 +128,6 @@ p {
         display: none;
     }
 
-    .explore-responsive {
-        display: block;
-    }
 
     .logout-bot {
         width: 70px;
@@ -172,8 +151,15 @@ p {
     .leftcolumn {
         width: 100px;
     }
+}
 
 
+
+
+@media only screen and (max-width: 800px) {
+    .explore-responsive {
+        display: block;
+    }
 }
 
 @media only screen and (max-width: 580px) {
@@ -183,11 +169,6 @@ p {
         position: absolute;
         bottom: 0;
         width: 60px;
-
-    }
-
-    .navbar {
-        /* margin-left: -1px; */
     }
 
     .logout {
@@ -199,6 +180,42 @@ p {
         width: 40px;
         height: 50px;
     }
+}
 
+@media only screen and (max-height: 565px) {
+    .logoutmid, .logoutleft {
+        display: none;
+    }
 
+    .logout-bot {
+        width: 40%;
+    }
+    .nave {
+        height: 325px;
+        overflow-y: auto;
+    }
+}
+
+@media only screen and (max-height: 485px) {
+    .nave {
+        height: 250px;
+    }
+}
+
+@media only screen and (max-height: 400px) {
+    .nave {
+        height: 175px;
+    }
+}
+
+@media only screen and (max-height: 320px) {
+    .nave {
+        height: 110px;
+    }
+}
+
+@media only screen and (max-height: 255px) {
+    .nave {
+        height: 50px;
+    }
 }
