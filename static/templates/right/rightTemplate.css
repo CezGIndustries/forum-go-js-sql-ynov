@@ -1,5 +1,5 @@
 .rightcolumn {
-    position: absolute;
+    position: fixed;
     right: 0px;
     display: flex;
     justify-content: center;

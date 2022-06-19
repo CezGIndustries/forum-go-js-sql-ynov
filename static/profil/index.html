@@ -8,6 +8,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://kit.fontawesome.com/4f6d94b9cb.js" crossorigin="anonymous"></script>
+    <script src="https://kit.fontawesome.com/yourcode.js" crossorigin="anonymous"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <title>Accueil | Cronos</title>
@@ -18,28 +19,62 @@
     <div class="allcolumns">
         {{template "LeftColumn" }}
         <div class="midcolumn">
-            <div class="top">
-                <div class="ProfilePicture">
-                    <img id="pp" src="https://pbs.twimg.com/profile_images/1416422006682161152/n2K0NX7B_400x400.jpg">
+            <div id="top">
+                <div id="banner-div">
                 </div>
-                <div class="Banniere">
-                    <img class="ban" src="https://mouillotins.fr/festival/wp-content/uploads/banniere-site-1.png">
-                </div>
+                <div id="other-div">
+                    <div id="o-top">
+                        <div id="top-left-profil">
+                            <div id="div-username">
+                                <p id="username">azeaze </p>
+                            </div>
+                            <div id="div-i"></div>
+                        </div>
+                        <div id="top-mid-profil">
+                            <div id="div-img">
 
-                <div class="bio">
-                    bio
-                    <div class="subio">
-                        coucou
-                    </div> 
+                            </div>
+                        </div>
+                        <div id="top-right-profil">
+
+                        </div>
+                    </div>
+                    <div id="o-mid">
+                        <div id="bio">
+                            bio
+                        </div>
+                    </div>
+                    <div id="o-bot">
+                        <div id="abonnement">
+
+                        </div>
+                        <div id="vide">
+
+                        </div>
+                        <div id="abonnes">
+
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div class="Crone">
-                <div class="Crones">Crones</div>
-                <div class="Crones">J'aimes</div>
+            <div id="mid">
+                <div class="btn-cron" id="my-post">
+                    <p class="text-btn" id="myPost">Mes crons</p>
+                </div>
+                <div class="btn-cron" id="friend-post">
+                    <p class="text-btn" id="FriendlyPost">Amis</p>
+
+                </div>
+                <div class="btn-cron" id="tag-post">
+                    <p class="text-btn" clicl id="interestPost">Interets</p>
+
+                </div>
             </div>
-            <div class="div-all-article">
+            <div id="bot">
 
             </div>
+
+
         </div>
         {{template "RightColumn" }}
     </div>

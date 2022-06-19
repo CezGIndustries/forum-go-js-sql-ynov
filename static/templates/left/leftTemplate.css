@@ -6,7 +6,7 @@
 
 
 .leftcolumn {
-    position:absolute;
+    position:fixed;
     left: 0px;
     display: flex;
     justify-content: flex-end;
