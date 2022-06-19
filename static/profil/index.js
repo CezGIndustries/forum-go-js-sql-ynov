@@ -121,7 +121,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
             document.getElementById('popup-retour').innerHTML = 
             `
-            <p  id="popup-btnLogout">Retour </p>
+            <p  id="popup-retour">Retour </p>
             `
 
             document.getElementById('popup-confirm').innerHTML = 
@@ -129,7 +129,10 @@ document.addEventListener("DOMContentLoaded", async () => {
             <p  id="popup-btnLogout">Enregistrer </p>
             `
     })
-
+    const retour = document.getElementById('popup-retour') 
+    retour.addEventListener('click', () => {
+        document.getElementById('edit-box').style.display = "none"
+    })
     
 })
 
