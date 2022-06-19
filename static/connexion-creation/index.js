@@ -104,3 +104,11 @@ function passwordIsGood(password, confirmPassword) {
 function validateEmail(email) {
     return email.match(/^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/) !== null
   }
+
+
+function onSignIn(googleUser){
+    console.log('prout')
+    console.log(JSON.stringify(googleUser.getBasicProfile))
+}
+
+
