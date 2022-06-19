@@ -155,11 +155,7 @@ body{
     flex-direction: column;
     overflow-x: hidden;
     overflow-y: auto;
-<<<<<<< HEAD
-    height: 70%;
-=======
     height: 75%;
->>>>>>> 5828f8ee0fc4eb824f04fd3917a4f6a21d4e83a4
     width: 100%;
 }
 
