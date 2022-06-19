@@ -25,6 +25,12 @@ func Contact() http.HandlerFunc {
 // tmpl, _ := template.ParseFiles("./index.html")
 // 	tmpl.Execute(w, nil)
 
+func RedirectCo() http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		http.Redirect(w, r, "/connexion", http.StatusFound)
+	}
+}
+
 func Connexion_Creation() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		if !ValidSession(w, r) {
