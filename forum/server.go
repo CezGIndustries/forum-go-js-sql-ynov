@@ -15,6 +15,13 @@ func Home() http.HandlerFunc {
 	}
 }
 
+func Contact() http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		t, _ := template.ParseFiles("./static/contact/index.html", "./static/templates/left/leftTemplate.html", "./static/templates/right/rightTemplate.html")
+		t.Execute(w, "index.html")
+	}
+}
+
 // tmpl, _ := template.ParseFiles("./index.html")
 // 	tmpl.Execute(w, nil)
 

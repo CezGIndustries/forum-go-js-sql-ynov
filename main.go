@@ -28,6 +28,7 @@ func main() {
 	Env.Router.HandleFunc("/admin", forum.Moderation())
 	Env.Router.HandleFunc("/explore", forum.Explore())
 	Env.Router.HandleFunc("/compose/cron", forum.Compose())
+	Env.Router.HandleFunc("/contact", forum.Contact())
 
 	Env.Router.HandleFunc("/profil/{nameUser}", forum.Profil())
 

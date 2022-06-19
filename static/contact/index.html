@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://kit.fontawesome.com/4f6d94b9cb.js" crossorigin="anonymous"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="./static/contact/style.css">
+    <title>Contact - Report</title>
+</head>
+
+<body>
+
+    <div class="allcolumns">
+        {{template "LeftColumn" }}
+        <div class="midcolumn">
+
+            <div class="right">
+                <select name="selectfilter" id="selectfilter">
+                        <option value="Aide">Aide</option>
+                        <option value="SPAM">SPAM</option>
+                        <option value="Racisme">Racisme</option>
+                        <option value="Bug">Bug</option> 
+                        <option value="Nous Contacter">Nous contacter</option>
+                    </select>
+            </div>
+            <div class="mid">
+                <div class="textareawrapper">
+                    <textarea id="text" rows="5%" maxlength="240" placeholder="renseign your report"></textarea>
+                </div>
+                <div class="mailpost">
+                    <textarea id="mailid" rows="2%" maxlength="240" placeholder="Take your email"></textarea>
+                </div>
+                <div class="mediaction">
+                    <div class="buttonpost">
+                        <button class="buttoncrone" type="button">Report</button>
+                    </div>
+                </div>
+            </div>
+            <div id="report">Welcome to our report page.</div>
+        </div>
+
+    </div>
+    <script src="./static/contact/index.js"></script>
+</body>
+
+</html>
