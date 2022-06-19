@@ -232,7 +232,7 @@ body {
 
 #popup{
     display: flex;
-    height: 700px;
+    height: 80%;
     width:500px;
     background-color: #17152A;
     border-radius: 26px;
