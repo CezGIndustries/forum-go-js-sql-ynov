@@ -48,10 +48,18 @@ func main() {
 	Env.Router.HandleFunc("/cronosdb/POST/cron/DELETE", forum.DeleteCron(Env.DB)).Methods("POST")
 	Env.Router.HandleFunc("/cronosdb/POST/cron/LIKE", forum.CreateLike(Env.DB)).Methods("POST")
 
+	Env.Router.HandleFunc("/cronosdb/POST/contact/REQUEST", temp(Env.DB)).Methods("POST")
+
 	credentials := handlers.AllowCredentials()
 	origins := handlers.AllowedOrigins([]string{"http://localhost:8080"})
 
 	// go forum.GoDeleteCron(Env.DB)
 
 	log.Fatal(http.ListenAndServe(":8080", handlers.CORS(credentials, origins)(Env.Router)))
+}
+
+func temp(cronosDB *sql.DB) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+
+	}
 }
