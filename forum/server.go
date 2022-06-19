@@ -23,7 +23,7 @@ func Contact() http.HandlerFunc {
 }
 
 // tmpl, _ := template.ParseFiles("./index.html")
-// 	tmpl.Execute(w, nil)
+//  tmpl.Execute(w, nil)
 
 func RedirectCo() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
