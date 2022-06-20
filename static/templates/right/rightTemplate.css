@@ -2,6 +2,7 @@
     position: fixed;
     right: 0px;
     display: flex;
+    flex-direction: column;
     justify-content: flex-end;
     width: 300px;
     height: 100%;
@@ -45,8 +46,26 @@
     width: 100%;
 }
 
-.tags {
+#tags {
+    display: flex;
+    flex-direction: column;
     height: 90%;
+}
+
+.popular-tags {
+    display: flex;
+    height: 8%;
+    border: solid 2px #08061A;
+    background-color: #17152A;
+    color: white;
+    padding: 5%;
+    padding-left: 10%;
+    padding-right: 20%;
+    flex-direction: column;
+}
+
+#used {
+    text-align: right;
 }
 
 @media only screen and (max-width: 1050px) {
