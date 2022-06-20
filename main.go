@@ -62,6 +62,8 @@ func main() {
 	Env.Router.HandleFunc("/cronosdb/POST/profil/CRON_FRIENDS", forum.FriendCronUser(Env.DB)).Methods("POST")
 	Env.Router.HandleFunc("/cronosdb/POST/profil/CRON_TAG", forum.TagCronUser(Env.DB)).Methods("POST")
 
+	Env.Router.HandleFunc("/cronosdb/POST/tag/GET_ALL_TAG", forum.EveryTag(Env.DB)).Methods("POST")
+
 	credentials := handlers.AllowCredentials()
 	origins := handlers.AllowedOrigins([]string{"http://localhost"})
 
