@@ -271,6 +271,7 @@ func CreateCron(cronosDB *sql.DB) http.HandlerFunc {
 			} else {
 				row := cronosDB.QueryRow(`SELECT Year, Month, Day, Hour, Minute FROM timeLeft WHERE ID = ?`, Cron.ParentID)
 				row.Scan(&Cron.TimeLeft.Year, &Cron.TimeLeft.Month, &Cron.TimeLeft.Day, &Cron.TimeLeft.Hour, &Cron.TimeLeft.Minute)
+				cronosDB.Exec(`INSERT INTO timeLeft (ID, Year, Month, Day, Hour, Minute) VALUES (?, ?, ?, ?, ?, ?);`, ID, Cron.TimeLeft.Year, Cron.TimeLeft.Month, Cron.TimeLeft.Day, Cron.TimeLeft.Hour, Cron.TimeLeft.Minute)
 			}
 			for _, tag := range Cron.Tag {
 				cronosDB.Exec(`INSERT INTO tagCron (ID, Tag) VALUES (?, ?);`, ID, tag)
