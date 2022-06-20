@@ -252,10 +252,10 @@ type Cron struct {
 	TimeLeft struct {
 		Year, Month, Day, Hour, Minute int
 	} `json:"timeLeft"`
-	ParentID int        `json:"ParentID"`
-	Tag      []string   `json:"tag"`
-	Likes    []string   `json:"Likes"`
-	Comments [][]string `json:"Comments"`
+	ParentID int      `json:"ParentID"`
+	Tag      []string `json:"tag"`
+	Likes    []string `json:"Likes"`
+	Comments []int    `json:"Comments"`
 }
 
 func CreateCron(cronosDB *sql.DB) http.HandlerFunc {
@@ -272,6 +272,9 @@ func CreateCron(cronosDB *sql.DB) http.HandlerFunc {
 			ID, _ := result.LastInsertId()
 			if Cron.TimeLeft.Year != 0 {
 				cronosDB.Exec(`INSERT INTO timeLeft (ID, Year, Month, Day, Hour, Minute) VALUES (?, ?, ?, ?, ?, ?);`, ID, Cron.TimeLeft.Year, Cron.TimeLeft.Month, Cron.TimeLeft.Day, Cron.TimeLeft.Hour, Cron.TimeLeft.Minute)
+			} else {
+				row := cronosDB.QueryRow(`SELECT Year, Month, Day, Hour, Minute FROM timeLeft WHERE ID = ?`, Cron.ParentID)
+				row.Scan(&Cron.TimeLeft.Year, &Cron.TimeLeft.Month, &Cron.TimeLeft.Day, &Cron.TimeLeft.Hour, &Cron.TimeLeft.Minute)
 			}
 			for _, tag := range Cron.Tag {
 				cronosDB.Exec(`INSERT INTO tagCron (ID, Tag) VALUES (?, ?);`, ID, tag)
@@ -331,7 +334,7 @@ func GetCron(cronosDB *sql.DB) http.HandlerFunc {
 				rows.Scan(&tag)
 				Cron.Tag = append(Cron.Tag, tag)
 			}
-			// Cron.Comments = getComments(cronosDB, Cron)
+			Cron.Comments = getComments(cronosDB, Cron)
 			Cron.Likes = getLikes(cronosDB, Cron)
 			response, _ := json.Marshal(Cron)
 			w.Write(response)
@@ -354,32 +357,16 @@ func getLikes(cronosDB *sql.DB, Cron Cron) []string {
 	return likes
 }
 
-// func getComments(cronosDB *sql.DB, Cron Cron) [][]string {
-// 	var (
-// 		comments [][]string
-// 		id, user string
-// 	)
-// 	sqlStatement := fmt.Sprintf(`SELECT * FROM cron WHERE ParentID = %v`, Cron.ID)
-// 	rows, _ := cronosDB.Query(sqlStatement)
-// 	defer rows.Close()
-// 	for rows.Next() {
-// 		rows.Scan(&id, &user)
-// 		comments = append(comments, addComment(cronosDB, id, []string{user}))
-// 	}
-// 	return comments
-// }
-
-// func addComment(cronosDB *sql.DB, id string, tab []string) []string {
-// 	sqlStatement := fmt.Sprintf(`SELECT * FROM cron WHERE ParentID = %v`, id)
-// 	rows, _ := cronosDB.Query(sqlStatement)
-// 	defer rows.Close()
-// 	for rows.Next() {
-// 		var user string
-// 		rows.Scan(&id, &user)
-// 		return addComment(cronosDB, id, append(tab, user))
-// 	}
-// 	return tab
-// }
+func getComments(cronosDB *sql.DB, Cron Cron) []int {
+	var comments []int
+	rows, _ := cronosDB.Query(`SELECT ID FROM cron WHERE ParentID = ?`, Cron.ID)
+	defer rows.Close()
+	for rows.Next() {
+		rows.Scan(&Cron.ID)
+		comments = append(comments, Cron.ID)
+	}
+	return comments
+}
 
 type Likes struct {
 	ID int
@@ -541,7 +528,6 @@ func CronUser(cronosDB *sql.DB) http.HandlerFunc {
 		)
 		body, _ := ioutil.ReadAll(r.Body)
 		json.Unmarshal(body, &UniqueName)
-		// UniqueName = "CezGain"
 		rows, err := cronosDB.Query(`SELECT * FROM cron WHERE Creator = ?`, UniqueName)
 		if err != nil {
 			panic(err)
@@ -557,7 +543,7 @@ func CronUser(cronosDB *sql.DB) http.HandlerFunc {
 				cronAlone.Tag = append(cronAlone.Tag, Tag)
 			}
 			rowsTags.Close()
-			// cronAlone.Comments = getComments(cronosDB, cronAlone)
+			cronAlone.Comments = getComments(cronosDB, cronAlone)
 			cronAlone.Likes = getLikes(cronosDB, cronAlone)
 			AllCron = append(AllCron, cronAlone)
 		}
