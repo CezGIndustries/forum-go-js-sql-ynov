@@ -128,9 +128,14 @@ document.addEventListener("DOMContentLoaded", async () => {
             </div>
             `
 
+            document.getElementById('popup-status').innerHTML = 
+            `
+            <p  id="popup-lestatus">Status: ${user.Rank} </p>
+            `
+
             document.getElementById('popup-retour').innerHTML = 
             `
-            <p  id="popup-retour">Retour </p>
+            <p  id="popup-leretour">Retour </p>
             `
 
             document.getElementById('popup-confirm').innerHTML = 
