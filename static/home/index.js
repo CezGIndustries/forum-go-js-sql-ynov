@@ -67,7 +67,7 @@ async function drawCrons(id, asc = 1) {
     helloCron(null, cron, asc)
   } else {
     const parentCron = await requestCron(cron.ParentID)
-    helloCron( null, cron, asc)
+    helloCron( parentCron, cron, asc)
   }
   NUMBER_OF_CRON += 1
   everyAddEventListener()
