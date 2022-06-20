@@ -159,6 +159,7 @@ func DeleteUser(cronosDB *sql.DB) {
 
 type PP_Bio struct {
 	PP         string
+	Banner     string
 	Bio        string
 	UniqueName string
 }
@@ -170,7 +171,7 @@ func ModifyPPBio(cronosDB *sql.DB) http.HandlerFunc {
 		)
 		body, _ := ioutil.ReadAll(r.Body)
 		json.Unmarshal(body, &PP_Bio)
-		cronosDB.Exec(`UPDATE accountUsers SET ProfilPicture = ?, Biography = ? WHERE UniqueName = ?`, PP_Bio.PP, PP_Bio.Bio, PP_Bio.UniqueName)
+		cronosDB.Exec(`UPDATE accountUsers SET ProfilPicture = ? , Biography = ?,Banner = ? WHERE UniqueName = ?`, PP_Bio.PP, PP_Bio.Bio, PP_Bio.Banner, PP_Bio.UniqueName)
 	}
 }
 

@@ -80,13 +80,6 @@ document.addEventListener("DOMContentLoaded", async () => {
 
 
     const edit = document.getElementById('edit-profil')
-<<<<<<< HEAD
-
-    edit.addEventListener('click', () => {
-        document.getElementById("edit-box").style.display = "flex"
-
-        document.getElementById('popup-img').innerHTML =
-=======
     
         edit.addEventListener('click', () => {
             document.getElementById("edit-box").style.display = "flex"
@@ -102,7 +95,6 @@ document.addEventListener("DOMContentLoaded", async () => {
                 </label>
             `
             document.getElementById('popup-img').innerHTML = 
->>>>>>> 104acf53697bfc661f1156f60b924d133a248b1d
             `
                 <label id="label-pp" for="pp">
                     <img id="img-USER" src="${user.ProfilPicture}">
@@ -143,14 +135,13 @@ document.addEventListener("DOMContentLoaded", async () => {
     const retour = document.getElementById('popup-retour')
     retour.addEventListener('click', () => {
         document.getElementById('edit-box').style.display = "none"
+<<<<<<< HEAD
     })
-    const confirm = document.getElementById('popup-confirm') 
-    confirm.addEventListener('click', () => {
-        //fetch//
-        console.log('fetch// is good reload page')
-        //--//
-    })
+
     
+=======
+    }) 
+>>>>>>> e6b7693665c801c734d8f6614c5d3576e5265f25
     const confirm = document.getElementById('popup-confirm') 
     confirm.addEventListener('click', () => {
         fetch('/cronosdb/POST/userInfo/PPBIO', {
@@ -161,7 +152,9 @@ document.addEventListener("DOMContentLoaded", async () => {
             body: JSON.stringify({
                 uniqueName: window.location.href.split("/")[4],
                 bio: document.getElementById('popup-textarea').value,
-                pp: document.getElementById('img-popup').src,
+                pp: document.getElementById('img-USER').src,
+                banner: document.getElementById('popup-img-baner').src,
+                
             })
         })
         location.reload()
