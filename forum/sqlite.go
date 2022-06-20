@@ -626,6 +626,28 @@ func TagCronUser(cronosDB *sql.DB) http.HandlerFunc {
 	}
 }
 
+type UserInfoExist struct {
+	UniqueName, Status, Rank, ProfilPicture, Banner, Biography string
+}
+
+func UserExists(cronosDB *sql.DB) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		var (
+			UN   UN
+			User UserInfoExist
+		)
+		body, _ := ioutil.ReadAll(r.Body)
+		json.Unmarshal(body, &UN)
+		row := cronosDB.QueryRow(`SELECT * FROM accountUsers WHERE UniqueName = ?`, UN.UniqueName)
+		if err := row.Scan(&User.UniqueName, &User.Status, &User.Rank, &User.ProfilPicture, &User.Banner, &User.Biography); err != nil {
+			w.Write([]byte(`{"ERROR": 404}`))
+		} else {
+			response, _ := json.Marshal(User)
+			w.Write(response)
+		}
+	}
+}
+
 func FamousTag(cronosDB *sql.DB) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 

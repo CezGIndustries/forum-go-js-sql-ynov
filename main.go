@@ -45,6 +45,7 @@ func main() {
 	Env.Router.HandleFunc("/cronosdb/POST/adminAccess/CHECK", forum.AdminAccess(Env.DB)).Methods("POST")
 
 	Env.Router.HandleFunc("/cronosdb/POST/userInfo/GET", forum.GetUser(Env.DB)).Methods("POST")
+	Env.Router.HandleFunc("/cronosdb/POST/userInfo/EXIST", forum.UserExists(Env.DB)).Methods("POST")
 	Env.Router.HandleFunc("/cronosdb/POST/userInfo/PPBIO", forum.ModifyPPBio(Env.DB)).Methods("POST")
 
 	Env.Router.HandleFunc("/cronosdb/POST/cron/CREATE", forum.CreateCron(Env.DB)).Methods("POST")
@@ -58,7 +59,7 @@ func main() {
 
 	Env.Router.HandleFunc("/cronosdb/POST/profil/CRON_USER", forum.CronUser(Env.DB)).Methods("POST")
 	Env.Router.HandleFunc("/cronosdb/POST/profil/CRON_FRIENDS", forum.FriendCronUser(Env.DB)).Methods("POST")
-	Env.Router.HandleFunc("/cronosdb/POST/profil/CRON_TAG", forum.TagCronUser(Env.DB))
+	Env.Router.HandleFunc("/cronosdb/POST/profil/CRON_TAG", forum.TagCronUser(Env.DB)).Methods("POST")
 
 	credentials := handlers.AllowCredentials()
 	origins := handlers.AllowedOrigins([]string{"http://localhost"})
