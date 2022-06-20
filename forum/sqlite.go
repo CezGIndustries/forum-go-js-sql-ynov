@@ -99,11 +99,6 @@ type UserLogin struct {
 	Password   string `json:"password"`
 }
 
-const (
-	DEFAULT_PP_PATH     = "static/img/others/default_pp.png"
-	DEFAULT_BANNER_PATH = "static/img/others/default_banner.png"
-)
-
 func CreateNewUser(cronosDB *sql.DB) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		var (
@@ -321,16 +316,13 @@ func GetCron(cronosDB *sql.DB) http.HandlerFunc {
 		)
 		body, _ := ioutil.ReadAll(r.Body)
 		json.Unmarshal(body, &Cron)
-		sqlStatement := fmt.Sprintf(`SELECT * FROM cron WHERE ID = %v`, Cron.ID)
-		row := cronosDB.QueryRow(sqlStatement)
+		row := cronosDB.QueryRow(`SELECT * FROM cron WHERE ID = ?`, Cron.ID)
 		if err := row.Scan(&Cron.ID, &Cron.Creator, &Cron.Content, &Cron.ParentID); err != nil {
 			w.Write([]byte(`{ "ERROR":"404" }`))
 		} else {
-			sqlStatement = fmt.Sprintf(`SELECT Year, Month, Day, Hour, Minute FROM timeLeft WHERE ID = %v`, Cron.ID)
-			row = cronosDB.QueryRow(sqlStatement)
+			row = cronosDB.QueryRow(`SELECT Year, Month, Day, Hour, Minute FROM timeLeft WHERE ID = ?`, Cron.ID)
 			row.Scan(&Cron.TimeLeft.Year, &Cron.TimeLeft.Month, &Cron.TimeLeft.Day, &Cron.TimeLeft.Hour, &Cron.TimeLeft.Minute)
-			sqlStatement = fmt.Sprintf(`SELECT Tag FROM tagCron WHERE ID = %v`, Cron.ID)
-			rows, _ := cronosDB.Query(sqlStatement)
+			rows, _ := cronosDB.Query(`SELECT Tag FROM tagCron WHERE ID = ?`, Cron.ID)
 			for rows.Next() {
 				rows.Scan(&tag)
 				Cron.Tag = append(Cron.Tag, tag)
