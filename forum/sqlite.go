@@ -650,7 +650,19 @@ func UserExists(cronosDB *sql.DB) http.HandlerFunc {
 
 func FamousTag(cronosDB *sql.DB) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-
+		var (
+			tag string
+			id  int
+		)
+		allTag := make(map[string]int)
+		rows, _ := cronosDB.Query(`SELECT DISTINCT * FROM tagCron`)
+		for rows.Next() {
+			rows.Scan(&id, &tag)
+			allTag[tag] += 1
+		}
+		rows.Close()
+		response, _ := json.Marshal(allTag)
+		w.Write(response)
 	}
 }
 
