@@ -48,14 +48,16 @@ document.addEventListener("DOMContentLoaded", async () => {
     } else {
         const signout = document.getElementsByClassName('fa-sign-out')
         for (let i of signout) {
+            console.log(i)
             i.addEventListener('click', () => {
                 fetch('/cronosdb/POST/logUsers/DISCONNECT', {
                     method: 'POST',
                     headers: {
                         "content-type": "application/json"
                     }
+                }).then(() => {
+                    window.location.href = '/connexion'
                 })
-                window.location.href = '/connexion'
             })
         }
     }

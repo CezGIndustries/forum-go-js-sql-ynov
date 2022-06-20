@@ -135,13 +135,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     const retour = document.getElementById('popup-retour')
     retour.addEventListener('click', () => {
         document.getElementById('edit-box').style.display = "none"
-<<<<<<< HEAD
-    })
-
-    
-=======
     }) 
->>>>>>> e6b7693665c801c734d8f6614c5d3576e5265f25
     const confirm = document.getElementById('popup-confirm') 
     confirm.addEventListener('click', () => {
         fetch('/cronosdb/POST/userInfo/PPBIO', {
