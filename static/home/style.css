@@ -256,7 +256,7 @@ body {
     display: flex;
     height: 70%;
     width: 100%;
-    justify-content: center;
+    justify-content: start;
     align-items: center;
 }
 
@@ -282,9 +282,9 @@ body {
 }
 
 .redirect-parent {
-    margin-left: 8%;
+    margin-left: 40px;
     color: #B33CED;
-    text-decoration: underline;
+    font-size: 14px;
 }
 
 .article-text {
@@ -423,6 +423,7 @@ body {
         /* justify-content: center; */
     }
 
+
     .midcolumn {
         height: 96%;
     }
@@ -529,7 +530,9 @@ body {
     #more i {
         font-size: 10px;
     }
-
+    .redirect-parent{
+        font-size: 12px;
+    }
 
 
 

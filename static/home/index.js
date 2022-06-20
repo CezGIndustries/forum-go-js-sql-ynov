@@ -1,4 +1,4 @@
-import { grantParentToParentToChildCron, parentToChildCron, soloCron } from "./templateCron.js"
+import { helloCron } from "./templateCron.js"
 
 let NUMBER_OF_CRON = 0
 
@@ -6,7 +6,6 @@ document.querySelector('body').onload = async function () {
   // Function that while be load when page is load
   console.log('Page is loaded.')
   await sleep(35)
-  console.log(document.getElementsByClassName('logoutmid')[0].textContent == "undefined")
   if (document.getElementsByClassName('logoutmid')[0].textContent != "undefined") {
     document.getElementById('more').addEventListener('click', async () => {
       const cron = await printCrons()
@@ -65,18 +64,10 @@ async function drawCrons(id, asc = 1) {
     cron.Comments = []
   }
   if (cron.ParentID == -1) {
-    soloCron(cron, asc)
+    helloCron(null, cron, asc)
   } else {
     const parentCron = await requestCron(cron.ParentID)
-    if (cron.ParendID == -1) {
-      parentToChildCron(parentCron, cron, asc)
-    } else {
-      let fatherCron = await requestCron(parentCron.ParentID)
-      while (fatherCron.ParendID != -1) {
-        fatherCron = await requestCron(fatherCron.ParentID)
-      }
-      grantParentToParentToChildCron(fatherCron, parentCron, cron, asc)
-    }
+    helloCron( parentCron, cron, asc)
   }
   NUMBER_OF_CRON += 1
   everyAddEventListener()
