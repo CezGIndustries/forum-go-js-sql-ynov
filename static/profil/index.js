@@ -80,17 +80,34 @@ document.addEventListener("DOMContentLoaded", async () => {
 
 
     const edit = document.getElementById('edit-profil')
+<<<<<<< HEAD
 
     edit.addEventListener('click', () => {
         document.getElementById("edit-box").style.display = "flex"
 
         document.getElementById('popup-img').innerHTML =
-            `
-            <label for="file">
-                <img id="img-popup" src="${user.ProfilPicture}">
-                <input type="file" name="file" id="file" accept="image/png, image/jpeg, image/gif, image/jpg" onchange="previewImage();">
-            </label>
+=======
+    
+        edit.addEventListener('click', () => {
+            document.getElementById("edit-box").style.display = "flex"
             
+            
+         
+            
+            document.getElementById('popup-banner').innerHTML = 
+            `
+                <label id="label-banner" for="banner">
+                    <img id="popup-img-baner" src="${user.Banner}">
+                    <input type="file" name="file" id="banner" accept="image/png, image/jpeg, image/gif, image/jpg" onchange="loadBanner();">
+                </label>
+            `
+            document.getElementById('popup-img').innerHTML = 
+>>>>>>> 104acf53697bfc661f1156f60b924d133a248b1d
+            `
+                <label id="label-pp" for="pp">
+                    <img id="img-USER" src="${user.ProfilPicture}">
+                    <input type="file" name="file" id="pp" accept="image/png, image/jpeg, image/gif, image/jpg" onchange="loadPP();">
+                </label>
             `
 
         document.getElementById('popup-name').innerHTML =
@@ -108,9 +125,14 @@ document.addEventListener("DOMContentLoaded", async () => {
             </div>
             `
 
-        document.getElementById('popup-retour').innerHTML =
+            document.getElementById('popup-status').innerHTML = 
             `
-            <p  id="popup-retour">Retour </p>
+            <p  id="popup-lestatus">Status: ${user.Rank} </p>
+            `
+
+            document.getElementById('popup-retour').innerHTML = 
+            `
+            <p  id="popup-leretour">Retour </p>
             `
 
         document.getElementById('popup-confirm').innerHTML =
@@ -121,6 +143,12 @@ document.addEventListener("DOMContentLoaded", async () => {
     const retour = document.getElementById('popup-retour')
     retour.addEventListener('click', () => {
         document.getElementById('edit-box').style.display = "none"
+    })
+    const confirm = document.getElementById('popup-confirm') 
+    confirm.addEventListener('click', () => {
+        //fetch//
+        console.log('fetch// is good reload page')
+        //--//
     })
     
     const confirm = document.getElementById('popup-confirm') 

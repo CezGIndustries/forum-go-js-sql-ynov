@@ -92,14 +92,14 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 150px;
+    height: 100px;
     aspect-ratio: 1/1;
     margin-top: -20%;
 
 }
 
 #div-img img {
-    height: 149px;
+    height: 148px;
     aspect-ratio: 1/1;
     border-radius: 50%;
 
@@ -235,9 +235,8 @@ body {
     height: 80%;
     width:500px;
     background-color: #17152A;
-    border-radius: 26px;
+    /* border-radius: 26px; */
     flex-direction: column;
-    /* border: 1px solid #cacaca; */
 }
 #top-popup{
     display: flex;
@@ -248,22 +247,63 @@ body {
     border-bottom: 1px solid #cacaca;
 
 }
-/* #popup-banner{
-    DI
-} */
-#popup-img{
+#popup-banner{
+    position: relative;
     display: flex;
-    height: 160px;
-    aspect-ratio: 1/1;
+    height: 100%;
+    width: 100%;
 }
-#popup-img img{
+#label-banner{
+    display: flex;
+    height: 100%;
+    width: 100%;
+    cursor: pointer;
 
-    height: 155px;
+}
+
+#label-banner img{
+    display: flex;
+    height: 100%;
+    width: 100%;
+    cursor: pointer;
+
+
+}
+
+#popup-img{
+    
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 15%;
     aspect-ratio: 1/1;
+    position: absolute;
+   
+    
+}
+#label-pp{
+    display: flex;
+    height: 100%;
+    width: 100%;
+    cursor: pointer;
+}
+#img-USER{
+    display: flex;
+    height: 100%;
+    width: 100%;
     border-radius: 50%;
     object-fit: cover;
     
 }
+
+#pp{
+    display: none;
+}
+#banner{
+    display: none;
+}
+
+
 
 #mid-popup{
     display: flex;
@@ -330,7 +370,7 @@ body {
     
 
 }
- #popup-err{
+ #popup-status{
     display: flex;
     height: 30%;
     width: 100%;
@@ -362,15 +402,3 @@ body {
     background-color: #08061A;
 }
 
-#file{
-    display: none;
-}
-label{
-    cursor: pointer;
-}
-label i{
-    position: absolute;
-    top: 260px;
-    left: 460px;
-    color: gray;
-}

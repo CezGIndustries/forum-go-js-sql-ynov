@@ -17,16 +17,28 @@
 
 <body>
     <script>
-        function previewImage() {
-            var file = document.getElementById("file").files;
-            if (file.length > 0) {
-                var fileReader = new FileReader();
-                fileReader.onload = function (event) {
-                    document.getElementById("img-popup").setAttribute("src", event.target.result)
-                }
-                fileReader.readAsDataURL(file[0])
-            }
+
+    function loadPP() {
+        const file = document.getElementById("pp").files;
+        if (file.length > 0) {
+            const fileReader = new FileReader();
+            fileReader.onload = function (event) {
+                document.getElementById("img-USER").setAttribute("src", event.target.result);
+            };
+             fileReader.readAsDataURL(file[0])
         }
+    }
+    function loadBanner() {
+        const file = document.getElementById("banner").files;
+        if (file.length > 0) {
+            const fileReader = new FileReader();
+            fileReader.onload = function (event) {
+                document.getElementById("popup-img-baner").setAttribute("src", event.target.result);
+            };
+             fileReader.readAsDataURL(file[0])
+        }
+    }
+
     </script>
     </form>
     <div class="allcolumns">
@@ -46,7 +58,7 @@
 
                 </div>
                 <div id="bot-popup">
-                    <div id="popup-err"></div>
+                    <div id="popup-status"></div>
                     <div id="popup-retour"></div>
                     <div id="popup-confirm"></div>
                 </div>
