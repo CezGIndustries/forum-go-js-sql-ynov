@@ -45,6 +45,7 @@ func main() {
 	Env.Router.HandleFunc("/cronosdb/POST/adminAccess/CHECK", forum.AdminAccess(Env.DB)).Methods("POST")
 
 	Env.Router.HandleFunc("/cronosdb/POST/userInfo/GET", forum.GetUser(Env.DB)).Methods("POST")
+	Env.Router.HandleFunc("/cronosdb/POST/userInfo/EXIST", forum.UserExists(Env.DB)).Methods("POST")
 	Env.Router.HandleFunc("/cronosdb/POST/userInfo/PPBIO", forum.ModifyPPBio(Env.DB)).Methods("POST")
 
 	Env.Router.HandleFunc("/cronosdb/POST/cron/CREATE", forum.CreateCron(Env.DB)).Methods("POST")
