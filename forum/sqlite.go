@@ -593,7 +593,36 @@ func FriendCronUser(cronosDB *sql.DB) http.HandlerFunc {
 
 func TagCronUser(cronosDB *sql.DB) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-
+		var (
+			UN      UN
+			Tag     string
+			AllCron []Cron
+		)
+		body, _ := ioutil.ReadAll(r.Body)
+		json.Unmarshal(body, &UN)
+		UN.UniqueName = "CezGain"
+		rows, _ := cronosDB.Query(`SELECT DISTINCT cron.* FROM cron 
+			LEFT JOIN tagCron ON cron.ID = tagCron.ID
+			LEFT JOIN tagUsers ON tagUsers.User = ?
+			WHERE tagCron.Tag = tagUsers.Tag`, UN.UniqueName)
+		for rows.Next() {
+			var cronAlone Cron
+			rows.Scan(&cronAlone.ID, &cronAlone.Creator, &cronAlone.Content, &cronAlone.ParentID)
+			rowsTimeLeft := cronosDB.QueryRow(`SELECT Year, Month, Day, Hour, Minute FROM timeLeft WHERE ID = ?`, cronAlone.ID)
+			rowsTimeLeft.Scan(&cronAlone.TimeLeft.Year, &cronAlone.TimeLeft.Month, &cronAlone.TimeLeft.Day, &cronAlone.TimeLeft.Hour, &cronAlone.TimeLeft.Minute)
+			rowsTags, _ := cronosDB.Query(`SELECT Tag FROM tagCron WHERE ID = ?`, cronAlone.ID)
+			for rowsTags.Next() {
+				rowsTags.Scan(&Tag)
+				cronAlone.Tag = append(cronAlone.Tag, Tag)
+			}
+			rowsTags.Close()
+			cronAlone.Comments = getComments(cronosDB, cronAlone)
+			cronAlone.Likes = getLikes(cronosDB, cronAlone)
+			AllCron = append(AllCron, cronAlone)
+		}
+		rows.Close()
+		response, _ := json.Marshal(AllCron)
+		w.Write(response)
 	}
 }
 
