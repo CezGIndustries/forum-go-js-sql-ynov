@@ -111,7 +111,8 @@ body {
     cursor: pointer;
 }
 
-.timeselecteur {}
+
+/* .timeselecteur {} */
 
 #select-time {
     cursor: pointer;
@@ -130,7 +131,8 @@ body {
     border: #B33CED solid 1px;
 }
 
-.buttonpost {}
+
+/* .buttonpost {} */
 
 #button-post {
     cursor: pointer;

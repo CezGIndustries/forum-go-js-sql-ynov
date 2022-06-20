@@ -67,18 +67,13 @@ document.addEventListener("DOMContentLoaded", async () => {
         </div>
         `
 
-    } else if (pseudoUser != user.UniqueName && user.Rank === "member") {
+    } else if (actualUser.UniqueName != user.UniqueName ) {
 
         document.getElementById('top-right-profil').innerHTML = `<p id="follow">Follow !</p>`
+        document.getElementById('myPost').innerText = "Crons postés" 
 
-    } else if (pseudoUser != user.UniqueName && user.Rank === "moderator") {
-        document.getElementById('top-right-profil').innerHTML = `<p id="follow">Follow !</p>`
-
-
-    } else if (pseudoUser != user.UniqueName && user.Rank === "administrator") {
-        document.getElementById('top-right-profil').innerHTML = `<p id="follow">Follow !</p>`
-
-    }
+    } 
+    
     const selectOption = document.getElementsByClassName('btn-cron')
     for (let i of selectOption) {
         i.addEventListener('click', async e => {
