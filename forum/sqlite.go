@@ -521,15 +521,20 @@ func GoDeleteCron(cronosDB *sql.DB) {
 	}
 }
 
+type UN struct {
+	UniqueName string
+}
+
 func CronUser(cronosDB *sql.DB) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		var (
-			UniqueName, Tag string
-			AllCron         []Cron
+			UN      UN
+			Tag     string
+			AllCron []Cron
 		)
 		body, _ := ioutil.ReadAll(r.Body)
-		json.Unmarshal(body, &UniqueName)
-		rows, _ := cronosDB.Query(`SELECT * FROM cron WHERE Creator = ?`, UniqueName)
+		json.Unmarshal(body, &UN)
+		rows, _ := cronosDB.Query(`SELECT * FROM cron WHERE Creator = ?`, UN.UniqueName)
 		for rows.Next() {
 			var cronAlone Cron
 			rows.Scan(&cronAlone.ID, &cronAlone.Creator, &cronAlone.Content, &cronAlone.ParentID)
@@ -554,13 +559,13 @@ func CronUser(cronosDB *sql.DB) http.HandlerFunc {
 func FriendCronUser(cronosDB *sql.DB) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		var (
+			UN              UN
 			UniqueName, Tag string
 			AllCron         []Cron
 		)
 		body, _ := ioutil.ReadAll(r.Body)
-		json.Unmarshal(body, &UniqueName)
-		UniqueName = "CezGain"
-		rows, _ := cronosDB.Query(`SELECT User FROM follow WHERE FollowUser = ?`, UniqueName)
+		json.Unmarshal(body, &UN)
+		rows, _ := cronosDB.Query(`SELECT User FROM follow WHERE FollowUser = ?`, UN.UniqueName)
 		for rows.Next() {
 			rows.Scan(&UniqueName)
 			rowsFriend, _ := cronosDB.Query(`SELECT * FROM cron WHERE Creator = ?`, UniqueName)

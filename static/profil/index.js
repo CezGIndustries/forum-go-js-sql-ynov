@@ -1,12 +1,27 @@
+import { helloCron } from "./../home/templateCron.js"
+
+
 document.addEventListener("DOMContentLoaded", async () => {
 
     // Function that while be load when page is load
     console.log("Template is loaded.")
     const user = await requestUserInfo()
-    
+
     const pseudoUser = window.location.href.split("/")[4]
 
-    user.Rank = "moderator"
+    const load = await userCron(pseudoUser)
+    load.forEach(async e => {
+        if (e.ParentID == -1) {
+            helloCron(null, e, 1)
+        } else {
+            const parentCron = await requestCron(e.ParentID)
+            helloCron(parentCron, cron, 1)
+        }
+    })
+
+
+
+    
 
     const userName = document.getElementById("username")
     userName.innerText = "@" + user.UniqueName
@@ -51,7 +66,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
     const selectOption = document.getElementsByClassName('btn-cron')
     for (let i of selectOption) {
-        i.addEventListener('click', e => {
+        i.addEventListener('click', async e => {
             const btnSelected = e.path[1]
             let current = document.getElementsByClassName("active");
             current[0].className = current[0].className.replace(" active", "");
@@ -59,12 +74,32 @@ document.addEventListener("DOMContentLoaded", async () => {
 
             if (btnSelected.id == "my-post") {
                 //Fetch//
-                console.log(pseudoUser)
-                userCron(pseudoUser)
+                document.getElementsByClassName('div-all-article')[0].innerHTML = ""
+                const myCron = await userCron(pseudoUser)
+                myCron.forEach(async e => {
+                    if (e.ParentID == -1) {
+                        helloCron(null, e, 1)
+                    } else {
+                        const parentCron = await requestCron(e.ParentID)
+                        helloCron(parentCron, cron, 1)
+                    }
+                })
+
+
+                // helloCron
                 //-----//
             } else if (btnSelected.id == "friend-post") {
                 //Fetch//  
-
+                document.getElementsByClassName('div-all-article')[0].innerHTML = ""
+                const myCron = await friendCron(pseudoUser)
+                myCron.forEach(async e => {
+                    if (e.ParentID == -1) {
+                        helloCron(null, e, 1)
+                    } else {
+                        const parentCron = await requestCron(e.ParentID)
+                        helloCron(parentCron, cron, 1)
+                    }
+                })
                 //-----//
             } else if (btnSelected.id == "tag-post") {
                 //Fetch//
@@ -192,12 +227,11 @@ async function userCron(pseudo) {
     }).then((res) => {
         return res.json()
     }).then((res) => {
-        console.log(res)
         return res
     })
 }
-async function Cron(pseudo) {
-    return fetch('/cronosdb/POST/profil/CRON_USER', {
+async function friendCron(pseudo) {
+    return fetch('/cronosdb/POST/profil/CRON_FRIENDS', {
         method: 'POST',
         headers: {
             "content-type": "application/json"
@@ -208,7 +242,23 @@ async function Cron(pseudo) {
     }).then((res) => {
         return res.json()
     }).then((res) => {
-        console.log(res)
+        return res
+    })
+}
+
+async function requestCron(id) {
+    // Ask to database every information on a cron
+    return fetch('/cronosdb/POST/cron/GET', {
+        method: 'POST',
+        headers: {
+            "content-type": "application/json"
+        },
+        body: JSON.stringify({
+            id: id,
+        })
+    }).then((res) => {
+        return res.json()
+    }).then((res) => {
         return res
     })
 }

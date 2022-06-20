@@ -198,8 +198,9 @@ body {
 
 #my-post {}
 
-#bot {
+.div-all-article {
     display: flex;
+    flex-direction: column;
     height: 40%;
     width: 100%;
 

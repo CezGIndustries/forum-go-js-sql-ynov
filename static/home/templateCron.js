@@ -1,14 +1,28 @@
-export async function helloCron( parentCron, cron, asc) {
+export async function helloCron(parentCron, cron, asc) {
+    console.log(window.location.href.split("/")[4])
     let liked = 'fa-thumbs-o-up'
-    if (cron.Likes.includes(document.getElementsByClassName('logoutmid')[0].textContent)) {
-        liked = "fa fa-thumbs-up"
+    if(cron.Likes === null){
+        cron.Likes = []
     }
-    console.log(parentCron)
+    try {
+        if (cron.Likes.includes(document.getElementsByClassName('logoutmid')[0].textContent)) {
+            liked = "fa fa-thumbs-up"
+        }
+    } catch {
+        if (cron.Likes.includes(window.location.href.split("/")[4])) {
+            liked = "fa fa-thumbs-up"
+        }
+    }
+
     const allCron = document.querySelector('.div-all-article')
+    console.log(allCron)
     const Like = cron.Likes.length
+    if (cron.Comments === null) {
+        cron.Comments = []
+    }
     const Comment = cron.Comments.length
     let newCron = ``;
-     if (parentCron != null) {
+    if (parentCron != null) {
         console.log('hello')
 
         newCron = `
@@ -131,9 +145,11 @@ export async function helloCron( parentCron, cron, asc) {
             e.style.display = 'none'
         })
     }
-    const mainCron = document.getElementsByClassName('.redirect-parent')[0]
-    
-    mainCron.addEventListener('click', redirect(parentCron))
+    if (parentCron != null) {
+        const mainCron = document.getElementsByClassName('.redirect-parent')[0]
+        mainCron.addEventListener('click', redirect(parentCron))
+    }
+
 
 
 
@@ -154,7 +170,7 @@ async function requestUserInfo() {
 }
 
 
-function redirect(event, parent){
+function redirect(event, parent) {
     event.stopPropagation()
     window.location.href = `/cron/${parent.ID}/`
 }
