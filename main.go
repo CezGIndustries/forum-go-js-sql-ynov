@@ -57,6 +57,8 @@ func main() {
 	Env.Router.HandleFunc("/cronosdb/POST/cron/DELETE", forum.DeleteCron(Env.DB)).Methods("POST")
 	Env.Router.HandleFunc("/cronosdb/POST/cron/LIKE", forum.CreateLike(Env.DB)).Methods("POST")
 
+	Env.Router.HandleFunc("/cronosdb/POST/user/FOLLOW", forum.CreateFollow(Env.DB)).Methods("POST")
+
 	Env.Router.HandleFunc("/cronosdb/POST/contact/REQUEST", temp(Env.DB)).Methods("POST")
 
 	Env.Router.HandleFunc("/cronosdb/POST/profil/CRON_USER", forum.CronUser(Env.DB)).Methods("POST")

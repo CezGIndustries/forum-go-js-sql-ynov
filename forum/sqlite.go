@@ -387,6 +387,29 @@ func CreateLike(cronosDB *sql.DB) http.HandlerFunc {
 	}
 }
 
+func CreateFollow(cronosDB *sql.DB) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		if ValidSession(w, r) {
+			var (
+				UN         UN
+				UniqueName string
+			)
+			body, _ := ioutil.ReadAll(r.Body)
+			json.Unmarshal(body, &UN)
+			session, _ := store.Get(r, "AUTH_TOKEN")
+			UniqueName = session.Values["uniqueName"].(string)
+			rows, _ := cronosDB.Query(`SELECT * FROM follow WHERE User = ? AND FollowUser = ?`, UN.UniqueName, UniqueName)
+			if rows.Next() {
+				rows.Close()
+				cronosDB.Exec(`INSERT INTO follow (User, FollowUser) VALUES (?, ?);`, UN.UniqueName, UniqueName)
+			} else {
+				rows.Close()
+				cronosDB.Exec(`DELETE FROM follow WHERE User = ? AND FollowUser = ?;`, UN.UniqueName, UniqueName)
+			}
+		}
+	}
+}
+
 type MultipleID struct {
 	From int
 	To   int
