@@ -1,54 +1,66 @@
 import { helloCron } from "./../home/templateCron.js"
 
 
+
 document.addEventListener("DOMContentLoaded", async () => {
 
     // Function that while be load when page is load
     console.log("Template is loaded.")
-    
-    userExist()
 
     const pseudoUser = window.location.href.split("/")[4]
 
-    // const load = await userCron(pseudoUser)
-    // load.forEach(async e => {
-    //     if (e.ParentID == -1) {
-    //         helloCron(null, e, 1)
-    //     } else {
-    //         const parentCron = await requestCron(e.ParentID)
-    //         helloCron(parentCron, cron, 1)
-    //     }
-    // })
+    const actualUser = await userExist(pseudoUser)
+    console.log(actualUser.UniqueName)
+    if (actualUser.ERROR == "404") {
+        window.location.href = "/error"
+    }
+    console.log(actualUser.UniqueName)
+
+
+
+
+
+
+
+
+
+    const load = await userCron(pseudoUser)
+    load.forEach(async e => {
+        if (e.ParentID == -1) {
+            helloCron(null, e, 1)
+        } else {
+            const parentCron = await requestCron(e.ParentID)
+            helloCron(parentCron, cron, 1)
+        }
+    })
 
     const user = await requestUserInfo()
-   
-    if(pseudoUser == user.UniqueName){
-        console.log('ici')
-        const userName = document.getElementById("username")
-        userName.innerText = "@" + user.UniqueName
-    
-        document.getElementById('div-img').innerHTML = `<img src="${user.ProfilPicture}" alt="">`
-        document.getElementById('banner-div').style.backgroundImage = `url(${user.Banner})`
-    
-        icon(user.Rank)
-    
-        if (user.FoollowU == null) {
-            document.getElementById('abonnement').innerHTML = `<p class="nb"><span class="span-nb">0</span> abonnements</p>`
-        } else {
-            document.getElementById('abonnement').innerHTML = `<p class="nb"><span class="span-nb">${user.FoollowU}</span> abonnements</p>`
-        }
-        if (user.UFollow == null) {
-            document.getElementById('abonnes').innerHTML = `<p class="nb"><span class="span-nb">0</span> abonnés</p>`
-        } else {
-            document.getElementById('abonnes').innerHTML = `<p class="nb"><span class="span-nb">${user.UFollow}</span> abonnés</p>`
-        }
-        document.getElementById('bio').innerHTML = `<p id="Biography">Biography: ${user.Biography}</p>`
-    }else{
 
+    const divUserName = document.getElementById("div-username")
+    divUserName.innerHTML = `<p id="username">@${actualUser.UniqueName}</p>`
+    console.log(document.getElementById("username"))
+
+
+    document.getElementById('div-img').innerHTML = `<img src="${actualUser.ProfilPicture}" alt="">`
+    document.getElementById('banner-div').style.backgroundImage = `url(${actualUser.Banner})`
+
+    icon(actualUser.Rank)
+
+    if (actualUser.FoollowU == null) {
+        document.getElementById('abonnement').innerHTML = `<p class="nb"><span class="span-nb">0</span> abonnements</p>`
+    } else {
+        document.getElementById('abonnement').innerHTML = `<p class="nb"><span class="span-nb">${actualUser.FoollowU}</span> abonnements</p>`
     }
+    if (actualUser.UFollow == null) {
+        document.getElementById('abonnes').innerHTML = `<p class="nb"><span class="span-nb">0</span> abonnés</p>`
+    } else {
+        document.getElementById('abonnes').innerHTML = `<p class="nb"><span class="span-nb">${actualUser.UFollow}</span> abonnés</p>`
+    }
+    document.getElementById('bio').innerHTML = `<p id="Biography">Biography: ${actualUser.Biography}</p>`
 
-   
-    if (window.location.href.split("/")[4] == user.UniqueName) {
+
+
+    if (actualUser.UniqueName == user.UniqueName) {
         document.getElementById('top-right-profil').innerHTML = `
         <div id="btn-profil">
             <p id="edit-profil">Editer le profil</p>
@@ -58,7 +70,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     } else if (pseudoUser != user.UniqueName && user.Rank === "member") {
 
         document.getElementById('top-right-profil').innerHTML = `<p id="follow">Follow !</p>`
-        document.getElementById('username').innerHTML = ``
 
     } else if (pseudoUser != user.UniqueName && user.Rank === "moderator") {
         document.getElementById('top-right-profil').innerHTML = `<p id="follow">Follow !</p>`
@@ -79,7 +90,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             if (btnSelected.id == "my-post") {
                 //Fetch//
                 document.getElementsByClassName('div-all-article')[0].innerHTML = ""
-                const myCron = await userCron(pseudoUser)
+                const myCron = await userCron(actualUser.UniqueName)
                 myCron.forEach(async e => {
                     if (e.ParentID == -1) {
                         helloCron(null, e, 1)
@@ -90,7 +101,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                 })
             } else if (btnSelected.id == "friend-post") {
                 document.getElementsByClassName('div-all-article')[0].innerHTML = ""
-                const myCron = await friendCron(pseudoUser)
+                const myCron = await friendCron(actualUser.UniqueName)
                 myCron.forEach(async e => {
                     if (e.ParentID == -1) {
                         helloCron(null, e, 1)
@@ -101,7 +112,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                 })
             } else if (btnSelected.id == "tag-post") {
                 document.getElementsByClassName('div-all-article')[0].innerHTML = ""
-                const myCron = await tagCron(pseudoUser)
+                const myCron = await tagCron(actualUser.UniqueName)
                 myCron.forEach(async e => {
                     if (e.ParentID == -1) {
                         helloCron(null, e, 1)
@@ -115,59 +126,65 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 
 
-    const edit = document.getElementById('edit-profil')
+    let edit  = document.getElementById('edit-profil')
+    if (edit === null) {
+        await FoollowUnFollow(actualUser.UniqueName)
+    } else {
+        edit = document.getElementById('edit-profil')
+        edit.addEventListener('click', () => {
+            document.getElementById("edit-box").style.display = "flex"
+            document.getElementById('popup-banner').innerHTML =
+                `
+                        <label id="label-banner" for="banner">
+                            <img id="popup-img-baner" src="${user.Banner}">
+                            <input type="file" name="file" id="banner" accept="image/png, image/jpeg, image/gif, image/jpg" onchange="loadBanner();">
+                        </label>
+                    `
+            document.getElementById('popup-img').innerHTML =
+                `
+                        <label id="label-pp" for="pp">
+                            <img id="img-USER" src="${user.ProfilPicture}">
+                            <input type="file" name="file" id="pp" accept="image/png, image/jpeg, image/gif, image/jpg" onchange="loadPP();">
+                        </label>
+                    `
 
-    edit.addEventListener('click', () => {
-        document.getElementById("edit-box").style.display = "flex"
+            document.getElementById('popup-name').innerHTML =
+                `
+                    <p>@${user.UniqueName}</p>
+                    `
+
+            document.getElementById('popup-bio').innerHTML =
+                `
+                    <div  id="popup-titleBio">
+                        <p>Bio: </p>
+                    </div>
+                    <div id="popup-text">
+                        <textarea id="popup-textarea">${user.Biography}</textarea>
+                    </div>
+                    `
+
+            document.getElementById('popup-status').innerHTML =
+                `
+                    <p  id="popup-lestatus">Status: ${user.Rank} </p>
+                    `
+
+            document.getElementById('popup-retour').innerHTML =
+                `
+                    <p  id="popup-leretour">Retour </p>
+                    `
+
+            document.getElementById('popup-confirm').innerHTML =
+                `
+                    <p  id="popup-btnConfirm">Enregistrer </p>
+                    `
+        })
+
+
+    }
 
 
 
 
-        document.getElementById('popup-banner').innerHTML =
-            `
-                <label id="label-banner" for="banner">
-                    <img id="popup-img-baner" src="${user.Banner}">
-                    <input type="file" name="file" id="banner" accept="image/png, image/jpeg, image/gif, image/jpg" onchange="loadBanner();">
-                </label>
-            `
-        document.getElementById('popup-img').innerHTML =
-            `
-                <label id="label-pp" for="pp">
-                    <img id="img-USER" src="${user.ProfilPicture}">
-                    <input type="file" name="file" id="pp" accept="image/png, image/jpeg, image/gif, image/jpg" onchange="loadPP();">
-                </label>
-            `
-
-        document.getElementById('popup-name').innerHTML =
-            `
-            <p>@${user.UniqueName}</p>
-            `
-
-        document.getElementById('popup-bio').innerHTML =
-            `
-            <div  id="popup-titleBio">
-                <p>Bio: </p>
-            </div>
-            <div id="popup-text">
-                <textarea id="popup-textarea">${user.Biography}</textarea>
-            </div>
-            `
-
-        document.getElementById('popup-status').innerHTML =
-            `
-            <p  id="popup-lestatus">Status: ${user.Rank} </p>
-            `
-
-        document.getElementById('popup-retour').innerHTML =
-            `
-            <p  id="popup-leretour">Retour </p>
-            `
-
-        document.getElementById('popup-confirm').innerHTML =
-            `
-            <p  id="popup-btnConfirm">Enregistrer </p>
-            `
-    })
     const retour = document.getElementById('popup-retour')
     retour.addEventListener('click', () => {
         document.getElementById('edit-box').style.display = "none"
@@ -203,6 +220,21 @@ async function requestUserInfo() {
         headers: {
             "content-type": "application/json"
         }
+    }).then((res) => {
+        return res.json()
+    }).then((res) => {
+        return res
+    })
+}
+async function FoollowUnFollow(pseudo) {
+    return fetch('/cronosdb/POST/profil/CRON_USER', {
+        method: 'POST',
+        headers: {
+            "content-type": "application/json"
+        },
+        body: JSON.stringify({
+            UniqueName: pseudo,
+        })
     }).then((res) => {
         return res.json()
     }).then((res) => {
@@ -284,14 +316,14 @@ async function requestCron(id) {
     })
 }
 
-async function userExist(){
+async function userExist(pseudo) {
     return fetch("/cronosdb/POST/userInfo/EXIST", {
         method: 'POST',
         headers: {
             "content-type": "application/json"
         },
         body: JSON.stringify({
-            id: id,
+            UniqueName: pseudo,
         })
     }).then((res) => {
         return res.json()
