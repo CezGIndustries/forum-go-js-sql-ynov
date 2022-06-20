@@ -57,6 +57,7 @@ func main() {
 	Env.Router.HandleFunc("/cronosdb/POST/contact/REQUEST", temp(Env.DB)).Methods("POST")
 
 	Env.Router.HandleFunc("/cronosdb/POST/profil/CRON_USER", forum.CronUser(Env.DB))
+	Env.Router.HandleFunc("/cronosdb/POST/profil/CRON_FRIENDS", forum.FriendCronUser(Env.DB))
 
 	credentials := handlers.AllowCredentials()
 	origins := handlers.AllowedOrigins([]string{"http://localhost"})

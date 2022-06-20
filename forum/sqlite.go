@@ -528,10 +528,7 @@ func CronUser(cronosDB *sql.DB) http.HandlerFunc {
 		)
 		body, _ := ioutil.ReadAll(r.Body)
 		json.Unmarshal(body, &UniqueName)
-		rows, err := cronosDB.Query(`SELECT * FROM cron WHERE Creator = ?`, UniqueName)
-		if err != nil {
-			panic(err)
-		}
+		rows, _ := cronosDB.Query(`SELECT * FROM cron WHERE Creator = ?`, UniqueName)
 		for rows.Next() {
 			var cronAlone Cron
 			rows.Scan(&cronAlone.ID, &cronAlone.Creator, &cronAlone.Content, &cronAlone.ParentID)
@@ -555,7 +552,36 @@ func CronUser(cronosDB *sql.DB) http.HandlerFunc {
 
 func FriendCronUser(cronosDB *sql.DB) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-
+		var (
+			UniqueName, Tag string
+			AllCron         []Cron
+		)
+		body, _ := ioutil.ReadAll(r.Body)
+		json.Unmarshal(body, &UniqueName)
+		UniqueName = "CezGain"
+		rows, _ := cronosDB.Query(`SELECT User FROM follow WHERE FollowUser = ?`, UniqueName)
+		for rows.Next() {
+			rows.Scan(&UniqueName)
+			rowsFriend, _ := cronosDB.Query(`SELECT * FROM cron WHERE Creator = ?`, UniqueName)
+			for rowsFriend.Next() {
+				var cronAlone Cron
+				rowsFriend.Scan(&cronAlone.ID, &cronAlone.Creator, &cronAlone.Content, &cronAlone.ParentID)
+				rowsFriendTimeLeft := cronosDB.QueryRow(`SELECT Year, Month, Day, Hour, Minute FROM timeLeft WHERE ID = ?`, cronAlone.ID)
+				rowsFriendTimeLeft.Scan(&cronAlone.TimeLeft.Year, &cronAlone.TimeLeft.Month, &cronAlone.TimeLeft.Day, &cronAlone.TimeLeft.Hour, &cronAlone.TimeLeft.Minute)
+				rowsFriendTags, _ := cronosDB.Query(`SELECT Tag FROM tagCron WHERE ID = ?`, cronAlone.ID)
+				for rowsFriendTags.Next() {
+					rowsFriendTags.Scan(&Tag)
+					cronAlone.Tag = append(cronAlone.Tag, Tag)
+				}
+				rowsFriendTags.Close()
+				cronAlone.Comments = getComments(cronosDB, cronAlone)
+				cronAlone.Likes = getLikes(cronosDB, cronAlone)
+				AllCron = append(AllCron, cronAlone)
+			}
+		}
+		rows.Close()
+		response, _ := json.Marshal(AllCron)
+		w.Write(response)
 	}
 }
 
