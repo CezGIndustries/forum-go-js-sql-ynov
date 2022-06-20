@@ -1,15 +1,10 @@
 document.addEventListener("DOMContentLoaded", async () => {
-    //IMG//
-    function myFuncPP(e) {
-        console.log(e)
-    }
-
-    //----//
 
     // Function that while be load when page is load
     console.log("Template is loaded.")
     const user = await requestUserInfo()
-    console.log(user)
+    
+    const pseudoUser = window.location.href.split("/")[4]
 
     user.Rank = "moderator"
 
@@ -42,15 +37,15 @@ document.addEventListener("DOMContentLoaded", async () => {
         </div>
         `
 
-    } else if (window.location.href.split("/")[4] != user.UniqueName && user.Rank === "member") {
+    } else if (pseudoUser != user.UniqueName && user.Rank === "member") {
 
         document.getElementById('top-right-profil').innerHTML = `<p id="follow">Follow !</p>`
 
-    } else if (window.location.href.split("/")[4] != user.UniqueName && user.Rank === "moderator") {
+    } else if (pseudoUser != user.UniqueName && user.Rank === "moderator") {
         document.getElementById('top-right-profil').innerHTML = `<p id="follow">Follow !</p>`
 
 
-    } else if (window.location.href.split("/")[4] != user.UniqueName && user.Rank === "administrator") {
+    } else if (pseudoUser != user.UniqueName && user.Rank === "administrator") {
         document.getElementById('top-right-profil').innerHTML = `<p id="follow">Follow !</p>`
 
     }
@@ -64,7 +59,8 @@ document.addEventListener("DOMContentLoaded", async () => {
 
             if (btnSelected.id == "my-post") {
                 //Fetch//
-
+                console.log(pseudoUser)
+                userCron(pseudoUser)
                 //-----//
             } else if (btnSelected.id == "friend-post") {
                 //Fetch//  
@@ -80,21 +76,21 @@ document.addEventListener("DOMContentLoaded", async () => {
 
 
     const edit = document.getElementById('edit-profil')
-    
-        edit.addEventListener('click', () => {
-            document.getElementById("edit-box").style.display = "flex"
-            
-            
-         
-            
-            document.getElementById('popup-banner').innerHTML = 
+
+    edit.addEventListener('click', () => {
+        document.getElementById("edit-box").style.display = "flex"
+
+
+
+
+        document.getElementById('popup-banner').innerHTML =
             `
                 <label id="label-banner" for="banner">
                     <img id="popup-img-baner" src="${user.Banner}">
                     <input type="file" name="file" id="banner" accept="image/png, image/jpeg, image/gif, image/jpg" onchange="loadBanner();">
                 </label>
             `
-            document.getElementById('popup-img').innerHTML = 
+        document.getElementById('popup-img').innerHTML =
             `
                 <label id="label-pp" for="pp">
                     <img id="img-USER" src="${user.ProfilPicture}">
@@ -117,12 +113,12 @@ document.addEventListener("DOMContentLoaded", async () => {
             </div>
             `
 
-            document.getElementById('popup-status').innerHTML = 
+        document.getElementById('popup-status').innerHTML =
             `
             <p  id="popup-lestatus">Status: ${user.Rank} </p>
             `
 
-            document.getElementById('popup-retour').innerHTML = 
+        document.getElementById('popup-retour').innerHTML =
             `
             <p  id="popup-leretour">Retour </p>
             `
@@ -135,14 +131,10 @@ document.addEventListener("DOMContentLoaded", async () => {
     const retour = document.getElementById('popup-retour')
     retour.addEventListener('click', () => {
         document.getElementById('edit-box').style.display = "none"
-<<<<<<< HEAD
     })
 
-    
-=======
-    }) 
->>>>>>> e6b7693665c801c734d8f6614c5d3576e5265f25
-    const confirm = document.getElementById('popup-confirm') 
+
+    const confirm = document.getElementById('popup-confirm')
     confirm.addEventListener('click', () => {
         fetch('/cronosdb/POST/userInfo/PPBIO', {
             method: 'POST',
@@ -154,7 +146,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                 bio: document.getElementById('popup-textarea').value,
                 pp: document.getElementById('img-USER').src,
                 banner: document.getElementById('popup-img-baner').src,
-                
+
             })
         })
         location.reload()
@@ -188,4 +180,35 @@ function icon(string) {
         document.getElementById('div-i').innerHTML = `<i class='fas fa-chess-queen' style="color:#F970FE;"></i>`
     }
 }
-
+async function userCron(pseudo) {
+    return fetch('/cronosdb/POST/profil/CRON_USER', {
+        method: 'POST',
+        headers: {
+            "content-type": "application/json"
+        },
+        body: JSON.stringify({
+            UniqueName: pseudo,
+        })
+    }).then((res) => {
+        return res.json()
+    }).then((res) => {
+        console.log(res)
+        return res
+    })
+}
+async function Cron(pseudo) {
+    return fetch('/cronosdb/POST/profil/CRON_USER', {
+        method: 'POST',
+        headers: {
+            "content-type": "application/json"
+        },
+        body: JSON.stringify({
+            UniqueName: pseudo,
+        })
+    }).then((res) => {
+        return res.json()
+    }).then((res) => {
+        console.log(res)
+        return res
+    })
+}
