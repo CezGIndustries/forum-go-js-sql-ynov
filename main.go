@@ -42,6 +42,7 @@ func main() {
 	Env.Router.HandleFunc("/cronosdb/POST/logUsers/GOOGLE_REGISTER", forum.GoogleLog(Env.DB)).Methods("POST")
 
 	Env.Router.HandleFunc("/cronosdb/POST/getAllUsers/GET", forum.GetAllUsers(Env.DB)).Methods("POST")
+	Env.Router.HandleFunc("/cronosdb/POST/getAllUsers/UNIQUENAME", forum.EveryUser(Env.DB)).Methods("POST")
 
 	Env.Router.HandleFunc("/cronosdb/POST/adminAccess/CHECK", forum.AdminAccess(Env.DB)).Methods("POST")
 
@@ -63,6 +64,7 @@ func main() {
 	Env.Router.HandleFunc("/cronosdb/POST/profil/CRON_TAG", forum.TagCronUser(Env.DB)).Methods("POST")
 
 	Env.Router.HandleFunc("/cronosdb/POST/tag/GET_ALL_TAG", forum.EveryTag(Env.DB)).Methods("POST")
+	Env.Router.HandleFunc("/cronosdb/POST/tag/GET_FAMOUS_TAG", forum.FamousTag(Env.DB))
 
 	credentials := handlers.AllowCredentials()
 	origins := handlers.AllowedOrigins([]string{"http://localhost"})
