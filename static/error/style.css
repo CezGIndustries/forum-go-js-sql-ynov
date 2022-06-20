@@ -10,8 +10,12 @@ body {
     height: 100vh;
     width: 100%;
     background-color: #17152A;
+    flex-direction: column;
 }
 
 h1 {
-    color: #b33ced;
+    color: #cacaca;
+}
+a {
+    color: #cacaca;
 }

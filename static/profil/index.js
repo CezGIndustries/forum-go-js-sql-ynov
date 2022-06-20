@@ -6,6 +6,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     // Function that while be load when page is load
     console.log("Template is loaded.")
     
+    userExist()
 
     const pseudoUser = window.location.href.split("/")[4]
 
@@ -43,7 +44,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
         document.getElementById('bio').innerHTML = `<p id="Biography">Biography: ${user.Biography}</p>`
     }else{
-        
+
     }
 
    
@@ -283,4 +284,18 @@ async function requestCron(id) {
     })
 }
 
-
+async function userExist(){
+    return fetch("/cronosdb/POST/userInfo/EXIST", {
+        method: 'POST',
+        headers: {
+            "content-type": "application/json"
+        },
+        body: JSON.stringify({
+            id: id,
+        })
+    }).then((res) => {
+        return res.json()
+    }).then((res) => {
+        return res
+    })
+}

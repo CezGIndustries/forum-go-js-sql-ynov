@@ -30,6 +30,7 @@ func main() {
 	Env.Router.HandleFunc("/explore", forum.Explore())
 	Env.Router.HandleFunc("/compose/cron", forum.Compose())
 	Env.Router.HandleFunc("/contact", forum.Contact())
+	Env.Router.HandleFunc("/error", forum.Error())
 
 	Env.Router.HandleFunc("/profil/{nameUser}", forum.Profil())
 

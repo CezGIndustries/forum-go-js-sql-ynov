@@ -76,3 +76,9 @@ func CronPage() http.HandlerFunc {
 		fmt.Println(username, id)
 	}
 }
+func Error() http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		t, _ := template.ParseFiles("./static/error/index.html")
+		t.Execute(w, "index.html")
+	}
+}
