@@ -656,7 +656,18 @@ func FamousTag(cronosDB *sql.DB) http.HandlerFunc {
 
 func EveryTag(cronosDB *sql.DB) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-
+		var (
+			tag    string
+			allTag []string
+		)
+		rows, _ := cronosDB.Query(`SELECT DISTINCT Tag FROM tagCron`)
+		for rows.Next() {
+			rows.Scan(&tag)
+			allTag = append(allTag, tag)
+		}
+		rows.Close()
+		response, _ := json.Marshal(allTag)
+		w.Write(response)
 	}
 }
 
