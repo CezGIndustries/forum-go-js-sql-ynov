@@ -3,10 +3,18 @@
     padding: 0;
 }
 
+.allcolumns {
+    background-color: #08061A;
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+}
+
 .leftcolumn {
     position: fixed;
     left: 0px;
-    display: flex;
+    /* display: flex; */
     justify-content: flex-end;
     width: 20%;
     height: 100%;
@@ -56,7 +64,7 @@ p {
     cursor: pointer;
     color: #cacaca;
     text-decoration: none;
-    font-size: 20px;
+    font-size: 25px;
 }
 
 .explore-responsive {
@@ -76,7 +84,6 @@ p {
 .logout {
     display: flex;
     align-items: center;
-
     border-radius: 30px;
     width: 100%;
     height: 50%;
@@ -119,29 +126,22 @@ p {
     .leftcolumn {
         width: 12%;
     }
-
     .nave {
         justify-content: center;
     }
-
     .nomnave {
         display: none;
     }
-
-
     .logout-bot {
         width: 70px;
     }
-
     .logout {
         justify-content: center;
         background-color: transparent;
     }
-
     .logoutmid {
         display: none;
     }
-
     .logoutright {
         margin-left: 20px;
     }
@@ -152,9 +152,6 @@ p {
         width: 100px;
     }
 }
-
-
-
 
 @media only screen and (max-width: 800px) {
     .explore-responsive {
@@ -170,12 +167,10 @@ p {
         bottom: 0;
         width: 60px;
     }
-
     .logout {
         position: absolute;
         left: 0;
     }
-
     svg {
         width: 40px;
         height: 50px;
@@ -183,10 +178,10 @@ p {
 }
 
 @media only screen and (max-height: 565px) {
-    .logoutmid, .logoutleft {
+    .logoutmid,
+    .logoutleft {
         display: none;
     }
-
     .logout-bot {
         width: 40%;
     }

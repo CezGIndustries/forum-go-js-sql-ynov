@@ -111,8 +111,6 @@ body {
     cursor: pointer;
 }
 
-.timeselecteur {}
-
 #select-time {
     cursor: pointer;
     width: 75px;
@@ -129,8 +127,6 @@ body {
     transition: 0.4s ease;
     border: #B33CED solid 1px;
 }
-
-.buttonpost {}
 
 #button-post {
     cursor: pointer;
@@ -157,7 +153,6 @@ body {
     height: 75%;
     width: 100%;
 }
-
 
 .div-all-article::-webkit-scrollbar {
     width: 10px;
@@ -195,7 +190,6 @@ body {
 .article-child {
     border: none;
     margin-bottom: 2%;
-    /* border-bottom: #17152A 2px solid; */
     width: 80%;
 }
 
@@ -219,8 +213,6 @@ body {
     aspect-ratio: 1/1;
     border-radius: 50%;
 }
-
-.user-image {}
 
 .user-image img {
     cursor: pointer;
@@ -302,8 +294,6 @@ body {
     word-wrap: break-word;
 }
 
-.text {}
-
 .partage {
     display: flex;
     justify-content: flex-start;
@@ -317,7 +307,6 @@ body {
     width: 50%;
     justify-content: space-evenly;
     align-items: center;
-
 }
 
 .btn-action {
@@ -365,7 +354,6 @@ body {
     justify-content: center;
     align-items: center;
     color: #cacaca;
-
 }
 
 #more-text {
@@ -380,7 +368,6 @@ body {
 #more:hover {
     text-decoration: underline;
 }
-
 
 ::-webkit-scrollbar {
     width: 15px;
@@ -420,13 +407,10 @@ body {
     .allcolumns {
         width: 100%;
         align-items: flex-end;
-        /* justify-content: center; */
     }
-
     .midcolumn {
         height: 96%;
     }
-
     .post-popup {
         display: block;
         position: absolute;
@@ -438,99 +422,71 @@ body {
         background-color: #B33CED;
         cursor: pointer;
     }
-
     .post-popup i {
         position: absolute;
         top: 27%;
         left: 27%;
     }
-
     .div-all-article {
         align-items: center;
         height: 90%;
         width: 100%;
         margin-top: 1%;
     }
-
     .article {
         width: 80%;
     }
-
     .userwrapper {
         display: none;
     }
-
     .user-image img {
         height: 35px;
         width: 35px;
     }
-
     .options-admin i {
         font-size: 15px;
     }
-
     .text {
         font-size: 15px;
     }
-
     .top {
         display: none;
     }
-
     .like i {
         font-size: 15px;
-
     }
-
     .like p {
         font-size: 13px;
     }
-
     .comment i {
         font-size: 15px;
-
     }
-
     .comment p {
         font-size: 13px;
     }
-
     .share i {
         font-size: 15px;
-
     }
-
     .share p {
         font-size: 13px;
     }
-
-
     .time i {
         font-size: 15px;
     }
-
     .time p {
         font-size: 13px;
     }
-
     #more {
         display: flex;
         justify-content: center;
         align-items: center;
         color: #cacaca;
-
     }
-
     #more-text {
         font-size: 15px;
         padding-right: 2px;
     }
-
     #more i {
         font-size: 10px;
     }
-
-
-
-
 }
