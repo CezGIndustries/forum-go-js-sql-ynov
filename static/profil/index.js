@@ -1,15 +1,10 @@
 document.addEventListener("DOMContentLoaded", async () => {
-
-
     //IMG//
-    function myFuncPP(e){
+    function myFuncPP(e) {
         console.log(e)
     }
 
     //----//
-
-
-
 
     // Function that while be load when page is load
     console.log("Template is loaded.")
@@ -17,7 +12,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     console.log(user)
 
     user.Rank = "moderator"
-    user.Biography = "je veux du cul du cul du cul"
 
     const userName = document.getElementById("username")
     userName.innerText = "@" + user.UniqueName
@@ -60,11 +54,6 @@ document.addEventListener("DOMContentLoaded", async () => {
         document.getElementById('top-right-profil').innerHTML = `<p id="follow">Follow !</p>`
 
     }
-
-
-
-
-
     const selectOption = document.getElementsByClassName('btn-cron')
     for (let i of selectOption) {
         i.addEventListener('click', e => {
@@ -91,11 +80,11 @@ document.addEventListener("DOMContentLoaded", async () => {
 
 
     const edit = document.getElementById('edit-profil')
-    
-        edit.addEventListener('click', () => {
-            document.getElementById("edit-box").style.display = "flex"
-            
-            document.getElementById('popup-img').innerHTML = 
+
+    edit.addEventListener('click', () => {
+        document.getElementById("edit-box").style.display = "flex"
+
+        document.getElementById('popup-img').innerHTML =
             `
             <label for="file">
                 <img id="img-popup" src="${user.ProfilPicture}">
@@ -103,37 +92,52 @@ document.addEventListener("DOMContentLoaded", async () => {
             </label>
             
             `
-            
-            document.getElementById('popup-name').innerHTML = 
+
+        document.getElementById('popup-name').innerHTML =
             `
             <p>@${user.UniqueName}</p>
             `
 
-            document.getElementById('popup-bio').innerHTML = 
+        document.getElementById('popup-bio').innerHTML =
             `
             <div  id="popup-titleBio">
                 <p>Bio: </p>
             </div>
             <div id="popup-text">
-                <textarea id="popup-bio">${user.Biography}</textarea>
+                <textarea id="popup-textarea">${user.Biography}</textarea>
             </div>
             `
 
-            document.getElementById('popup-retour').innerHTML = 
+        document.getElementById('popup-retour').innerHTML =
             `
             <p  id="popup-retour">Retour </p>
             `
 
-            document.getElementById('popup-confirm').innerHTML = 
+        document.getElementById('popup-confirm').innerHTML =
             `
-            <p  id="popup-btnLogout">Enregistrer </p>
+            <p  id="popup-btnConfirm">Enregistrer </p>
             `
     })
-    const retour = document.getElementById('popup-retour') 
+    const retour = document.getElementById('popup-retour')
     retour.addEventListener('click', () => {
         document.getElementById('edit-box').style.display = "none"
     })
     
+    const confirm = document.getElementById('popup-confirm') 
+    confirm.addEventListener('click', () => {
+        fetch('/cronosdb/POST/userInfo/PPBIO', {
+            method: 'POST',
+            headers: {
+                "content-type": "application/json"
+            },
+            body: JSON.stringify({
+                uniqueName: window.location.href.split("/")[4],
+                bio: document.getElementById('popup-textarea').value,
+                pp: document.getElementById('img-popup').src,
+            })
+        })
+        location.reload()
+    })
 })
 
 

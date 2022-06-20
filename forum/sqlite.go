@@ -157,11 +157,20 @@ func DeleteUser(cronosDB *sql.DB) {
 	cronosDB.Exec(`DELETE FROM logUsers WHERE UniqueName = '?';`, "uniqueName")
 }
 
-func ModifyUser(cronosDB *sql.DB, uniqueName string, User UserLogin) {
-	_, err := cronosDB.Exec(`UPDATE logUsers SET UniqueName = '?', Email ='?', Password = '?' WHERE UniqueName = '?';`, User.UniqueName, User.Email, User.Password, uniqueName)
-	if err != nil {
-		log.Fatal(err)
-		// GESTION D'ERREUR RENVOIE DE L'ERREUR
+type PP_Bio struct {
+	PP         string
+	Bio        string
+	UniqueName string
+}
+
+func ModifyPPBio(cronosDB *sql.DB) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		var (
+			PP_Bio PP_Bio
+		)
+		body, _ := ioutil.ReadAll(r.Body)
+		json.Unmarshal(body, &PP_Bio)
+		cronosDB.Exec(`UPDATE accountUsers SET ProfilPicture = ?, Biography = ? WHERE UniqueName = ?`, PP_Bio.PP, PP_Bio.Bio, PP_Bio.UniqueName)
 	}
 }
 

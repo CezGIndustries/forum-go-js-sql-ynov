@@ -17,34 +17,27 @@
 
 <body>
     <script>
-
-    function previewImage() {
-        var file = document.getElementById("file").files;
-        if (file.length > 0) {
-            var fileReader = new FileReader();
- 
-            fileReader.onload = function (event) {
-                document.getElementById("img-popup").setAttribute("src", event.target.result);
-                console.log(event.target.result)
-
-            };
-            
-             fileReader.readAsDataURL(file[0])
+        function previewImage() {
+            var file = document.getElementById("file").files;
+            if (file.length > 0) {
+                var fileReader = new FileReader();
+                fileReader.onload = function (event) {
+                    document.getElementById("img-popup").setAttribute("src", event.target.result)
+                }
+                fileReader.readAsDataURL(file[0])
+            }
         }
-        
-    }
-
     </script>
-</form>
+    </form>
     <div class="allcolumns">
-        <div id="edit-box" >
+        <div id="edit-box">
             <div id="popup">
                 <div id="top-popup">
                     <div id="popup-banner">
-                        
+
                     </div>
                     <div id="popup-img">
-                        
+
                     </div>
                 </div>
                 <div id="mid-popup">
@@ -56,13 +49,10 @@
                     <div id="popup-err"></div>
                     <div id="popup-retour"></div>
                     <div id="popup-confirm"></div>
-
-
                 </div>
             </div>
         </div>
         {{template "LeftColumn" }}
-       
         <div class="midcolumn">
             <div id="top">
                 <div id="banner-div">
@@ -77,11 +67,9 @@
                         </div>
                         <div id="top-mid-profil">
                             <div id="div-img">
-
                             </div>
                         </div>
                         <div id="top-right-profil">
-
                         </div>
                     </div>
                     <div id="o-mid">
@@ -91,26 +79,23 @@
                     </div>
                     <div id="o-bot">
                         <div id="abonnement">
-
                         </div>
                         <div id="vide">
-
                         </div>
                         <div id="abonnes">
-
                         </div>
                     </div>
                 </div>
             </div>
             <div id="mid">
-                <div class="btn-cron active"  id="my-post">
+                <div class="btn-cron active" id="my-post">
                     <p class="text-btn " id="myPost">Mes crons</p>
                 </div>
                 <div class="btn-cron" id="friend-post">
-                    <p  class="text-btn" id="FriendlyPost">Amis</p>
+                    <p class="text-btn" id="FriendlyPost">Amis</p>
                 </div>
                 <div class="btn-cron " id="tag-post">
-                    <p  class="text-btn" clicl id="interestPost">Interets</p>
+                    <p class="text-btn" clicl id="interestPost">Interets</p>
                 </div>
             </div>
             <div id="bot">
