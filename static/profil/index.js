@@ -95,13 +95,22 @@ document.addEventListener("DOMContentLoaded", async () => {
         edit.addEventListener('click', () => {
             document.getElementById("edit-box").style.display = "flex"
             
+            
+         
+            
+            document.getElementById('popup-banner').innerHTML = 
+            `
+                <label id="label-banner" for="banner">
+                    <img id="popup-img-baner" src="${user.Banner}">
+                    <input type="file" name="file" id="banner" accept="image/png, image/jpeg, image/gif, image/jpg" onchange="loadBanner();">
+                </label>
+            `
             document.getElementById('popup-img').innerHTML = 
             `
-            <label for="file">
-                <img id="img-popup" src="${user.ProfilPicture}">
-                <input type="file" name="file" id="file" accept="image/png, image/jpeg, image/gif, image/jpg" onchange="previewImage();">
-            </label>
-            
+                <label id="label-pp" for="pp">
+                    <img id="img-USER" src="${user.ProfilPicture}">
+                    <input type="file" name="file" id="pp" accept="image/png, image/jpeg, image/gif, image/jpg" onchange="loadPP();">
+                </label>
             `
             
             document.getElementById('popup-name').innerHTML = 
@@ -126,12 +135,18 @@ document.addEventListener("DOMContentLoaded", async () => {
 
             document.getElementById('popup-confirm').innerHTML = 
             `
-            <p  id="popup-btnLogout">Enregistrer </p>
+            <p  id="popup-btnConfirm">Enregistrer </p>
             `
     })
     const retour = document.getElementById('popup-retour') 
     retour.addEventListener('click', () => {
         document.getElementById('edit-box').style.display = "none"
+    })
+    const confirm = document.getElementById('popup-confirm') 
+    confirm.addEventListener('click', () => {
+        //fetch//
+        console.log('fetch// is good reload page')
+        //--//
     })
     
 })
