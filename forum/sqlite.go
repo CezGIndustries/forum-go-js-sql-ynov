@@ -539,9 +539,9 @@ func CronUser(cronosDB *sql.DB) http.HandlerFunc {
 			UniqueName, Tag string
 			AllCron         []Cron
 		)
-		// body, _ := ioutil.ReadAll(r.Body)
-		// json.Unmarshal(body, &UniqueName)
-		UniqueName = "CezGain"
+		body, _ := ioutil.ReadAll(r.Body)
+		json.Unmarshal(body, &UniqueName)
+		// UniqueName = "CezGain"
 		rows, err := cronosDB.Query(`SELECT * FROM cron WHERE Creator = ?`, UniqueName)
 		if err != nil {
 			panic(err)
