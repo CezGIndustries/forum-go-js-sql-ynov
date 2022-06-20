@@ -1,20 +1,31 @@
 document.addEventListener("DOMContentLoaded", async () => {
     console.log("Template right loaded")
     const famousTags = await famousTagsFetch()
-    console.log(famousTags)
+    tagFamous = []
+    for (const [key, value] of Object.entries(famousTags)) {
+        tagFamous.push([key, value])
+    }
+    tagFamous.sort(function (a, b) {
+        return b[1] - a[1]
+    })
+    const divTags = document.getElementById('tags')
+    divTags.innerHTML = ""
+    for (let i = 0; i < 5 && i < tagFamous.length; i++) {
+        divTags.innerHTML += `
+        <div class="popular-tags">
+            <p>
+                ${tagFamous[i][0]}
+            </p>
+            <p id="used">
+                Utilisés ${tagFamous[i][1]} fois
+            </p>
+        </div>
+        `
+    }
 })
 
-/* <div class="popular-tags">
-    <p>
-        #TAG
-    </p>
-    <p id="used">
-        Utilisés 50 fois
-    </p>
-</div> */
-
 async function famousTagsFetch() {
-    fetch('/cronosdb/POST/tag/GET_FAMOUS_TAG', {
+    return fetch('/cronosdb/POST/tag/GET_FAMOUS_TAG', {
         method: 'POST',
         headers: {
             "content-type": "application/json"
@@ -22,6 +33,6 @@ async function famousTagsFetch() {
     }).then((res) => {
         return res.json()
     }).then((res) => {
-       return res
+        return res
     })
 }
