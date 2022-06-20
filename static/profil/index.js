@@ -5,46 +5,48 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     // Function that while be load when page is load
     console.log("Template is loaded.")
-    const user = await requestUserInfo()
+    
 
     const pseudoUser = window.location.href.split("/")[4]
 
-    const load = await userCron(pseudoUser)
-    load.forEach(async e => {
-        if (e.ParentID == -1) {
-            helloCron(null, e, 1)
-        } else {
-            const parentCron = await requestCron(e.ParentID)
-            helloCron(parentCron, cron, 1)
-        }
-    })
+    // const load = await userCron(pseudoUser)
+    // load.forEach(async e => {
+    //     if (e.ParentID == -1) {
+    //         helloCron(null, e, 1)
+    //     } else {
+    //         const parentCron = await requestCron(e.ParentID)
+    //         helloCron(parentCron, cron, 1)
+    //     }
+    // })
 
-
-
+    const user = await requestUserInfo()
+   
+    if(pseudoUser == user.UniqueName){
+        console.log('ici')
+        const userName = document.getElementById("username")
+        userName.innerText = "@" + user.UniqueName
     
-
-    const userName = document.getElementById("username")
-    userName.innerText = "@" + user.UniqueName
-
-    document.getElementById('div-img').innerHTML = `<img src="${user.ProfilPicture}" alt="">`
-    document.getElementById('banner-div').style.backgroundImage = `url(${user.Banner})`
-
-    icon(user.Rank)
-
-    if (user.FoollowU == null) {
-        document.getElementById('abonnement').innerHTML = `<p class="nb"><span class="span-nb">0</span> abonnements</p>`
-    } else {
-        document.getElementById('abonnement').innerHTML = `<p class="nb"><span class="span-nb">${user.FoollowU}</span> abonnements</p>`
+        document.getElementById('div-img').innerHTML = `<img src="${user.ProfilPicture}" alt="">`
+        document.getElementById('banner-div').style.backgroundImage = `url(${user.Banner})`
+    
+        icon(user.Rank)
+    
+        if (user.FoollowU == null) {
+            document.getElementById('abonnement').innerHTML = `<p class="nb"><span class="span-nb">0</span> abonnements</p>`
+        } else {
+            document.getElementById('abonnement').innerHTML = `<p class="nb"><span class="span-nb">${user.FoollowU}</span> abonnements</p>`
+        }
+        if (user.UFollow == null) {
+            document.getElementById('abonnes').innerHTML = `<p class="nb"><span class="span-nb">0</span> abonnés</p>`
+        } else {
+            document.getElementById('abonnes').innerHTML = `<p class="nb"><span class="span-nb">${user.UFollow}</span> abonnés</p>`
+        }
+        document.getElementById('bio').innerHTML = `<p id="Biography">Biography: ${user.Biography}</p>`
+    }else{
+        
     }
-    if (user.UFollow == null) {
-        document.getElementById('abonnes').innerHTML = `<p class="nb"><span class="span-nb">0</span> abonnés</p>`
-    } else {
-        document.getElementById('abonnes').innerHTML = `<p class="nb"><span class="span-nb">${user.UFollow}</span> abonnés</p>`
-    }
 
-
-    document.getElementById('bio').innerHTML = `<p id="Biography">Biography: ${user.Biography}</p>`
-
+   
     if (window.location.href.split("/")[4] == user.UniqueName) {
         document.getElementById('top-right-profil').innerHTML = `
         <div id="btn-profil">
@@ -55,6 +57,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     } else if (pseudoUser != user.UniqueName && user.Rank === "member") {
 
         document.getElementById('top-right-profil').innerHTML = `<p id="follow">Follow !</p>`
+        document.getElementById('username').innerHTML = ``
 
     } else if (pseudoUser != user.UniqueName && user.Rank === "moderator") {
         document.getElementById('top-right-profil').innerHTML = `<p id="follow">Follow !</p>`
@@ -84,12 +87,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                         helloCron(parentCron, cron, 1)
                     }
                 })
-
-
-                // helloCron
-                //-----//
             } else if (btnSelected.id == "friend-post") {
-                //Fetch//  
                 document.getElementsByClassName('div-all-article')[0].innerHTML = ""
                 const myCron = await friendCron(pseudoUser)
                 myCron.forEach(async e => {
@@ -100,11 +98,17 @@ document.addEventListener("DOMContentLoaded", async () => {
                         helloCron(parentCron, cron, 1)
                     }
                 })
-                //-----//
             } else if (btnSelected.id == "tag-post") {
-                //Fetch//
-
-                //-----//
+                document.getElementsByClassName('div-all-article')[0].innerHTML = ""
+                const myCron = await tagCron(pseudoUser)
+                myCron.forEach(async e => {
+                    if (e.ParentID == -1) {
+                        helloCron(null, e, 1)
+                    } else {
+                        const parentCron = await requestCron(e.ParentID)
+                        helloCron(parentCron, cron, 1)
+                    }
+                })
             }
         })
     }
@@ -246,6 +250,22 @@ async function friendCron(pseudo) {
     })
 }
 
+async function tagCron(pseudo) {
+    return fetch("/cronosdb/POST/profil/CRON_TAG", {
+        method: 'POST',
+        headers: {
+            "content-type": "application/json"
+        },
+        body: JSON.stringify({
+            UniqueName: pseudo,
+        })
+    }).then((res) => {
+        return res.json()
+    }).then((res) => {
+        return res
+    })
+}
+
 async function requestCron(id) {
     // Ask to database every information on a cron
     return fetch('/cronosdb/POST/cron/GET', {
@@ -262,3 +282,5 @@ async function requestCron(id) {
         return res
     })
 }
+
+

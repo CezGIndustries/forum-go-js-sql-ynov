@@ -1,18 +1,16 @@
 export async function helloCron(parentCron, cron, asc) {
-    console.log(window.location.href.split("/")[4])
     let liked = 'fa-thumbs-o-up'
-    if(cron.Likes === null){
+
+    if (cron.Likes === null) {
         cron.Likes = []
     }
-    try {
-        if (cron.Likes.includes(document.getElementsByClassName('logoutmid')[0].textContent)) {
-            liked = "fa fa-thumbs-up"
-        }
-    } catch {
-        if (cron.Likes.includes(window.location.href.split("/")[4])) {
-            liked = "fa fa-thumbs-up"
-        }
+    console.log(cron.Likes.includes(window.location.href.split("/")[4]))
+
+    console.log("1")
+    if (cron.Likes.includes(document.getElementsByClassName('logoutmid')[0].textContent) || cron.Likes.includes(window.location.href.split("/")[4])) {
+        liked = "fa fa-thumbs-up"
     }
+
 
     const allCron = document.querySelector('.div-all-article')
     console.log(allCron)
