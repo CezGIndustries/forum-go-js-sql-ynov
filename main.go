@@ -40,6 +40,10 @@ func main() {
 	Env.Router.HandleFunc("/cronosdb/POST/logUsers/REGISTER", forum.CreateNewUser(Env.DB)).Methods("POST")
 	Env.Router.HandleFunc("/cronosdb/POST/logUsers/GOOGLE_REGISTER", forum.GoogleLog(Env.DB)).Methods("POST")
 
+	Env.Router.HandleFunc("/cronosdb/POST/getAllUsers/GET", forum.GetAllUsers(Env.DB)).Methods("POST")
+
+	Env.Router.HandleFunc("/cronosdb/POST/adminAccess/CHECK", forum.AdminAccess(Env.DB)).Methods("POST")
+
 	Env.Router.HandleFunc("/cronosdb/POST/userInfo/GET", forum.GetUser(Env.DB)).Methods("POST")
 	Env.Router.HandleFunc("/cronosdb/POST/userInfo/PPBIO", forum.ModifyPPBio(Env.DB)).Methods("POST")
 
@@ -51,6 +55,8 @@ func main() {
 	Env.Router.HandleFunc("/cronosdb/POST/cron/LIKE", forum.CreateLike(Env.DB)).Methods("POST")
 
 	Env.Router.HandleFunc("/cronosdb/POST/contact/REQUEST", temp(Env.DB)).Methods("POST")
+
+	Env.Router.HandleFunc("/cronosdb/POST/profil/CRON_USER", forum.CronUser(Env.DB))
 
 	credentials := handlers.AllowCredentials()
 	origins := handlers.AllowedOrigins([]string{"http://localhost"})

@@ -331,7 +331,8 @@ func GetCron(cronosDB *sql.DB) http.HandlerFunc {
 				rows.Scan(&tag)
 				Cron.Tag = append(Cron.Tag, tag)
 			}
-			Cron.Comments, Cron.Likes = getComments(cronosDB, Cron), getLikes(cronosDB, Cron)
+			// Cron.Comments = getComments(cronosDB, Cron)
+			Cron.Likes = getLikes(cronosDB, Cron)
 			response, _ := json.Marshal(Cron)
 			w.Write(response)
 		}
@@ -353,32 +354,32 @@ func getLikes(cronosDB *sql.DB, Cron Cron) []string {
 	return likes
 }
 
-func getComments(cronosDB *sql.DB, Cron Cron) [][]string {
-	var (
-		comments [][]string
-		id, user string
-	)
-	sqlStatement := fmt.Sprintf(`SELECT * FROM cron WHERE ParentID = %v`, Cron.ID)
-	rows, _ := cronosDB.Query(sqlStatement)
-	defer rows.Close()
-	for rows.Next() {
-		rows.Scan(&id, &user)
-		comments = append(comments, addComment(cronosDB, id, []string{user}))
-	}
-	return comments
-}
+// func getComments(cronosDB *sql.DB, Cron Cron) [][]string {
+// 	var (
+// 		comments [][]string
+// 		id, user string
+// 	)
+// 	sqlStatement := fmt.Sprintf(`SELECT * FROM cron WHERE ParentID = %v`, Cron.ID)
+// 	rows, _ := cronosDB.Query(sqlStatement)
+// 	defer rows.Close()
+// 	for rows.Next() {
+// 		rows.Scan(&id, &user)
+// 		comments = append(comments, addComment(cronosDB, id, []string{user}))
+// 	}
+// 	return comments
+// }
 
-func addComment(cronosDB *sql.DB, id string, tab []string) []string {
-	sqlStatement := fmt.Sprintf(`SELECT * FROM cron WHERE ParentID = %v`, id)
-	rows, _ := cronosDB.Query(sqlStatement)
-	defer rows.Close()
-	for rows.Next() {
-		var user string
-		rows.Scan(&id, &user)
-		return addComment(cronosDB, id, append(tab, user))
-	}
-	return tab
-}
+// func addComment(cronosDB *sql.DB, id string, tab []string) []string {
+// 	sqlStatement := fmt.Sprintf(`SELECT * FROM cron WHERE ParentID = %v`, id)
+// 	rows, _ := cronosDB.Query(sqlStatement)
+// 	defer rows.Close()
+// 	for rows.Next() {
+// 		var user string
+// 		rows.Scan(&id, &user)
+// 		return addComment(cronosDB, id, append(tab, user))
+// 	}
+// 	return tab
+// }
 
 type Likes struct {
 	ID int
@@ -450,6 +451,65 @@ func GetMutlipleCronID(cronosDB *sql.DB) http.HandlerFunc {
 	}
 }
 
+func AdminAccess(cronosDB *sql.DB) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		if ValidSession(w, r) {
+			var (
+				UniqueName, Rank string
+			)
+			session, _ := store.Get(r, "AUTH_TOKEN")
+			UniqueName = session.Values["uniqueName"].(string)
+			row := cronosDB.QueryRow(`SELECT Rank FROM accountUsers WHERE UniqueName = ?`, UniqueName)
+			if err := row.Scan(&Rank); err != nil || Rank == "member" {
+				w.Write([]byte(`{"ERROR":403}`))
+			} else {
+				w.Write([]byte(`{}`))
+			}
+		} else {
+			w.Write([]byte(`{"ERROR":403}`))
+		}
+	}
+}
+
+type Rank struct {
+	Rank string
+}
+
+type AllUsers struct {
+	AllUsers []User
+}
+
+type User struct {
+	UniqueName, Status, Rank, ProfilPicture, Banner, Biography string
+}
+
+func GetAllUsers(cronosDB *sql.DB) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		if ValidSession(w, r) {
+			var (
+				R    Rank
+				AU   AllUsers
+				U    User
+				rows *sql.Rows
+			)
+			body, _ := ioutil.ReadAll(r.Body)
+			json.Unmarshal(body, &R)
+			if R.Rank == "administrator" {
+				rows, _ = cronosDB.Query(`SELECT * FROM accountUsers WHERE NOT Rank = ? AND NOT Status = ? ORDER BY UniqueName ASC`, "administrator", "banned")
+			} else {
+				rows, _ = cronosDB.Query(`SELECT * FROM accountUsers WHERE NOT Rank = ? AND NOT Rank = ? AND NOT Status = ? ORDER BY UniqueName ASC`, "administrator", "moderator", "banned")
+			}
+			defer rows.Close()
+			for rows.Next() {
+				rows.Scan(&U.UniqueName, &U.Status, &U.Rank, &U.ProfilPicture, &U.Banner, &U.Biography)
+				AU.AllUsers = append(AU.AllUsers, U)
+			}
+			response, _ := json.Marshal(AU)
+			w.Write(response)
+		}
+	}
+}
+
 func GoDeleteCron(cronosDB *sql.DB) {
 	for {
 		var (
@@ -470,5 +530,69 @@ func GoDeleteCron(cronosDB *sql.DB) {
 			cronosDB.Exec(`DELETE FROM cronLike WHERE ID = ?`, i)
 		}
 		time.Sleep(time.Second * 30)
+	}
+}
+
+func CronUser(cronosDB *sql.DB) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		var (
+			UniqueName, Tag string
+			AllCron         []Cron
+		)
+		// body, _ := ioutil.ReadAll(r.Body)
+		// json.Unmarshal(body, &UniqueName)
+		UniqueName = "CezGain"
+		rows, err := cronosDB.Query(`SELECT * FROM cron WHERE Creator = ?`, UniqueName)
+		if err != nil {
+			panic(err)
+		}
+		for rows.Next() {
+			var cronAlone Cron
+			rows.Scan(&cronAlone.ID, &cronAlone.Creator, &cronAlone.Content, &cronAlone.ParentID)
+			rowsTimeLeft := cronosDB.QueryRow(`SELECT Year, Month, Day, Hour, Minute FROM timeLeft WHERE ID = ?`, cronAlone.ID)
+			rowsTimeLeft.Scan(&cronAlone.TimeLeft.Year, &cronAlone.TimeLeft.Month, &cronAlone.TimeLeft.Day, &cronAlone.TimeLeft.Hour, &cronAlone.TimeLeft.Minute)
+			rowsTags, _ := cronosDB.Query(`SELECT Tag FROM tagCron WHERE ID = ?`, cronAlone.ID)
+			for rowsTags.Next() {
+				rowsTags.Scan(&Tag)
+				cronAlone.Tag = append(cronAlone.Tag, Tag)
+			}
+			rowsTags.Close()
+			// cronAlone.Comments = getComments(cronosDB, cronAlone)
+			cronAlone.Likes = getLikes(cronosDB, cronAlone)
+			AllCron = append(AllCron, cronAlone)
+		}
+		rows.Close()
+		response, _ := json.Marshal(AllCron)
+		w.Write(response)
+	}
+}
+
+func FriendCronUser(cronosDB *sql.DB) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+
+	}
+}
+
+func TagCronUser(cronosDB *sql.DB) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+
+	}
+}
+
+func FamousTag(cronosDB *sql.DB) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+
+	}
+}
+
+func EveryTag(cronosDB *sql.DB) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+
+	}
+}
+
+func EveryUser(cronosDB *sql.DB) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+
 	}
 }

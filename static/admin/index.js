@@ -1,52 +1,86 @@
-const onglets = document.querySelectorAll('.onglet');
-const contenu = document.querySelectorAll('.contenu');
-
-let users = document.getElementById('banned')
-const user = {
-    name: 'phillippe',
-    id: 1,
-    status: banned,
-};
-
-
-let index = 0;
-if (user.status == banned) {
-    document.getElementById("banned").innerHTML = user.name;
-    users.onclick = () => {
-        console.log(user.status)
-        user.status = null;
-
+fetch("/cronosdb/POST/adminAccess/CHECK", {
+    method: 'POST',
+    header: {
+        "content-type": "application/json"
     }
-}
+}).then((res) => {
+    return res.json()
+}).then((res) => {
+    if (res.ERROR == 403) {
+        window.location.href = '/connexion'
+    }
+})
 
-
-onglets.forEach(onglet => {
-    onglet.addEventListener('click', () => {
-        if (onglet.classList.contains('active')) {
-            return
-        } else {
-            onglet.classList.toggle('active')
+for (let i of document.getElementsByClassName('onglet')) {
+    i.addEventListener('click', () => {
+        for (let k of document.getElementsByClassName('onglet')) {
+            k.classList.remove('active')
         }
-
-        index = onglet.getAttribute('data-anim');
-        console.log(index)
-
-        for (let i = 0; i < onglets.length; i++) {
-
-            if (onglets[i].getAttribute('data-anim') != index) {
-                onglets[i].classList.remove('active');
-            }
-        }
-
-        for (let j = 0; j < contenu.length; j++) {
-            if (contenu[j].getAttribute('data-anim') == index) {
-                contenu[j].classList.add('activeContenu')
+        i.classList.add('active')
+        const animAttr = i.getAttribute('data-anim')
+        for (let k of document.getElementsByClassName('contenu')) {
+            if (k.getAttribute('data-anim') == animAttr) {
+                k.classList.add('activeContenu')
+                switch (animAttr) {
+                    case "1":
+                        EveryUsersInfo(k)
+                        break
+                    case "2":
+                        k.innerHTML = `BANNED`
+                        break
+                    case "3":
+                        k.innerHTML = `UESR RPEORTED`
+                        break
+                    case "4":
+                        k.innerHTML = `CRON REPORTED`
+                        break
+                    default:
+                        console.log("None")
+                }
             } else {
-                contenu[j].classList.remove('activeContenu');
-
+                k.classList.remove('activeContenu')
             }
         }
     })
-})
+}
 
+async function EveryUsersInfo(div) {
+    const user = await requestUserInfo()
+    const allUsers = await requestAllUsers(user.Rank)
+    div.innerHTML = ''
+    for(let i of allUsers.AllUsers) {
+        console.log(i)
+        div.innerHTML += `<img id="img-USER" src="${i.ProfilPicture}">, ${i.UniqueName}, ${i.Rank}`
+    }
+}
 
+async function requestUserInfo() {
+    // Get user info for the template
+    return fetch('/cronosdb/POST/userInfo/GET', {
+        method: 'POST',
+        headers: {
+            "content-type": "application/json"
+        }
+    }).then((res) => {
+        return res.json()
+    }).then((res) => {
+        return res
+    })
+}
+
+async function requestAllUsers(rank) {
+    // Get user info for the template
+    return fetch('/cronosdb/POST/getAllUsers/GET', {
+        method: 'POST',
+        headers: {
+            "content-type": "application/json"
+        },
+        body: JSON.stringify({
+            Rank: rank,
+        })
+    }).then((res) => {
+        return res.json()
+    }).then((res) => {
+        return res
+    })
+}
