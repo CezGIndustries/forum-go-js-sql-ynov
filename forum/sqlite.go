@@ -411,6 +411,33 @@ func CreateFollow(cronosDB *sql.DB) http.HandlerFunc {
 	}
 }
 
+func IsFollow(cronosDB *sql.DB) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		if ValidSession(w, r) {
+			var (
+				UN         UN
+				UniqueName string
+			)
+			body, _ := ioutil.ReadAll(r.Body)
+			json.Unmarshal(body, &UN)
+			session, _ := store.Get(r, "AUTH_TOKEN")
+			UniqueName = session.Values["uniqueName"].(string)
+			rows, _ := cronosDB.Query(`SELECT * FROM follow WHERE User = ? AND FollowUser = ?`, UN.UniqueName, UniqueName)
+			if rows.Next() {
+				rows.Close()
+				w.Write([]byte(`{"Followed":true}`))
+
+			} else {
+				rows.Close()
+				w.Write([]byte(`{"Followed":false}`))
+
+			}
+		} else {
+			w.Write([]byte(`{"ERROR":404}`))
+		}
+	}
+}
+
 type MultipleID struct {
 	From int
 	To   int
