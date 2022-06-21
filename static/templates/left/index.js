@@ -15,7 +15,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     const notif = document.getElementsByClassName('notif')
     for (let i of notif) {
         i.addEventListener('click', () => {
-            window.location.href = `/notif`
+            window.location.href = `/error`
         })
     }
     const profil = document.getElementsByClassName('profil')
