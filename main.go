@@ -26,11 +26,17 @@ func main() {
 	Env.Router.HandleFunc("/", forum.RedirectCo())
 	Env.Router.HandleFunc("/connexion", forum.Connexion_Creation())
 	Env.Router.HandleFunc("/home", forum.Home())
+<<<<<<< HEAD
 	Env.Router.HandleFunc("/admin", forum.Moderation())
 	Env.Router.HandleFunc("/explore", forum.Explore())
 	Env.Router.HandleFunc("/compose/cron", forum.Compose())
 	Env.Router.HandleFunc("/contact", forum.Contact())
 	Env.Router.HandleFunc("/error", forum.Error())
+=======
+	Env.Router.HandleFunc("/admin", forum.Admin())
+	Env.Router.HandleFunc("/login/github/", forum.Gitlog())
+	Env.Router.HandleFunc("/login/github/callback", forum.Gitlog())
+>>>>>>> 94c3908f633c38813d402887e89a1cfee662970d
 
 	Env.Router.HandleFunc("/profil/{nameUser}", forum.Profil())
 
