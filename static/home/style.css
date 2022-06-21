@@ -111,12 +111,9 @@ body {
     cursor: pointer;
 }
 
-<<<<<<< HEAD
 
 /* .timeselecteur {} */
 
-=======
->>>>>>> 334f6cdc05a8c191119cc68f84110812980c8c72
 #select-time {
     cursor: pointer;
     width: 75px;
@@ -134,12 +131,9 @@ body {
     border: #B33CED solid 1px;
 }
 
-<<<<<<< HEAD
 
 /* .buttonpost {} */
 
-=======
->>>>>>> 334f6cdc05a8c191119cc68f84110812980c8c72
 #button-post {
     cursor: pointer;
     width: 75px;
@@ -203,6 +197,9 @@ body {
     border: none;
     margin-bottom: 2%;
     width: 80%;
+}
+.article-bot{
+    cursor: pointer;
 }
 
 .user-wrapper {

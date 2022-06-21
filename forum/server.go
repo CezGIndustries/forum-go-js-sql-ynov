@@ -1,11 +1,8 @@
 package forum
 
 import (
-	"fmt"
 	"html/template"
 	"net/http"
-
-	"github.com/gorilla/mux"
 )
 
 func Home() http.HandlerFunc {
@@ -70,10 +67,6 @@ func CronPage() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		t, _ := template.ParseFiles("./static/cron/index.html", "./static/templates/left/leftTemplate.html", "./static/templates/right/rightTemplate.html")
 		t.Execute(w, "index.html")
-		username := mux.Vars(r)["username"]
-		id := mux.Vars(r)["idcron"]
-
-		fmt.Println(username, id)
 	}
 }
 func Error() http.HandlerFunc {

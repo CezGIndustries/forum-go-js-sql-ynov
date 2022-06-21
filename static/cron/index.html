@@ -3,6 +3,7 @@
 <html lang="en">
 
 <head>
+    <link rel="stylesheet" type="text/css" href="/static/home/style.css">
     <link rel="stylesheet" type="text/css" href="/static/cron/style.css">
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -19,32 +20,36 @@
     <div class="allcolumns">
         {{template "LeftColumn"}}
         <div class="midcolumn">
-            <div class="post-of-croner">
-            </div>
-            <div class="my-comment-wrapper">
-                <div class="my-comment-content">
-                    <div class="img-profile">
-                    </div>
-                    <div class="textarea-and-media-row">
-                        <div class="textarea-wrapper">
-                            <textarea id="text-value-entry" rows="5%" maxlength="240"
-                                placeholder="Racontes-nous ta vie ?!"></textarea>
+            <div class="div-all-article">
+                <div class="my-comment-wrapper">
+                    <div class="my-comment-content">
+                        <div id="img-profile">
                         </div>
-                        <div class="media-and-button-crone-comment-row">
-                            <i class="fa fa-photo"></i>
-                            <div class="button-crone-comment">
-                                <button type="button">Cron</button>
+                        <div class="textarea-and-media-row">
+                            <div class="textarea-wrapper">
+                                <textarea id="text-value-entry" rows="5%" maxlength="240"
+                                    placeholder="Racontes-nous ta vie ?!"></textarea>
                             </div>
-                        </div>
+                            <div class="media-and-button-crone-comment-row">
+                                <i class="fa fa-photo"></i>
+                                <div class="button-crone-comment">
+                                    <button id="submit" type="button">Cron</button>
+                                </div>
+                            </div>
 
+                        </div>
                     </div>
                 </div>
+                <div id="all-other-comments">
+                </div>
             </div>
-            <div class="all-other-comments">
-            </div>
+
+            
         </div>
         {{template "RightColumn"}}
     </div>
+    <script type="module" src="/static/cron/index.js"></script>
+
 </body>
 
 </html>

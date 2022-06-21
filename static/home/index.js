@@ -77,7 +77,9 @@ function everyAddEventListener() {
   // Add every listener to the div
   const allLikes = document.querySelectorAll('.fa-thumbs-o-up')
   const allLiked = document.querySelectorAll('.fa-thumbs-up')
-  const allCronID = document.querySelectorAll('.article')
+  const allCronID = document.querySelectorAll('.article-bot')
+  const allShare = document.querySelectorAll('.fa-share-alt')
+
   for (let likes of allLikes) {
     likes.addEventListener('click', addLike)
   }
@@ -88,6 +90,9 @@ function everyAddEventListener() {
   for (let CronID of allCronID) {
     CronID.addEventListener('click', redirectCron)
   }
+  // for (let shares of allShare) {
+  //   CronID.addEventListener('click', ShareUrl)
+  // }
 }
 
 async function printCrons() {
@@ -109,6 +114,8 @@ async function printCrons() {
     return res
   })
 }
+
+
 
 export function createCron(content, tag, timeLeft) {
   // Add cron to database
@@ -181,31 +188,12 @@ function addLike(event) {
 
 }
 
-function createComment(content, tag, parendID) {
-  // Add cron comment to database
-  fetch('/cronosdb/POST/cron/CREATE', {
-    method: 'POST',
-    headers: {
-      "content-type": "application/json"
-    },
-    body: JSON.stringify({
-      content: content,
-      timeLeft: {
-        year: 0
-      },
-      tag: tag,
-      parentID: parendID,
-    })
-  }).then((res) => {
-    return res.json()
-  }).then((res) => {
-    // drawCrons(res.ID)
-    // A VOIR
-  })
-}
+
 
 function redirectCron(event) {
-  // Redirect on cron if cron exist
+  
+
+  event.stopPropagation()//
   for (let i of event.path) {
     if (!(i.getAttribute('id-cron') === null)) {
       return fetch('/cronosdb/POST/cron/REDIRECT', {
