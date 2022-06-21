@@ -67,6 +67,12 @@
 #used {
     text-align: right;
 }
+#redirect-user{
+    background-color: transparent;
+    border:  none;
+    cursor: pointer;
+
+}
 
 @media only screen and (max-width: 1050px) {
     .search-bar {

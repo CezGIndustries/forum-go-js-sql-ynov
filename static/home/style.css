@@ -182,6 +182,7 @@ body {
 
 .article {
     border: none;
+    cursor: pointer;
     margin-bottom: 2%;
     border-bottom: #17152A 2px solid;
     font-size: 20px;
