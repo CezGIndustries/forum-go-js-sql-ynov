@@ -3,7 +3,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     // Function that while be load when page is load
     console.log("Template is loaded.")
     const user = await requestUserInfo()
-    // console.log(user)
     document.getElementsByClassName('logoutleft')[0].innerHTML = `<img src="${user.ProfilPicture}" alt="">`
     document.getElementsByClassName('logoutmid')[0].innerHTML = user.UniqueName
 
@@ -16,7 +15,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     const notif = document.getElementsByClassName('notif')
     for (let i of notif) {
         i.addEventListener('click', () => {
-            window.location.href = `/notif`
+            window.location.href = `/error`
         })
     }
     const profil = document.getElementsByClassName('profil')
@@ -48,7 +47,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     } else {
         const signout = document.getElementsByClassName('fa-sign-out')
         for (let i of signout) {
-            console.log(i)
             i.addEventListener('click', () => {
                 fetch('/cronosdb/POST/logUsers/DISCONNECT', {
                     method: 'POST',

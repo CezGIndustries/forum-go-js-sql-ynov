@@ -22,6 +22,34 @@ document.addEventListener("DOMContentLoaded", async () => {
         </div>
         `
     }
+
+    const valide = document.getElementById('redirect-user')
+  
+    valide.addEventListener('click', e => {
+        const valueInput = document.getElementById('research').value
+        console.log(valueInput[0])
+        if(valueInput != null){
+            if(valueInput[0] == "@"){
+                window.location.href = `/profil/${valueInput.replace("@", "")}`
+            }else if (valueInput[0] == "#"){
+                window.location.href = `/error`
+            }else{
+                alert("recherche err: élément manquant @ ou # ")
+            }
+        }else{
+            alert("recherche err: null")
+        }
+        document.getElementById('research').value = ""
+
+
+        
+    })
+      
+
+
+
+
+
 })
 
 async function famousTagsFetch() {

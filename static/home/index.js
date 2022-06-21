@@ -30,6 +30,7 @@ document.querySelector('body').onload = async function () {
   } else {
     document.getElementsByClassName('midcolumn')[0].removeChild(document.getElementById('more'))
   }
+
 }
 
 document.getElementById('button-post').addEventListener('click', () => {
@@ -67,7 +68,7 @@ async function drawCrons(id, asc = 1) {
     helloCron(null, cron, asc)
   } else {
     const parentCron = await requestCron(cron.ParentID)
-    helloCron( parentCron, cron, asc)
+    helloCron(parentCron, cron, asc)
   }
   NUMBER_OF_CRON += 1
   everyAddEventListener()
@@ -77,7 +78,7 @@ function everyAddEventListener() {
   // Add every listener to the div
   const allLikes = document.querySelectorAll('.fa-thumbs-o-up')
   const allLiked = document.querySelectorAll('.fa-thumbs-up')
-  const allCronID = document.querySelectorAll('.article-bot')
+  const allCronID = document.querySelectorAll('.article')
   const allShare = document.querySelectorAll('.fa-share-alt')
 
   for (let likes of allLikes) {
@@ -191,7 +192,7 @@ function addLike(event) {
 
 
 function redirectCron(event) {
-  
+
 
   event.stopPropagation()//
   for (let i of event.path) {
