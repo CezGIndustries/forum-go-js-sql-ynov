@@ -1,7 +1,6 @@
 package forum
 
 import (
-	"fmt"
 	"html/template"
 	"net/http"
 )
@@ -74,27 +73,5 @@ func Error() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		t, _ := template.ParseFiles("./static/error/index.html")
 		t.Execute(w, "index.html")
-	}
-}
-
-func Gitlog() http.HandlerFunc {
-	return func(w http.ResponseWriter, r *http.Request) {
-		githubClientID := getGithubClientID()
-
-		redirectURL := fmt.Sprintf("https://github.com/login/oauth/authorize?client_id=%s&redirect_uri=%s", githubClientID, "http://localhost:3000/login/github/callback")
-
-		http.Redirect(w, r, redirectURL, 301)
-	}
-}
-
-func Gitlogcallback() http.HandlerFunc {
-	return func(w http.ResponseWriter, r *http.Request) {
-		code := r.URL.Query().Get("code")
-
-		githubAccessToken := getGithubAccessToken(code)
-
-		githubData := getGithubData(githubAccessToken)
-
-		loggedinHandler(w, r, githubData)
 	}
 }

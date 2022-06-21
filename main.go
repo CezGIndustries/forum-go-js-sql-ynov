@@ -31,8 +31,6 @@ func main() {
 	Env.Router.HandleFunc("/compose/cron", forum.Compose())
 	Env.Router.HandleFunc("/contact", forum.Contact())
 	Env.Router.HandleFunc("/error", forum.Error())
-	Env.Router.HandleFunc("/login/github/", forum.Gitlog())
-	Env.Router.HandleFunc("/login/github/callback", forum.Gitlog())
 
 	Env.Router.HandleFunc("/profil/{nameUser}", forum.Profil())
 
