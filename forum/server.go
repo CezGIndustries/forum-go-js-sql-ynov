@@ -77,13 +77,6 @@ func Error() http.HandlerFunc {
 	}
 }
 
-func Admin() http.HandlerFunc {
-	return func(w http.ResponseWriter, r *http.Request) {
-		t, _ := template.ParseFiles("./static/admin/index.html")
-		t.Execute(w, "hello world")
-	}
-}
-
 func Gitlog() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		githubClientID := getGithubClientID()
