@@ -1,5 +1,4 @@
 document.addEventListener("DOMContentLoaded", async () => {
-    console.log("Template right loaded")
     const famousTags = await famousTagsFetch()
     const user = await requestUserInfo()
     let tagFamous = []
@@ -40,7 +39,6 @@ document.addEventListener("DOMContentLoaded", async () => {
   
     valide.addEventListener('click', e => {
         const valueInput = document.getElementById('research').value
-        console.log(valueInput[0])
         if(valueInput != null){
             if(valueInput[0] == "@"){
                 window.location.href = `/profil/${valueInput.replace("@", "")}`
@@ -60,7 +58,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     document.getElementsByClassName("fa-fighter-jet")[0].addEventListener('click', e => {
         window.location.href ="/home"
     })
-    console.log(user.ProfilPicture)
     const img =document.getElementsByClassName("img")[0]
     img.innerHTML =`
         <img id="ma-teter" src="${user.ProfilPicture}">
