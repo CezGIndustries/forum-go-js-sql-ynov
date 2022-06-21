@@ -20,10 +20,10 @@ export async function helloCron(parentCron, cron, asc) {
     if (parentCron != null) {
 
         newCron = `
-        <div id-cron="${parentCron.ID}" class="article">
+        <div id-cron="${cron.ID}" class="article">
         <div class="article-top">
             <div class="child-to-child-top">
-                <p class="redirect-parent">en réponse à @${parentCron.creator}...</p>
+                <a href="${parentCron.creator}/cron/${parentCron.ID}" class="redirect-parent">en réponse à @${parentCron.creator}...</a>
             </div>
             <div class="child-to-child-bot">
                 <div class="left-coin">
@@ -144,12 +144,12 @@ export async function helloCron(parentCron, cron, asc) {
             e.style.display = 'none'
         })
     }
-    if (parentCron != null) {
-        const mainCron = document.getElementsByClassName('.redirect-parent')[0]
-        mainCron.addEventListener('click', redirect(parentCron))
-    }
+    
+
+   
 
 
+        
 
 
 }

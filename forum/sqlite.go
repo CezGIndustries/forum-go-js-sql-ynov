@@ -271,7 +271,6 @@ func CreateCron(cronosDB *sql.DB) http.HandlerFunc {
 			} else {
 				row := cronosDB.QueryRow(`SELECT Year, Month, Day, Hour, Minute FROM timeLeft WHERE ID = ?`, Cron.ParentID)
 				row.Scan(&Cron.TimeLeft.Year, &Cron.TimeLeft.Month, &Cron.TimeLeft.Day, &Cron.TimeLeft.Hour, &Cron.TimeLeft.Minute)
-				cronosDB.Exec(`INSERT INTO timeLeft (ID, Year, Month, Day, Hour, Minute) VALUES (?, ?, ?, ?, ?, ?);`, ID, Cron.TimeLeft.Year, Cron.TimeLeft.Month, Cron.TimeLeft.Day, Cron.TimeLeft.Hour, Cron.TimeLeft.Minute)
 			}
 			for _, tag := range Cron.Tag {
 				cronosDB.Exec(`INSERT INTO tagCron (ID, Tag) VALUES (?, ?);`, ID, tag)
@@ -384,29 +383,6 @@ func CreateLike(cronosDB *sql.DB) http.HandlerFunc {
 		} else {
 			row.Close()
 			cronosDB.Exec(`DELETE FROM cronLike WHERE ID=? AND User=?;`, ID.ID, UniqueName)
-		}
-	}
-}
-
-func CreateFollow(cronosDB *sql.DB) http.HandlerFunc {
-	return func(w http.ResponseWriter, r *http.Request) {
-		if ValidSession(w, r) {
-			var (
-				UN         UN
-				UniqueName string
-			)
-			body, _ := ioutil.ReadAll(r.Body)
-			json.Unmarshal(body, &UN)
-			session, _ := store.Get(r, "AUTH_TOKEN")
-			UniqueName = session.Values["uniqueName"].(string)
-			rows, _ := cronosDB.Query(`SELECT * FROM follow WHERE User = ? AND FollowUser = ?`, UN.UniqueName, UniqueName)
-			if rows.Next() {
-				rows.Close()
-				cronosDB.Exec(`INSERT INTO follow (User, FollowUser) VALUES (?, ?);`, UN.UniqueName, UniqueName)
-			} else {
-				rows.Close()
-				cronosDB.Exec(`DELETE FROM follow WHERE User = ? AND FollowUser = ?;`, UN.UniqueName, UniqueName)
-			}
 		}
 	}
 }
@@ -713,5 +689,28 @@ func EveryUser(cronosDB *sql.DB) http.HandlerFunc {
 		rows.Close()
 		response, _ := json.Marshal(allUniqueName)
 		w.Write(response)
+	}
+}
+
+func CreateFollow(cronosDB *sql.DB) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		if ValidSession(w, r) {
+			var (
+				UN         UN
+				UniqueName string
+			)
+			body, _ := ioutil.ReadAll(r.Body)
+			json.Unmarshal(body, &UN)
+			session, _ := store.Get(r, "AUTH_TOKEN")
+			UniqueName = session.Values["uniqueName"].(string)
+			rows, _ := cronosDB.Query(`SELECT * FROM follow WHERE User = ? AND FollowUser = ?`, UN.UniqueName, UniqueName)
+			if rows.Next() {
+				rows.Close()
+				cronosDB.Exec(`INSERT INTO follow (User, FollowUser) VALUES (?, ?);`, UN.UniqueName, UniqueName)
+			} else {
+				rows.Close()
+				cronosDB.Exec(`DELETE FROM follow WHERE User = ? AND FollowUser = ?;`, UN.UniqueName, UniqueName)
+			}
+		}
 	}
 }

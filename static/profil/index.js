@@ -16,14 +16,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
     console.log(actualUser.UniqueName)
 
-
-
-
-
-
-
-
-
     const load = await userCron(pseudoUser)
     load.forEach(async e => {
         if (e.ParentID == -1) {
@@ -123,7 +115,11 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     let edit  = document.getElementById('edit-profil')
     if (edit === null) {
-        await FoollowUnFollow(actualUser.UniqueName)
+        edit = document.getElementById('follow')
+        edit.addEventListener('click',async () => {
+        const test = await FoollowUnFollow(actualUser.UniqueName)
+        console.log(test)
+        })
     } else {
         edit = document.getElementById('edit-profil')
         edit.addEventListener('click', () => {
@@ -222,18 +218,14 @@ async function requestUserInfo() {
     })
 }
 async function FoollowUnFollow(pseudo) {
-    return fetch('/cronosdb/POST/profil/CRON_USER', {
+    fetch('/cronosdb/POST/user/FOLLOW', {
         method: 'POST',
         headers: {
             "content-type": "application/json"
         },
         body: JSON.stringify({
-            UniqueName: pseudo,
+            uniqueName:pseudo,
         })
-    }).then((res) => {
-        return res.json()
-    }).then((res) => {
-        return res
     })
 }
 
@@ -326,3 +318,5 @@ async function userExist(pseudo) {
         return res
     })
 }
+
+

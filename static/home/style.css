@@ -198,6 +198,9 @@ body {
     margin-bottom: 2%;
     width: 80%;
 }
+.article-bot{
+    cursor: pointer;
+}
 
 .user-wrapper {
     display: flex;
