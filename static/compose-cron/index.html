@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link rel="stylesheet" type="text/css" href="/static/compose-cron/style.css">
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <script src='https://kit.fontawesome.com/a076d05399.js' crossorigin='anonymous'></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <title>Compose | Cronos</title>
+</head>
+
+<body>
+    <div id="all">
+        <header>
+            <div id="quitt-ico">
+                <i class='fas fa-space-shuttle' style='font-size:36px;color:#cacaca;transform: rotate(180deg)'></i>
+            </div>
+        </header>
+        <div class="midd">
+            <div id="post">
+                <div id="top">
+                    <div id="left">
+                        <div id="img">
+                            <img src="https://pbs.twimg.com/profile_images/1410345082432200709/sAjZ7yrn_400x400.jpg">
+                        </div>
+                    </div>
+                    <div id="right">
+                        <textarea id="text-value-entry-phone" row="5%" maxlength="240"
+                            placeholder="Racontes-nous ta vie ?!"></textarea>
+                    </div>
+                </div>
+                <div id="bot">
+                    <div id="bot-left">
+                        <div id="media">
+                            <div class="icon">
+                                <i class="fa fa-photo" style="color:#fff ;"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="bot-rigth">
+                        <select name="selecttime" id="select-time">
+                            <option value="1">1 min</option>
+                            <option value="5">5 min</option>
+                            <option value="10">10 min</option>
+                            <option value="30">30 min</option>
+                            <option value="60">1H</option>
+                            <option value="120">2H</option>
+                            <option value="180">3H</option>
+                            <option value="240">4H</option>
+                            <option value="300">5H</option>
+                            <option value="360">6H</option>
+                            <option value="420">7H</option>
+                            <option value="480">8H</option>
+                            <option value="540">9H</option>
+                            <option value="600">10H</option>
+                            <option value="660">11H</option>
+                            <option value="720">12H</option>
+                            <option value="1440">24H</option>
+                        </select>
+                        <button id="button-post" type="button"> Cron !</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<script type="module" src="/static/compose-cron/index.js"></script>
+
+
+
+</html>

@@ -1,9 +1,123 @@
 <!DOCTYPE html>
-<html>
-    <head>
-        <title>Cronos</title>
-    </head>
-    <body>
-        <h1>PAGE PROFIL</h1>
-    </body>
+
+<html lang="en">
+
+<head>
+    <link rel="stylesheet" type="text/css" href="/static/home/style.css">
+    <link rel="stylesheet" type="text/css" href="/static/profil/style.css">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://kit.fontawesome.com/4f6d94b9cb.js" crossorigin="anonymous"></script>
+    <script src="https://kit.fontawesome.com/yourcode.js" crossorigin="anonymous"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <title>Accueil | Cronos</title>
+</head>
+
+
+<body>
+    {{template "LeftColumn" }}
+    <script>
+
+    function loadPP() {
+        const file = document.getElementById("pp").files;
+        if (file.length > 0) {
+            const fileReader = new FileReader();
+            fileReader.onload = function (event) {
+                document.getElementById("img-USER").setAttribute("src", event.target.result);
+            };
+             fileReader.readAsDataURL(file[0])
+        }
+    }
+    function loadBanner() {
+        const file = document.getElementById("banner").files;
+        if (file.length > 0) {
+            const fileReader = new FileReader();
+            fileReader.onload = function (event) {
+                document.getElementById("popup-img-baner").setAttribute("src", event.target.result);
+            };
+             fileReader.readAsDataURL(file[0])
+        }
+    }
+
+    </script>
+    </form>
+    <div class="allcolumns">
+        <div id="edit-box">
+            <div id="popup">
+                <div id="top-popup">
+                    <div id="popup-banner">
+
+                    </div>
+                    <div id="popup-img">
+
+                    </div>
+                </div>
+                <div id="mid-popup">
+                    <div id="popup-name"></div>
+                    <div id="popup-bio"></div>
+
+                </div>
+                <div id="bot-popup">
+                    <div id="popup-status"></div>
+                    <div id="popup-retour"></div>
+                    <div id="popup-confirm"></div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="midcolumn">
+            <div id="top">
+                <div id="banner-div">
+                </div>
+                <div id="other-div">
+                    <div id="o-top">
+                        <div id="top-left-profil">
+                            <div id="div-username">
+                                
+                            </div>
+                            <div id="div-i"></div>
+                        </div>
+                        <div id="top-mid-profil">
+                            <div id="div-img">
+                            </div>
+                        </div>
+                        <div id="top-right-profil">
+                        </div>
+                    </div>
+                    <div id="o-mid">
+                        <div id="bio">
+                            bio
+                        </div>
+                    </div>
+                    <div id="o-bot">
+                        <div id="abonnement">
+                        </div>
+                        <div id="vide">
+                        </div>
+                        <div id="abonnes">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="mid">
+                <div class="btn-cron active" id="my-post">
+                    <p class="text-btn " id="myPost">Mes crons</p>
+                </div>
+                <div class="btn-cron" id="friend-post">
+                    <p class="text-btn" id="FriendlyPost">Amis</p>
+                </div>
+                <div class="btn-cron " id="tag-post">
+                    <p class="text-btn" clicl id="interestPost">Interets</p>
+                </div>
+            </div>
+            <div class="div-all-article">
+            </div>
+        </div>
+        {{template "RightColumn" }}
+    </div>
+</body>
+<script type="module" src="/static/profil/index.js"></script>
+
 </html>

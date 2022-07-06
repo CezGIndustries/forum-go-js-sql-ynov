@@ -1,0 +1,223 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+.allcolumns {
+    background-color: #08061A;
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+}
+
+.leftcolumn {
+    position: fixed;
+    left: 0px;
+    /* display: flex; */
+    justify-content: flex-end;
+    width: 20%;
+    height: 100%;
+}
+
+.navbar {
+    height: 95%;
+    margin: 30px;
+    border-radius: 1.05rem;
+    background-color: #08061A;
+}
+
+.logo {
+    margin-left: 10px;
+}
+
+.nave {
+    display: flex;
+    justify-content: flex-start;
+    margin-left: 10px;
+    font-size: 25px;
+    height: 80%;
+}
+
+.fa {
+    color: #cacaca;
+    margin-right: 10px;
+}
+
+.icon {
+    display: flex;
+    justify-content: center;
+    width: 20%;
+}
+
+.nomnave {
+    width: 60%;
+}
+
+li {
+    cursor: pointer;
+    list-style: none;
+    margin: 50px 0px;
+}
+
+p {
+    cursor: pointer;
+    color: #cacaca;
+    text-decoration: none;
+    font-size: 25px;
+}
+
+.explore-responsive {
+    display: none;
+}
+
+.logout-bot {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    height: 10%;
+    width: 200px;
+    position: absolute;
+    bottom: 0;
+}
+
+.logout {
+    display: flex;
+    align-items: center;
+    border-radius: 30px;
+    width: 100%;
+    height: 50%;
+    transition: 300ms;
+}
+
+
+/* .logout:hover {
+   height: 100%;
+   width:30%;
+
+} */
+
+.logoutleft {
+    width: 20%;
+}
+
+.logout img {
+    display: flex;
+    justify-content: center;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+}
+
+.logoutmid {
+    width: 69%;
+    overflow: hidden;
+    color: #cacaca;
+    margin-right: 1%;
+}
+
+.logoutright {
+    width: 10%;
+}
+
+.logoutright .fa-ellipsis {
+    color: #cacaca;
+}
+
+.iconlogout {
+    color: #cacaca;
+}
+
+@media only screen and (max-width: 1100px) {
+    .leftcolumn {
+        width: 12%;
+    }
+    .nave {
+        justify-content: center;
+    }
+    .nomnave {
+        display: none;
+    }
+    .logout-bot {
+        width: 70px;
+    }
+    .logout {
+        justify-content: center;
+        background-color: transparent;
+    }
+    .logoutmid {
+        display: none;
+    }
+    .logoutright {
+        margin-left: 20px;
+    }
+}
+
+@media only screen and (max-width: 830px) {
+    .leftcolumn {
+        width: 100px;
+    }
+}
+
+@media only screen and (max-width: 800px) {
+    .explore-responsive {
+        display: block;
+    }
+}
+
+@media only screen and (max-width: 580px) {
+    .leftcolumn {
+        justify-content: center;
+        border: none;
+        position: absolute;
+        bottom: 0;
+        width: 60px;
+    }
+    .logout {
+        position: absolute;
+        left: 0;
+    }
+    svg {
+        width: 40px;
+        height: 50px;
+    }
+}
+
+@media only screen and (max-height: 565px) {
+    .logoutmid,
+    .logoutleft {
+        display: none;
+    }
+    .logout-bot {
+        width: 40%;
+    }
+    .nave {
+        height: 325px;
+        overflow-y: auto;
+    }
+}
+
+@media only screen and (max-height: 485px) {
+    .nave {
+        height: 250px;
+    }
+}
+
+@media only screen and (max-height: 400px) {
+    .nave {
+        height: 175px;
+    }
+}
+
+@media only screen and (max-height: 320px) {
+    .nave {
+        height: 110px;
+    }
+}
+
+@media only screen and (max-height: 255px) {
+    .nave {
+        height: 50px;
+    }
+}

@@ -6,19 +6,69 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="./static/connexion-creation/style.css">
-    <script src="https://kit.fontawesome.com/4f6d94b9cb.js" crossorigin="anonymous"></script>
+    <meta name="google-signin-scope" content="profile email">
     <title>Connexion/Inscription | Cronos</title>
 </head>
 
 <body>
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    <script>
+
+        function handleCredentialResponse(response) {
+            console.log("Encoded JWT ID token: " + response.credential);
+        }
+        function handleCredentialResponse(response) {
+            // decodeJwtResponse() is a custom function defined by you
+            // to decode the credential response.
+            const responsePayload = parseJwt(response.credential);
+            fetch('/cronosdb/POST/logUsers/GOOGLE_REGISTER', {
+                method: 'POST',
+                headers: {
+                    "content-type": "application/json"
+                },
+                body: JSON.stringify({
+                    UniqueName: responsePayload.name,
+                    ProfilPicture: responsePayload.picture,
+                })
+            })
+            window.location.href = '/home'
+        }
+        window.onload = function () {
+            google.accounts.id.initialize({
+                client_id: "90465413078-kqpmh1g786p43ipk30jklkjr0pf3qa6j.apps.googleusercontent.com",
+                callback: handleCredentialResponse
+            });
+            google.accounts.id.renderButton(
+                document.getElementById("buttonDiv"),
+                { theme: "outline", size: "medium" }  // customization attributes
+            );
+            google.accounts.id.prompt(); // also display the One Tap dialog
+        }
+        function parseJwt(token) {
+            var base64Url = token.split('.')[1];
+            var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+            var jsonPayload = decodeURIComponent(atob(base64).split('').map(function (c) {
+                return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+            }).join(''));
+
+            return JSON.parse(jsonPayload);
+        };
+
+    </script>
     <div id="background">
+
         <div class="loginsignupform">
             <div class="logo">
                 <svg width="102" height="140" viewBox="0 0 262 300" fill="#b33ced" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M256.066 43.934C234.866 22.7344 207.8 8.37396 178.36 2.70552C148.92 -2.96292 118.457 0.320768 90.9014 12.1329C63.3456 23.9451 39.9618 43.7436 23.7669 68.974C7.57214 94.2045 -0.690489 123.709 0.0451827 153.681C0.780854 183.652 10.4811 212.716 27.8942 237.122C45.3074 261.527 69.6344 280.155 97.7365 290.601C125.839 301.047 156.426 302.832 185.553 295.726C214.679 288.62 241.008 272.949 261.142 250.735L222.747 215.935C209.568 230.475 192.335 240.732 173.271 245.384C154.206 250.035 134.185 248.866 115.791 242.029C97.3974 235.192 81.4743 222.999 70.0767 207.025C58.6791 191.05 52.3299 172.027 51.8483 152.409C51.3668 132.791 56.775 113.48 67.3752 96.9652C77.9754 80.4508 93.2811 67.4918 111.317 59.7603C129.354 52.0287 149.293 49.8794 168.563 53.5897C187.833 57.2999 205.549 66.6994 219.425 80.5754L256.066 43.934Z" fill="#b33ced"/>
-                    <path d="M154.884 159.07C154.884 165.62 149.574 170.93 143.023 170.93C136.473 170.93 131.163 165.62 131.163 159.07C131.163 152.519 136.473 147.209 143.023 147.209C149.574 147.209 154.884 152.519 154.884 159.07Z" fill="#b33ced"/>
-                    <path d="M143.023 81.628H145.814V140.233H143.023V81.628Z" fill="#b33ced"/>
-                    <path d="M154.884 172.917L156.844 170.93L189.251 202.913L187.291 204.899L154.884 172.917Z" fill="#b33ced"/>
+                    <path
+                        d="M256.066 43.934C234.866 22.7344 207.8 8.37396 178.36 2.70552C148.92 -2.96292 118.457 0.320768 90.9014 12.1329C63.3456 23.9451 39.9618 43.7436 23.7669 68.974C7.57214 94.2045 -0.690489 123.709 0.0451827 153.681C0.780854 183.652 10.4811 212.716 27.8942 237.122C45.3074 261.527 69.6344 280.155 97.7365 290.601C125.839 301.047 156.426 302.832 185.553 295.726C214.679 288.62 241.008 272.949 261.142 250.735L222.747 215.935C209.568 230.475 192.335 240.732 173.271 245.384C154.206 250.035 134.185 248.866 115.791 242.029C97.3974 235.192 81.4743 222.999 70.0767 207.025C58.6791 191.05 52.3299 172.027 51.8483 152.409C51.3668 132.791 56.775 113.48 67.3752 96.9652C77.9754 80.4508 93.2811 67.4918 111.317 59.7603C129.354 52.0287 149.293 49.8794 168.563 53.5897C187.833 57.2999 205.549 66.6994 219.425 80.5754L256.066 43.934Z"
+                        fill="#b33ced" />
+                    <path
+                        d="M154.884 159.07C154.884 165.62 149.574 170.93 143.023 170.93C136.473 170.93 131.163 165.62 131.163 159.07C131.163 152.519 136.473 147.209 143.023 147.209C149.574 147.209 154.884 152.519 154.884 159.07Z"
+                        fill="#b33ced" />
+                    <path d="M143.023 81.628H145.814V140.233H143.023V81.628Z" fill="#b33ced" />
+                    <path d="M154.884 172.917L156.844 170.93L189.251 202.913L187.291 204.899L154.884 172.917Z"
+                        fill="#b33ced" />
                 </svg>
             </div>
             <div class="loginsignupbutton">
@@ -27,32 +77,32 @@
                 <button type="button" class="mainbuttons" onclick="register()">S'inscrire</button>
             </div>
             <form action="" id="loginform" class="input-group">
-                <input id="email_login_login" type="text" class="input-field" placeholder="Pseudo/Email" title="Entrez votre Pseudo ou votre Email" required>
-                <input id="password_login" type="password" class="input-field" placeholder="Mot de passe" title="Entrez votre Mot De Passe" required>
-                <input type="checkbox" class="check-box"><span>Se souvenir de mon mot de passe</span>
+                <input id="email_login_login" type="text" class="input-field" placeholder="Pseudo/Email"
+                    title="Entrez votre Pseudo ou votre Email" required>
+                <input id="password_login" type="password" class="input-field" placeholder="Mot de passe"
+                    title="Entrez votre Mot De Passe" required>
                 <p><a href="#">Mot de passe oublié ?</a></p>
                 <button type="button" class="submitbutton" onclick="confirmLogin()">Confirmer</button>
                 <h4>Ou me connecter avec :</h4>
                 <div class="iconrow">
-                    <a href="#" class="icon"><i class="fa-brands fa-google"> Google</i></a>
-                    <a id="login-github" href="https://github.com/login/oauth/authorize?scope=user:email&client_id=<%= client_id %>" class="icon"><i class="fa-brands fa-github"> Github</i></a>
+                    <a id="login-github"
+                        href="https://github.com/login/oauth/authorize?scope=user:email&client_id=<%= client_id %>"
+                        class="icon"><i class="fa-brands fa-github"> Github</i></a>
                     <a href="#" class="icon"><i class="fa-brands fa-microsoft"> Microsoft</i></a>
+                    <div id="buttonDiv"></div>
                 </div>
-                <p><a href="#">Je souhaite accéder au forum sans me connnecter.</a></p>
+                <p id="no-connexion"><a href="/home">Je souhaite accéder au forum sans me connnecter.</a></p>
             </form>
             <form action="" id="signupform" class="input-group">
-                <input id="pseudo_register" type="text" class="input-field" placeholder="Pseudo" title="Le nom sous lequel vous apparaîtrez" required>
+                <input id="pseudo_register" type="text" class="input-field" placeholder="Pseudo"
+                    title="Le nom sous lequel vous apparaîtrez" required>
                 <input id="email_register" type="email" class="input-field" placeholder="Email" not required>
-                <input id="password_register" type="password" class="input-field" placeholder="Mot de passe" title="Renseignez un Mot De Passe" required>
-                <input id="confirm_password_register" type="password" class="input-field" placeholder="Confirmez le mot de passe" title="Confirmez un Mot De Passe" required>
-                <input type="checkbox" class="check-box"><span>Se souvenir de mon mot de passe</span>
+                <input id="password_register" type="password" class="input-field" placeholder="Mot de passe"
+                    title="Renseignez un Mot De Passe" required>
+                <input id="confirm_password_register" type="password" class="input-field"
+                    placeholder="Confirmez le mot de passe" title="Confirmez un Mot De Passe" required>
                 <button type="button" class="submitbutton" onclick="confirmRegister()">Confirmer</button>
-                <h4>Ou m'inscrire avec :</h4>
-                <div class="iconrow">
-                    <a href="#" class="icon"><i class="fa-brands fa-google"> Google</i></a>
-                    <a  href="#" class="icon"><i class="fa-brands fa-github"> Github</i></a>
-                    <a href="#" class="icon"><i class="fa-brands fa-microsoft"> Microsoft</i></a>
-                </div>
+
             </form>
         </div>
     </div>
